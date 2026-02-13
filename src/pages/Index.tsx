@@ -21,6 +21,7 @@ import absaLogo from "@/assets/logos/absa.png";
 import oldMutualLogo from "@/assets/logos/old-mutual.png";
 import ghalaLogo from "@/assets/logos/ghala.png";
 import awsLogo from "@/assets/logos/aws.png";
+import YouTubePlayer from "@/components/YouTubePlayer";
 
 const serviceCards = [
 {
@@ -243,13 +244,7 @@ const Index = () => {
 
                 <div className="relative">
                 <div className="aspect-video rounded-none border border-golden/20 overflow-hidden shadow-2xl shadow-background/60">
-                    <iframe
-                      src="https://www.youtube.com/embed/ikVCVdDhMsU?rel=0&showinfo=0&modestbranding=1&iv_load_policy=3&end=1231"
-                      title="Holaweb Media Group"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="w-full h-full"
-                    />
+                    <YouTubePlayer videoId="ikVCVdDhMsU" title="Holaweb Media Group" />
                   </div>
                 </div>
               </div>
