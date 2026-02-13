@@ -237,14 +237,11 @@ const Index = () => {
                 </div>
 
                 <div className="relative">
-                  <div className="aspect-video rounded-none border border-golden/20 overflow-hidden shadow-2xl shadow-background/60">
-                    <iframe
-                      src="https://www.youtube.com/embed/ZfEtUW5N62s"
-                      title="Holaweb Media Group"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="w-full h-full" />
-
+                <div className="aspect-video rounded-none border border-golden/20 overflow-hidden shadow-2xl shadow-background/60 bg-card/80 flex items-center justify-center">
+                    <div className="text-center">
+                      <Play className="h-16 w-16 text-golden/40 mx-auto mb-3" />
+                      <p className="font-subheading text-sm text-muted-foreground">Video Coming Soon</p>
+                    </div>
                   </div>
                 </div>
               </div>
