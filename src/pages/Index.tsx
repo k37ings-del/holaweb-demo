@@ -217,20 +217,21 @@ const Index = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div>
                   <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-2">
-                    See Holaweb in Action
+                    Scaling Ventures Across Africa
                   </h2>
                   <div className="w-16 h-1 bg-golden mb-6" />
                   <p className="font-subheading text-lg text-golden mb-4">
-                    Our Story, Our Impact
+                    Investment, Innovation & Ecosystem Building
                   </p>
                   <p className="font-body font-light text-foreground/75 leading-relaxed mb-6">
-                    Discover how Holaweb Media Group is empowering Africa's digital
-                    future. From cloud-powered solutions to hands-on skills transfer,
-                    see how we partner with businesses and institutions to drive real
-                    adoption, measurable growth, and long-term sustainability.
+                    Watch our co-founder Vuyisa Qabaka share insights from scaling
+                    startups across 13 African countries at the SA Innovation Summit.
+                    From navigating local procurement and global funding to the power
+                    of storytelling for entrepreneurs seeking investment—discover
+                    real-world strategies for thriving in Africa's emerging markets.
                   </p>
                   <a
-                    href="https://youtube.com"
+                    href="https://www.youtube.com/watch?v=ikVCVdDhMsU"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-golden hover:text-golden/80 font-subheading text-sm font-medium transition-colors">
