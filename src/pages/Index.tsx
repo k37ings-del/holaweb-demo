@@ -154,6 +154,9 @@ const Index = () => {
           </div>
         </section>
 
+        {/* ─── Hero / Body Separator ─── */}
+        <div className="w-full h-px bg-gradient-to-r from-transparent via-golden/40 to-transparent" />
+
         {/* ─── About / Intro Section ─── */}
         <section className="py-24">
           <div className="container mx-auto px-6">
