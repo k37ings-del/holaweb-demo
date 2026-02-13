@@ -84,10 +84,6 @@ const brandLogos = [
   { name: "Old Mutual", logo: oldMutualLogo },
   { name: "Ghala", logo: ghalaLogo },
   { name: "AWS", logo: awsLogo },
-  { name: "Partner 5", logo: null as string | null },
-  { name: "Partner 6", logo: null as string | null },
-  { name: "Partner 7", logo: null as string | null },
-  { name: "Partner 8", logo: null as string | null },
 ];
 
 
