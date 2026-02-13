@@ -142,8 +142,21 @@ const Index = () => {
       <section className="py-24">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Text on the left */}
-            <div>
+            {/* Image placeholder on the left */}
+            <div className="relative order-2 lg:order-1">
+              <div className="aspect-[4/3] rounded-xl bg-secondary/50 border border-golden/20 flex items-center justify-center overflow-hidden">
+                <div className="text-center p-8">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-golden/20 flex items-center justify-center">
+                    <Cloud className="h-8 w-8 text-golden" />
+                  </div>
+                  <p className="font-subheading text-sm text-muted-foreground">Stock Image Placeholder</p>
+                </div>
+              </div>
+              <div className="absolute -bottom-4 -left-4 w-full h-full rounded-xl border border-golden/30 -z-10" />
+            </div>
+
+            {/* Text on the right */}
+            <div className="order-1 lg:order-2">
               <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-2">
                 Who We Are
               </h2>
@@ -171,20 +184,6 @@ const Index = () => {
                 e‑commerce, WhatsApp and payment integrations, CRM and data tools,
                 and managed cloud services.
               </p>
-            </div>
-
-            {/* Image placeholder on the right */}
-            <div className="relative">
-              <div className="aspect-[4/3] rounded-xl bg-secondary/50 border border-golden/20 flex items-center justify-center overflow-hidden">
-                <div className="text-center p-8">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-golden/20 flex items-center justify-center">
-                    <Cloud className="h-8 w-8 text-golden" />
-                  </div>
-                  <p className="font-subheading text-sm text-muted-foreground">Stock Image Placeholder</p>
-                </div>
-              </div>
-              {/* Decorative border */}
-              <div className="absolute -bottom-4 -right-4 w-full h-full rounded-xl border border-golden/30 -z-10" />
             </div>
           </div>
         </div>
