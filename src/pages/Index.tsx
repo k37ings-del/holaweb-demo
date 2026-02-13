@@ -17,6 +17,10 @@ import AnimatedBackground from "@/components/AnimatedBackground";
 import FloatingTriangles from "@/components/FloatingTriangles";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import aboutImage from "@/assets/about-image.jpg";
+import absaLogo from "@/assets/logos/absa.png";
+import oldMutualLogo from "@/assets/logos/old-mutual.png";
+import ghalaLogo from "@/assets/logos/ghala.png";
+import awsLogo from "@/assets/logos/aws.png";
 
 const serviceCards = [
 {
@@ -76,14 +80,15 @@ const testimonials = [
 
 
 const brandLogos = [
-"Partner 1",
-"Partner 2",
-"Partner 3",
-"Partner 4",
-"Partner 5",
-"Partner 6",
-"Partner 7",
-"Partner 8"];
+  { name: "Absa Bank", logo: absaLogo },
+  { name: "Old Mutual", logo: oldMutualLogo },
+  { name: "Ghala", logo: ghalaLogo },
+  { name: "AWS", logo: awsLogo },
+  { name: "Partner 5", logo: null as string | null },
+  { name: "Partner 6", logo: null as string | null },
+  { name: "Partner 7", logo: null as string | null },
+  { name: "Partner 8", logo: null as string | null },
+];
 
 
 const ScrollSection = ({ children, className = "" }: {children: React.ReactNode;className?: string;}) => {
