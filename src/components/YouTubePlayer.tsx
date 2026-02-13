@@ -88,7 +88,7 @@ const YouTubePlayer = ({ videoId, title = "Video" }: YouTubePlayerProps) => {
           {/* Top overlay - covers suggestion tiles that appear on top */}
           <div
             onClick={handleOverlayClick}
-            className="absolute top-0 left-0 right-0 h-[60%] z-10 cursor-pointer bg-black/90"
+            className="absolute top-0 left-0 right-0 h-[60%] z-10 cursor-pointer bg-black"
             aria-label={`Play ${title}`}
           />
           {/* Play button in center */}
@@ -105,7 +105,7 @@ const YouTubePlayer = ({ videoId, title = "Video" }: YouTubePlayerProps) => {
           {/* Bottom overlay - covers bottom suggestion area, leaving controls visible */}
           <div
             onClick={handleOverlayClick}
-            className="absolute bottom-[48px] left-0 right-0 h-[calc(40%-48px)] z-10 cursor-pointer bg-black/90"
+            className="absolute bottom-[48px] left-0 right-0 h-[calc(40%-48px)] z-10 cursor-pointer bg-black"
             aria-label={`Resume ${title}`}
           />
         </>
