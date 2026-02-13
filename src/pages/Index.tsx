@@ -139,14 +139,14 @@ const Index = () => {
             >
               <Link
                 to="/contact"
-                className="btn-cherry inline-flex items-center justify-center rounded-none px-8 py-4 font-subheading text-sm font-semibold shadow-lg"
+                className="btn-cherry inline-flex items-center justify-center rounded-lg px-8 py-4 font-subheading text-sm font-semibold shadow-lg"
               >
                 Get Started
                 <ChevronRight className="ml-2 h-4 w-4" />
               </Link>
               <Link
                 to="/services"
-                className="inline-flex items-center justify-center rounded-none border border-golden/40 px-8 py-4 font-subheading text-sm font-semibold text-golden hover:bg-golden/10 transition-colors duration-300"
+                className="inline-flex items-center justify-center rounded-lg border border-golden/40 px-8 py-4 font-subheading text-sm font-semibold text-golden hover:bg-golden/10 transition-colors duration-300"
               >
                 Learn More
               </Link>
