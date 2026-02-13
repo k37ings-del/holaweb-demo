@@ -18,6 +18,7 @@ import FloatingTriangles from "@/components/FloatingTriangles";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useToast } from "@/hooks/use-toast";
 import siyabongaImg from "@/assets/siyabonga-tiwana.png";
+import vuyisaImg from "@/assets/vuyisa-qabaka.jpeg";
 
 const whyChooseUs = [
   {
@@ -71,7 +72,7 @@ const leaders = [
     role: "African Rainmaker",
     bio: "Vuyisa Qabaka is a Pan Africa focused startup and corporate innovation expert, angel investor and business mentor, with experience across 13 countries in Africa. Currently serving as a trustee at Groote Schuur Hospital Trust and the board of the National Mentorship Movement.",
     initials: "VQ",
-    image: null as string | null,
+    image: vuyisaImg,
   },
 ];
 
@@ -120,7 +121,7 @@ const About = () => {
         <Header />
 
         {/* ─── Hero Section ─── */}
-        <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
+        <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden pt-32 pb-16">
           <div className="absolute inset-0 bg-secondary/40" />
           <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/30 to-background" />
 
