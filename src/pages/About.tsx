@@ -8,7 +8,6 @@ import {
   MessageSquare,
   Layers,
   Handshake,
-  ImageIcon,
   Mail,
 } from "lucide-react";
 import Header from "@/components/Header";
@@ -19,6 +18,7 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useToast } from "@/hooks/use-toast";
 import siyabongaImg from "@/assets/siyabonga-tiwana.png";
 import vuyisaImg from "@/assets/vuyisa-qabaka.jpeg";
+import aboutWorkspaceImg from "@/assets/about-workspace.jpg";
 
 const whyChooseUs = [
   {
@@ -122,6 +122,14 @@ const About = () => {
 
         {/* ─── Hero Section ─── */}
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-32 pb-16">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+            src="/videos/about-hero.mp4"
+          />
           <div className="absolute inset-0 bg-secondary/40" />
           <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/30 to-background" />
 
@@ -201,13 +209,12 @@ const About = () => {
         <section className="py-16">
           <div className="container mx-auto px-6">
             <ScrollSection>
-              <div className="max-w-5xl mx-auto aspect-[21/9] rounded-none bg-card/80 backdrop-blur-sm border border-golden/20 flex items-center justify-center shadow-2xl shadow-background/60">
-                <div className="text-center">
-                  <ImageIcon className="h-16 w-16 text-golden/30 mx-auto mb-3" />
-                  <p className="font-subheading text-sm text-muted-foreground">
-                    Image Coming Soon
-                  </p>
-                </div>
+              <div className="max-w-5xl mx-auto aspect-[21/9] rounded-none overflow-hidden shadow-2xl shadow-background/60">
+                <img
+                  src={aboutWorkspaceImg}
+                  alt="Workspace showing digital solutions in action"
+                  className="w-full h-full object-cover"
+                />
               </div>
             </ScrollSection>
           </div>
