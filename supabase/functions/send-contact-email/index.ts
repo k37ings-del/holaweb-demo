@@ -41,7 +41,7 @@ Deno.serve(async (req) => {
       },
       body: JSON.stringify({
         from: "Holaweb Contact <onboarding@resend.dev>",
-        to: ["siya@holaweb.co.za", "holaweb.africa@gmail.com"],
+        to: ["k37.ings@gmail.com"],
         subject: `Contact Form: ${subject || "New Inquiry"} — from ${name}`,
         html: htmlBody,
         reply_to: email,
