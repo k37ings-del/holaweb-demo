@@ -80,15 +80,35 @@ const YouTubePlayer = ({ videoId, title = "Video" }: YouTubePlayerProps) => {
   };
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full h-full overflow-hidden">
       <div ref={containerRef} className="w-full h-full [&>div]:w-full [&>div]:h-full [&>iframe]:w-full [&>iframe]:h-full" />
-      {/* Overlay hides YouTube suggestions when paused */}
+      {/* Overlays hide YouTube suggestion tiles when paused/ended */}
       {!isPlaying && isReady && (
-        <div
-          onClick={handleOverlayClick}
-          className="absolute inset-0 z-10 cursor-pointer bg-transparent"
-          aria-label={`Play ${title}`}
-        />
+        <>
+          {/* Top overlay - covers suggestion tiles that appear on top */}
+          <div
+            onClick={handleOverlayClick}
+            className="absolute top-0 left-0 right-0 h-[60%] z-10 cursor-pointer bg-black/90"
+            aria-label={`Play ${title}`}
+          />
+          {/* Play button in center */}
+          <div
+            onClick={handleOverlayClick}
+            className="absolute inset-0 z-20 flex items-center justify-center cursor-pointer"
+          >
+            <div className="w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center shadow-lg hover:bg-primary transition-colors">
+              <svg className="w-7 h-7 text-primary-foreground ml-1" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </div>
+          </div>
+          {/* Bottom overlay - covers bottom suggestion area, leaving controls visible */}
+          <div
+            onClick={handleOverlayClick}
+            className="absolute bottom-[48px] left-0 right-0 h-[calc(40%-48px)] z-10 cursor-pointer bg-black/90"
+            aria-label={`Resume ${title}`}
+          />
+        </>
       )}
     </div>
   );
