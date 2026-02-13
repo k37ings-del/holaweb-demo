@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Noto+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Noto+Sans:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,82 +6,57 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 0%;
+    /* Dark theme as default — darkest Yale Blue background */
+    --background: 205 55% 8%;
+    --foreground: 0 0% 100%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 0%;
+    --card: 205 45% 12%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 0%;
+    --popover: 205 45% 12%;
+    --popover-foreground: 0 0% 100%;
 
+    /* Intense Cherry */
     --primary: 352 66% 47%;
     --primary-foreground: 0 0% 100%;
+    --primary-light: 352 60% 62%;
 
+    /* Yale Blue */
     --secondary: 205 55% 24%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 0 0% 82%;
-    --muted-foreground: 0 0% 35%;
+    --muted: 205 30% 16%;
+    --muted-foreground: 205 15% 60%;
 
+    /* Burnt Peach / Accent */
     --accent: 15 78% 61%;
     --accent-foreground: 0 0% 100%;
 
+    /* Golden Pollen */
     --golden: 42 100% 67%;
     --golden-foreground: 0 0% 0%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 82%;
-    --input: 0 0% 82%;
-    --ring: 352 66% 47%;
+    --border: 205 30% 20%;
+    --input: 205 30% 20%;
+    --ring: 42 100% 67%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-
-    --font-heading: 'Poppins', sans-serif;
-    --font-body: 'Noto Sans', sans-serif;
-  }
-
-  .dark {
-    --background: 0 0% 5%;
-    --foreground: 0 0% 95%;
-    --card: 0 0% 8%;
-    --card-foreground: 0 0% 95%;
-    --popover: 0 0% 8%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 352 66% 47%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 205 55% 24%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 65%;
-    --accent: 15 78% 61%;
-    --accent-foreground: 0 0% 100%;
-    --golden: 42 100% 67%;
-    --golden-foreground: 0 0% 0%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 352 66% 47%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-background: 205 55% 10%;
+    --sidebar-foreground: 0 0% 90%;
+    --sidebar-primary: 352 66% 47%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 205 40% 18%;
+    --sidebar-accent-foreground: 0 0% 90%;
+    --sidebar-border: 205 30% 20%;
+    --sidebar-ring: 42 100% 67%;
+
+    --font-heading: 'Outfit', sans-serif;
+    --font-subheading: 'Noto Sans', sans-serif;
+    --font-body: 'Poppins', sans-serif;
   }
 }
 
@@ -93,9 +68,47 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
+    font-weight: 300;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
+    font-weight: 700;
   }
+}
+
+/* Scrolling brand logos */
+@keyframes scroll-logos {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll-logos {
+  animation: scroll-logos 30s linear infinite;
+}
+
+.animate-scroll-logos:hover {
+  animation-duration: 15s;
+}
+
+/* Cherry button hover */
+.btn-cherry {
+  @apply bg-primary text-primary-foreground transition-all duration-300;
+}
+.btn-cherry:hover {
+  background-color: hsl(352 60% 62%);
+  @apply text-foreground;
+  color: #000;
+}
+
+/* Service card hover */
+.service-card {
+  @apply transition-all duration-300;
+}
+.service-card:hover .service-icon {
+  color: hsl(var(--accent));
 }
