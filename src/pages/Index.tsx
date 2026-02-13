@@ -244,7 +244,7 @@ const Index = () => {
                 <div className="relative">
                 <div className="aspect-video rounded-none border border-golden/20 overflow-hidden shadow-2xl shadow-background/60">
                     <iframe
-                      src="https://www.youtube.com/embed/ikVCVdDhMsU?rel=0"
+                      src="https://www.youtube.com/embed/ikVCVdDhMsU?rel=0&showinfo=0&modestbranding=1&iv_load_policy=3&end=1231"
                       title="Holaweb Media Group"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
