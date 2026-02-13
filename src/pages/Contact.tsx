@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import emailjs from "@emailjs/browser";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Mail,
   Phone,
@@ -113,22 +115,53 @@ const Contact = () => {
       return;
     }
 
-    // Build WhatsApp message as fallback action
-    const whatsappMessage = encodeURIComponent(
-      `Hi Holaweb! My name is ${result.data.name}. ${result.data.subject ? `Subject: ${result.data.subject}. ` : ""}${result.data.message}`
-    );
+    try {
+      // 1. Save to database
+      const { error: dbError } = await supabase
+        .from("contact_submissions")
+        .insert({
+          name: result.data.name,
+          email: result.data.email,
+          subject: result.data.subject || null,
+          phone: result.data.phone || null,
+          message: result.data.message,
+        });
 
-    toast({
-      title: "Message received!",
-      description: "Thank you for reaching out. We'll get back to you within 48 hours.",
-    });
+      if (dbError) {
+        console.error("DB insert error:", dbError);
+      }
 
-    // Open WhatsApp with the message
-    window.open(`https://wa.me/27715138219?text=${whatsappMessage}`, "_blank");
+      // 2. Send email via EmailJS
+      await emailjs.send(
+        "service_vw53zor",
+        "template_eyql4tw",
+        {
+          from_name: result.data.name,
+          from_email: result.data.email,
+          subject: result.data.subject || "No subject",
+          phone: result.data.phone || "Not provided",
+          message: result.data.message,
+        },
+        "MvUHhp6hPDUwVaFcO"
+      );
 
-    setForm({ name: "", email: "", subject: "", phone: "", message: "" });
-    setErrors({});
-    setIsSubmitting(false);
+      toast({
+        title: "Message sent!",
+        description: "Thank you for reaching out. We'll get back to you within 48 hours.",
+      });
+
+      setForm({ name: "", email: "", subject: "", phone: "", message: "" });
+      setErrors({});
+    } catch (error) {
+      console.error("Submission error:", error);
+      toast({
+        title: "Something went wrong",
+        description: "Please try again or contact us directly via WhatsApp.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const inputClasses =
