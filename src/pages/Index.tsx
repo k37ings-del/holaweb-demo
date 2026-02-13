@@ -9,8 +9,8 @@ import {
   Play,
   ExternalLink,
   Quote,
-  ChevronRight,
-} from "lucide-react";
+  ChevronRight } from
+"lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AnimatedBackground from "@/components/AnimatedBackground";
@@ -19,80 +19,80 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import aboutImage from "@/assets/about-image.jpg";
 
 const serviceCards = [
-  {
-    title: "Cloud Services",
-    icon: Cloud,
-    href: "/services/cloud",
-    description: "Cloud architecture, hosting, cost optimization & disaster recovery.",
-  },
-  {
-    title: "Apps Development",
-    icon: Smartphone,
-    href: "/services/apps",
-    description: "Web and mobile apps, microservices, APIs & QA automation.",
-  },
-  {
-    title: "Go-To-Market Support",
-    icon: Megaphone,
-    href: "/services/gtm",
-    description: "Adoption strategies, onboarding playbooks & enablement programs.",
-  },
-  {
-    title: "Integrations",
-    icon: Link2,
-    href: "/services/integrations",
-    description: "WhatsApp Business bots, payment gateways & customer workflows.",
-  },
-  {
-    title: "Tech Reseller",
-    icon: ShoppingCart,
-    href: "/services/reseller",
-    description: "Advisory on best-fit SaaS, licensing & partner coordination.",
-  },
-  {
-    title: "Business Strategy",
-    icon: BarChart3,
-    href: "/services/strategy",
-    description: "CRM, data enablement, analytics dashboards & growth planning.",
-  },
-];
+{
+  title: "Cloud Services",
+  icon: Cloud,
+  href: "/services/cloud",
+  description: "Cloud architecture, hosting, cost optimization & disaster recovery."
+},
+{
+  title: "Apps Development",
+  icon: Smartphone,
+  href: "/services/apps",
+  description: "Web and mobile apps, microservices, APIs & QA automation."
+},
+{
+  title: "Go-To-Market Support",
+  icon: Megaphone,
+  href: "/services/gtm",
+  description: "Adoption strategies, onboarding playbooks & enablement programs."
+},
+{
+  title: "Integrations",
+  icon: Link2,
+  href: "/services/integrations",
+  description: "WhatsApp Business bots, payment gateways & customer workflows."
+},
+{
+  title: "Tech Reseller",
+  icon: ShoppingCart,
+  href: "/services/reseller",
+  description: "Advisory on best-fit SaaS, licensing & partner coordination."
+},
+{
+  title: "Business Strategy",
+  icon: BarChart3,
+  href: "/services/strategy",
+  description: "CRM, data enablement, analytics dashboards & growth planning."
+}];
+
 
 const testimonials = [
-  {
-    name: "Client Name",
-    role: "CEO, Company",
-    text: "Holaweb transformed our digital presence and helped us reach customers we never thought possible. Their cloud solutions are truly enterprise-grade yet affordable.",
-  },
-  {
-    name: "Client Name",
-    role: "Director, Organization",
-    text: "The team's deep understanding of African operating realities sets them apart. They delivered on time, on budget, and with exceptional quality.",
-  },
-  {
-    name: "Client Name",
-    role: "Manager, Enterprise",
-    text: "From strategy to execution, Holaweb has been an invaluable partner in our digital transformation journey. Highly recommended.",
-  },
-];
+{
+  name: "Client Name",
+  role: "CEO, Company",
+  text: "Holaweb transformed our digital presence and helped us reach customers we never thought possible. Their cloud solutions are truly enterprise-grade yet affordable."
+},
+{
+  name: "Client Name",
+  role: "Director, Organization",
+  text: "The team's deep understanding of African operating realities sets them apart. They delivered on time, on budget, and with exceptional quality."
+},
+{
+  name: "Client Name",
+  role: "Manager, Enterprise",
+  text: "From strategy to execution, Holaweb has been an invaluable partner in our digital transformation journey. Highly recommended."
+}];
+
 
 const brandLogos = [
-  "Partner 1",
-  "Partner 2",
-  "Partner 3",
-  "Partner 4",
-  "Partner 5",
-  "Partner 6",
-  "Partner 7",
-  "Partner 8",
-];
+"Partner 1",
+"Partner 2",
+"Partner 3",
+"Partner 4",
+"Partner 5",
+"Partner 6",
+"Partner 7",
+"Partner 8"];
 
-const ScrollSection = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => {
+
+const ScrollSection = ({ children, className = "" }: {children: React.ReactNode;className?: string;}) => {
   const ref = useScrollReveal<HTMLDivElement>();
   return (
     <div ref={ref} className={className}>
       {children}
-    </div>
-  );
+    </div>);
+
 };
 
 const Index = () => {
@@ -112,8 +112,8 @@ const Index = () => {
             loop
             playsInline
             className="absolute inset-0 w-full h-full object-cover"
-            src="/videos/hero-bg.mp4"
-          />
+            src="/videos/hero-bg.mp4" />
+
           <div className="absolute inset-0 bg-background/80" />
 
           <div className="relative z-10 container mx-auto px-6 text-center">
@@ -122,32 +122,32 @@ const Index = () => {
             </h1>
             <p
               className="font-subheading text-lg md:text-2xl text-golden font-medium mb-4 animate-fade-in-up tracking-wide uppercase"
-              style={{ animationDelay: "0.15s" }}
-            >
+              style={{ animationDelay: "0.15s" }}>
+
               Your Digital Inclusion Enablement Partner
             </p>
             <p
               className="max-w-2xl mx-auto text-base md:text-lg text-foreground/70 font-body font-light mb-10 animate-fade-in-up"
-              style={{ animationDelay: "0.3s" }}
-            >
+              style={{ animationDelay: "0.3s" }}>
+
               Empowering Africa's entrepreneurs and institutions with simple,
               affordable, cloud-powered digital solutions.
             </p>
             <div
               className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up"
-              style={{ animationDelay: "0.45s" }}
-            >
+              style={{ animationDelay: "0.45s" }}>
+
               <Link
                 to="/contact"
-                className="btn-cherry inline-flex items-center justify-center rounded-lg px-8 py-4 font-subheading text-sm font-semibold shadow-lg"
-              >
+                className="btn-cherry inline-flex items-center justify-center rounded-lg px-8 py-4 font-subheading text-sm font-semibold shadow-lg">
+
                 Get Started
                 <ChevronRight className="ml-2 h-4 w-4" />
               </Link>
               <Link
                 to="/services"
-                className="inline-flex items-center justify-center rounded-lg border border-golden/40 px-8 py-4 font-subheading text-sm font-semibold text-golden hover:bg-golden/10 transition-colors duration-300"
-              >
+                className="inline-flex items-center justify-center rounded-lg border border-golden/40 px-8 py-4 font-subheading text-sm font-semibold text-golden hover:bg-golden/10 transition-colors duration-300">
+
                 Learn More
               </Link>
             </div>
@@ -165,8 +165,8 @@ const Index = () => {
                     <img
                       src={aboutImage}
                       alt="Programming and coding workstation"
-                      className="w-full h-full object-cover"
-                    />
+                      className="w-full h-full object-cover" />
+
                   </div>
                   <div className="absolute -bottom-4 -left-4 w-full h-full rounded-none border border-golden/30 -z-10" />
                 </div>
@@ -180,12 +180,12 @@ const Index = () => {
                   <p className="font-subheading text-lg text-golden mb-4">
                     Bridging Africa's Digital Divide
                   </p>
-                  <p className="font-body font-light text-foreground/75 leading-relaxed mb-4">
-                    Holaweb Media Group is a South African digital solutions company
-                    focused on inclusive, cloud‑powered products that turn strategy into
-                    measurable outcomes. Founded with a bold vision in 2024, we set out
-                    to ensure every entrepreneur and institution—from township to
-                    enterprise—can compete and grow through simple, affordable technology.
+                  <p className="font-body font-light text-foreground/75 leading-relaxed mb-4">Holaweb Media Group is a South African digital solutions company focused on inclusive, cloud‑powered products that turn strategy into measurable outcomes. Founded with a bold vision, we set out to ensure every entrepreneur and institution—from township to enterprise—can compete and grow through simple, affordable technology.
+
+
+
+
+
                   </p>
                   <p className="font-body font-light text-foreground/75 leading-relaxed mb-4">
                     Our multidisciplinary team blends product strategy, software
@@ -229,8 +229,8 @@ const Index = () => {
                     href="https://youtube.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-golden hover:text-golden/80 font-subheading text-sm font-medium transition-colors"
-                  >
+                    className="inline-flex items-center gap-2 text-golden hover:text-golden/80 font-subheading text-sm font-medium transition-colors">
+
                     Watch on YouTube
                     <ExternalLink className="h-4 w-4" />
                   </a>
@@ -243,8 +243,8 @@ const Index = () => {
                       title="Holaweb Media Group"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
-                      className="w-full h-full"
-                    />
+                      className="w-full h-full" />
+
                   </div>
                 </div>
               </div>
@@ -274,8 +274,8 @@ const Index = () => {
                   <ScrollSection key={service.href}>
                     <Link
                       to={service.href}
-                      className="service-card group block rounded-none bg-card/80 backdrop-blur-sm border border-border p-8 hover:border-golden/50 hover:shadow-xl hover:shadow-golden/5 transition-all duration-300"
-                    >
+                      className="service-card group block rounded-none bg-card/80 backdrop-blur-sm border border-border p-8 hover:border-golden/50 hover:shadow-xl hover:shadow-golden/5 transition-all duration-300">
+
                       <Icon className="service-icon h-10 w-10 text-golden/60 mb-5 transition-colors duration-300 group-hover:text-accent" />
                       <h3 className="font-subheading text-lg font-semibold text-foreground mb-2">
                         {service.title}
@@ -287,8 +287,8 @@ const Index = () => {
                         Learn more <ChevronRight className="h-4 w-4" />
                       </div>
                     </Link>
-                  </ScrollSection>
-                );
+                  </ScrollSection>);
+
               })}
             </div>
           </div>
@@ -310,8 +310,8 @@ const Index = () => {
             </ScrollSection>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {testimonials.map((t, i) => (
-                <ScrollSection key={i}>
+              {testimonials.map((t, i) =>
+              <ScrollSection key={i}>
                   <div className="rounded-none bg-card/80 backdrop-blur-sm border border-border p-8 hover:border-golden/30 transition-colors duration-300 shadow-lg shadow-background/40">
                     <Quote className="h-8 w-8 text-golden/40 mb-4" />
                     <p className="font-body font-light text-foreground/75 leading-relaxed mb-6 italic">
@@ -330,7 +330,7 @@ const Index = () => {
                     </div>
                   </div>
                 </ScrollSection>
-              ))}
+              )}
             </div>
           </div>
         </section>
@@ -344,22 +344,22 @@ const Index = () => {
           </div>
           <div className="overflow-hidden">
             <div className="animate-scroll-logos flex gap-16 items-center whitespace-nowrap w-max">
-              {[...brandLogos, ...brandLogos].map((brand, i) => (
-                <div
-                  key={i}
-                  className="flex-shrink-0 w-32 h-16 rounded-none bg-card/80 backdrop-blur-sm border border-border flex items-center justify-center"
-                >
+              {[...brandLogos, ...brandLogos].map((brand, i) =>
+              <div
+                key={i}
+                className="flex-shrink-0 w-32 h-16 rounded-none bg-card/80 backdrop-blur-sm border border-border flex items-center justify-center">
+
                   <span className="font-subheading text-xs text-muted-foreground">{brand}</span>
                 </div>
-              ))}
+              )}
             </div>
           </div>
         </section>
 
         <Footer />
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Index;
