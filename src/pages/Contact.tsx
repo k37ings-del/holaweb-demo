@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import emailjs from "@emailjs/browser";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Mail,
@@ -132,19 +131,20 @@ const Contact = () => {
         console.error("DB insert error:", dbError);
       }
 
-      // 2. Send email via EmailJS
-      await emailjs.send(
-        "service_vw53zor",
-        "template_eyql4tw",
-        {
-          from_name: result.data.name,
-          from_email: result.data.email,
+      // 2. Send email via Resend edge function
+      const { error: emailError } = await supabase.functions.invoke("send-contact-email", {
+        body: {
+          name: result.data.name,
+          email: result.data.email,
           subject: result.data.subject || "No subject",
           phone: result.data.phone || "Not provided",
           message: result.data.message,
         },
-        "MvUHhp6hPDUwVaFcO"
-      );
+      });
+
+      if (emailError) {
+        console.error("Email send error:", emailError);
+      }
 
       // 3. Open WhatsApp with the message
       const whatsappMessage = encodeURIComponent(
