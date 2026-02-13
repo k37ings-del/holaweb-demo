@@ -183,7 +183,7 @@ const Contact = () => {
         <Header />
 
         {/* ─── Hero Section ─── */}
-        <section className="relative min-h-[50vh] flex items-center justify-center overflow-hidden">
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
           <video
             autoPlay
             muted
@@ -346,7 +346,7 @@ const Contact = () => {
                     <img
                       src={contactSupportImg}
                       alt="Contact support"
-                      className="w-full h-48 object-cover"
+                      className="w-full aspect-square object-cover"
                     />
                   </div>
                   <div className="rounded-none bg-card/80 backdrop-blur-sm border border-border p-8 sticky top-28">
