@@ -126,9 +126,6 @@ const About = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/30 to-background" />
 
           <div className="relative z-10 container mx-auto px-6 text-center">
-            <p className="font-subheading text-sm uppercase tracking-widest text-golden mb-4 animate-fade-in-up">
-              About Us
-            </p>
             <h1 className="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4 animate-fade-in-up tracking-tight">
               Your Digital Inclusion
               <br />
