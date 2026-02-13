@@ -196,9 +196,6 @@ const Contact = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/30 to-background" />
 
           <div className="relative z-10 container mx-auto px-6 text-left max-w-4xl">
-            <p className="font-subheading text-sm uppercase tracking-widest text-golden mb-4 animate-fade-in-up">
-              Contact
-            </p>
             <h1 className="font-heading text-4xl md:text-6xl font-bold text-foreground mb-4 animate-fade-in-up tracking-tight">
               Let's Start a Conversation
             </h1>
