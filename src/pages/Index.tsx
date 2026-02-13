@@ -237,13 +237,14 @@ const Index = () => {
                 </div>
 
                 <div className="relative">
-                  <div className="aspect-video rounded-none bg-background/80 border border-golden/20 flex items-center justify-center overflow-hidden group cursor-pointer shadow-2xl shadow-background/60 backdrop-blur-sm">
-                    <div className="text-center">
-                      <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-primary/20 border-2 border-primary flex items-center justify-center group-hover:bg-primary/30 transition-colors">
-                        <Play className="h-8 w-8 text-primary ml-1" />
-                      </div>
-                      <p className="font-subheading text-sm text-muted-foreground">Video Placeholder</p>
-                    </div>
+                  <div className="aspect-video rounded-none border border-golden/20 overflow-hidden shadow-2xl shadow-background/60">
+                    <iframe
+                      src="https://www.youtube.com/embed/ZfEtUW5N62s"
+                      title="Holaweb Media Group"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="w-full h-full"
+                    />
                   </div>
                 </div>
               </div>
