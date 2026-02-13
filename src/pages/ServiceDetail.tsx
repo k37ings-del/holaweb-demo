@@ -27,6 +27,8 @@ const ServiceDetail = () => {
           </p>
         </div>
       </section>
+      {/* ─── Hero / Body Separator ─── */}
+      <div className="w-full h-px bg-gradient-to-r from-transparent via-golden/40 to-transparent" />
       <Footer />
     </div>
   );

@@ -165,6 +165,9 @@ const Contact = () => {
           </div>
         </section>
 
+        {/* ─── Hero / Body Separator ─── */}
+        <div className="w-full h-px bg-gradient-to-r from-transparent via-golden/40 to-transparent" />
+
         {/* ─── Form + Contact Info ─── */}
         <section className="py-24">
           <div className="container mx-auto px-6">
