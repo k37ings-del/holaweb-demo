@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import heroBg from "@/assets/hero-bg.jpg";
+
 
 const serviceCards = [
   {
@@ -90,11 +90,15 @@ const Index = () => {
 
       {/* ─── Hero Section ─── */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${heroBg})` }}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+          src="/videos/hero-bg.mp4"
         />
-        <div className="absolute inset-0 bg-background/85" />
+        <div className="absolute inset-0 bg-background/80" />
 
         <div className="relative z-10 container mx-auto px-6 text-center">
           <h1 className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold text-foreground mb-4 animate-fade-in-up tracking-tight">
