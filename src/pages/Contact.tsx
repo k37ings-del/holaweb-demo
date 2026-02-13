@@ -15,6 +15,7 @@ import {
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AnimatedBackground from "@/components/AnimatedBackground";
+import contactSupportImg from "@/assets/contact-support.jpg";
 import FloatingTriangles from "@/components/FloatingTriangles";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useToast } from "@/hooks/use-toast";
@@ -145,6 +146,12 @@ const Contact = () => {
         "MvUHhp6hPDUwVaFcO"
       );
 
+      // 3. Open WhatsApp with the message
+      const whatsappMessage = encodeURIComponent(
+        `Hi Holaweb! My name is ${result.data.name}. ${result.data.subject ? `Subject: ${result.data.subject}. ` : ""}${result.data.message}`
+      );
+      window.open(`https://wa.me/27715138219?text=${whatsappMessage}`, "_blank");
+
       toast({
         title: "Message sent!",
         description: "Thank you for reaching out. We'll get back to you within 48 hours.",
@@ -177,6 +184,14 @@ const Contact = () => {
 
         {/* ─── Hero Section ─── */}
         <section className="relative min-h-[50vh] flex items-center justify-center overflow-hidden">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+            src="/videos/contact-hero.mp4"
+          />
           <div className="absolute inset-0 bg-secondary/40" />
           <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/30 to-background" />
 
@@ -327,6 +342,13 @@ const Contact = () => {
               {/* Contact Info Sidebar */}
               <div className="lg:col-span-2">
                 <ScrollSection>
+                  <div className="mb-6 overflow-hidden rounded-lg">
+                    <img
+                      src={contactSupportImg}
+                      alt="Contact support"
+                      className="w-full h-48 object-cover"
+                    />
+                  </div>
                   <div className="rounded-none bg-card/80 backdrop-blur-sm border border-border p-8 sticky top-28">
                     <h3 className="font-heading text-xl font-bold text-foreground mb-6">
                       Contact Information
