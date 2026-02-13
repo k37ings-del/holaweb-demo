@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import {
   ChevronRight,
-  CheckCircle,
   Cloud,
   Code,
   Rocket,
@@ -18,6 +17,7 @@ import AnimatedBackground from "@/components/AnimatedBackground";
 import FloatingTriangles from "@/components/FloatingTriangles";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useToast } from "@/hooks/use-toast";
+import siyabongaImg from "@/assets/siyabonga-tiwana.png";
 
 const whyChooseUs = [
   {
@@ -64,12 +64,14 @@ const leaders = [
     role: "Chief Executive Officer",
     bio: "Innovative and results-driven executive with over 10 years of experience leading a technology startup, specializing in customer success, account management, and business development.",
     initials: "ST",
+    image: siyabongaImg,
   },
   {
     name: "Vuyisa Qabaka",
     role: "African Rainmaker",
     bio: "Vuyisa Qabaka is a Pan Africa focused startup and corporate innovation expert, angel investor and business mentor, with experience across 13 countries in Africa. Currently serving as a trustee at Groote Schuur Hospital Trust and the board of the National Mentorship Movement.",
     initials: "VQ",
+    image: null as string | null,
   },
 ];
 
@@ -126,7 +128,7 @@ const About = () => {
             <p className="font-subheading text-sm uppercase tracking-widest text-golden mb-4 animate-fade-in-up">
               About Us
             </p>
-            <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl font-bold text-foreground mb-4 animate-fade-in-up tracking-tight">
+            <h1 className="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4 animate-fade-in-up tracking-tight">
               Your Digital Inclusion
               <br />
               Enablement Partner
@@ -153,6 +155,9 @@ const About = () => {
             </div>
           </div>
         </section>
+
+        {/* ─── Hero / Body Separator ─── */}
+        <div className="w-full h-px bg-gradient-to-r from-transparent via-golden/40 to-transparent" />
 
         {/* ─── Who We Are ─── */}
         <section className="py-24">
@@ -194,6 +199,22 @@ const About = () => {
           </div>
         </section>
 
+        {/* ─── Image Placeholder ─── */}
+        <section className="py-16">
+          <div className="container mx-auto px-6">
+            <ScrollSection>
+              <div className="max-w-5xl mx-auto aspect-[21/9] rounded-none bg-card/80 backdrop-blur-sm border border-golden/20 flex items-center justify-center shadow-2xl shadow-background/60">
+                <div className="text-center">
+                  <ImageIcon className="h-16 w-16 text-golden/30 mx-auto mb-3" />
+                  <p className="font-subheading text-sm text-muted-foreground">
+                    Image Coming Soon
+                  </p>
+                </div>
+              </div>
+            </ScrollSection>
+          </div>
+        </section>
+
         {/* ─── Vision & Mission ─── */}
         <section className="py-24 bg-secondary/20 backdrop-blur-sm">
           <div className="container mx-auto px-6">
@@ -228,24 +249,8 @@ const About = () => {
           </div>
         </section>
 
-        {/* ─── Image Placeholder ─── */}
-        <section className="py-16">
-          <div className="container mx-auto px-6">
-            <ScrollSection>
-              <div className="max-w-5xl mx-auto aspect-[21/9] rounded-none bg-card/80 backdrop-blur-sm border border-golden/20 flex items-center justify-center shadow-2xl shadow-background/60">
-                <div className="text-center">
-                  <ImageIcon className="h-16 w-16 text-golden/30 mx-auto mb-3" />
-                  <p className="font-subheading text-sm text-muted-foreground">
-                    Image Coming Soon
-                  </p>
-                </div>
-              </div>
-            </ScrollSection>
-          </div>
-        </section>
-
         {/* ─── Why Choose Us ─── */}
-        <section className="py-24 bg-secondary/20 backdrop-blur-sm">
+        <section className="py-24">
           <div className="container mx-auto px-6">
             <ScrollSection>
               <div className="text-center mb-16">
@@ -281,7 +286,7 @@ const About = () => {
         </section>
 
         {/* ─── Leadership ─── */}
-        <section className="py-24">
+        <section className="py-24 bg-secondary/20 backdrop-blur-sm">
           <div className="container mx-auto px-6">
             <ScrollSection>
               <div className="text-center mb-16">
@@ -298,14 +303,22 @@ const About = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-4xl mx-auto">
               {leaders.map((leader) => (
                 <ScrollSection key={leader.name}>
-                  <div className="rounded-none bg-card/80 backdrop-blur-sm border border-border overflow-hidden hover:border-golden/30 transition-colors duration-300">
-                    {/* Photo placeholder */}
-                    <div className="aspect-[4/3] bg-secondary/40 flex items-center justify-center">
-                      <div className="w-24 h-24 rounded-full bg-golden/20 flex items-center justify-center">
-                        <span className="font-heading text-2xl font-bold text-golden">
-                          {leader.initials}
-                        </span>
-                      </div>
+                  <div className="rounded-2xl bg-card/80 backdrop-blur-sm border border-border overflow-hidden hover:border-golden/30 transition-colors duration-300">
+                    {/* Photo area */}
+                    <div className="aspect-square bg-secondary/40 flex items-center justify-center overflow-hidden">
+                      {leader.image ? (
+                        <img
+                          src={leader.image}
+                          alt={leader.name}
+                          className="w-full h-full object-cover object-right"
+                        />
+                      ) : (
+                        <div className="w-24 h-24 rounded-full bg-golden/20 flex items-center justify-center">
+                          <span className="font-heading text-2xl font-bold text-golden">
+                            {leader.initials}
+                          </span>
+                        </div>
+                      )}
                     </div>
                     <div className="p-8">
                       <h3 className="font-heading text-xl font-bold text-foreground mb-1">
@@ -326,7 +339,7 @@ const About = () => {
         </section>
 
         {/* ─── Get In Touch CTA ─── */}
-        <section className="py-24 bg-secondary/20 backdrop-blur-sm">
+        <section className="py-24">
           <div className="container mx-auto px-6">
             <ScrollSection>
               <div className="max-w-2xl mx-auto text-center">
