@@ -352,9 +352,12 @@ const Index = () => {
               {[...brandLogos, ...brandLogos].map((brand, i) =>
               <div
                 key={i}
-                className="flex-shrink-0 w-32 h-16 rounded-none bg-card/80 backdrop-blur-sm border border-border flex items-center justify-center">
-
-                  <span className="font-subheading text-xs text-muted-foreground">{brand}</span>
+                className="flex-shrink-0 w-32 h-16 rounded-none bg-card/80 backdrop-blur-sm border border-border flex items-center justify-center p-2">
+                  {brand.logo ? (
+                    <img src={brand.logo} alt={brand.name} className="max-h-12 max-w-28 object-contain" />
+                  ) : (
+                    <span className="font-subheading text-xs text-muted-foreground">{brand.name}</span>
+                  )}
                 </div>
               )}
             </div>
