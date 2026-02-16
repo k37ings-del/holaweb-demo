@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Garet';
+  src: local('Garet');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@layer base {
+  :root {
+    --background: 204 60% 12%;
+    --foreground: 0 0% 100%;
+
+    --card: 204 55% 15%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 204 55% 15%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 42 100% 67%;
+    --primary-foreground: 204 60% 12%;
+
+    --secondary: 352 67% 47%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 204 40% 20%;
+    --muted-foreground: 210 20% 70%;
+
+    --accent: 42 100% 67%;
+    --accent-foreground: 204 60% 12%;
+
+    --destructive: 352 67% 47%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 42 100% 67% / 0.2;
+    --input: 204 40% 25%;
+    --ring: 42 100% 67%;
+
+    --radius: 0.5rem;
+
+    --cherry: 352 67% 47%;
+    --cherry-foreground: 0 0% 100%;
+    --cherry-hover: 352 60% 77%;
+    --cherry-hover-foreground: 0 0% 0%;
+
+    --golden: 42 100% 67%;
+    --golden-foreground: 204 60% 12%;
+
+    --yale-blue: 204 60% 12%;
+    --yale-blue-light: 204 50% 24%;
+
+    --sidebar-background: 204 60% 10%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 42 100% 67%;
+    --sidebar-primary-foreground: 204 60% 12%;
+    --sidebar-accent: 204 40% 20%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 42 100% 67% / 0.15;
+    --sidebar-ring: 42 100% 67%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-poppins;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Garet', 'Noto Sans', sans-serif;
+  }
+}
+
+@layer components {
+  .btn-cherry {
+    @apply bg-cherry text-cherry-foreground font-semibold px-6 py-3 rounded-lg transition-all duration-300;
+  }
+  .btn-cherry:hover {
+    background: hsl(var(--cherry-hover));
+    color: hsl(var(--cherry-hover-foreground));
+  }
+
+  .golden-border {
+    border-color: hsl(var(--golden));
+  }
+
+  .golden-glow {
+    box-shadow: 0 0 20px hsl(var(--golden) / 0.3);
+  }
+
+  .text-golden {
+    color: hsl(var(--golden));
+  }
+}
