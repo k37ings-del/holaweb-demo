@@ -6,14 +6,14 @@
 
 @layer base {
   :root {
-    /* Dark theme as default — darkest Yale Blue background */
-    --background: 205 55% 8%;
+    /* Dark theme — Black & Grey with Intense Cherry */
+    --background: 0 0% 5%;
     --foreground: 0 0% 100%;
 
-    --card: 205 45% 12%;
+    --card: 0 0% 10%;
     --card-foreground: 0 0% 100%;
 
-    --popover: 205 45% 12%;
+    --popover: 0 0% 10%;
     --popover-foreground: 0 0% 100%;
 
     /* Intense Cherry */
@@ -21,38 +21,38 @@
     --primary-foreground: 0 0% 100%;
     --primary-light: 352 60% 62%;
 
-    /* Yale Blue */
-    --secondary: 205 55% 24%;
+    /* Dark Grey */
+    --secondary: 0 0% 12%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 205 30% 16%;
-    --muted-foreground: 205 15% 60%;
+    --muted: 0 0% 14%;
+    --muted-foreground: 0 0% 55%;
 
-    /* Burnt Peach / Accent */
-    --accent: 15 78% 61%;
+    /* Cherry as accent */
+    --accent: 352 60% 62%;
     --accent-foreground: 0 0% 100%;
 
-    /* Golden Pollen */
-    --golden: 42 100% 67%;
-    --golden-foreground: 0 0% 0%;
+    /* Golden now maps to Cherry */
+    --golden: 352 66% 47%;
+    --golden-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 205 30% 20%;
-    --input: 205 30% 20%;
-    --ring: 42 100% 67%;
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: 352 66% 47%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 205 55% 10%;
+    --sidebar-background: 0 0% 7%;
     --sidebar-foreground: 0 0% 90%;
     --sidebar-primary: 352 66% 47%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 205 40% 18%;
+    --sidebar-accent: 0 0% 16%;
     --sidebar-accent-foreground: 0 0% 90%;
-    --sidebar-border: 205 30% 20%;
-    --sidebar-ring: 42 100% 67%;
+    --sidebar-border: 0 0% 18%;
+    --sidebar-ring: 352 66% 47%;
 
     --font-heading: 'Outfit', sans-serif;
     --font-subheading: 'Noto Sans', sans-serif;
