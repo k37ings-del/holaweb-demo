@@ -13,15 +13,13 @@ import {
 "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import AnimatedBackground from "@/components/AnimatedBackground";
-import FloatingTriangles from "@/components/FloatingTriangles";
+import FloatingBubbles from "@/components/FloatingBubbles";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import aboutImage from "@/assets/about-image.jpg";
 import absaLogo from "@/assets/logos/absa.png";
 import oldMutualLogo from "@/assets/logos/old-mutual.png";
 import ghalaLogo from "@/assets/logos/ghala.png";
 import awsLogo from "@/assets/logos/aws.png";
-import YouTubePlayer from "@/components/YouTubePlayer";
 
 const serviceCards = [
 {
@@ -88,8 +86,7 @@ const ScrollSection = ({ children, className = "" }: {children: React.ReactNode;
 const Index = () => {
   return (
     <div className="min-h-screen bg-background relative">
-      <AnimatedBackground />
-      <FloatingTriangles />
+      <FloatingBubbles />
 
       <div className="relative" style={{ zIndex: 2 }}>
         <Header />
@@ -111,7 +108,7 @@ const Index = () => {
               Holaweb Media Group
             </h1>
             <p
-              className="font-subheading text-lg md:text-2xl text-golden font-medium mb-4 animate-fade-in-up tracking-wide uppercase"
+              className="font-subheading text-lg md:text-2xl text-primary-light font-medium mb-4 animate-fade-in-up tracking-wide uppercase"
               style={{ animationDelay: "0.15s" }}>
 
               Your Digital Inclusion Enablement Partner
@@ -136,7 +133,7 @@ const Index = () => {
               </Link>
               <Link
                 to="/services"
-                className="inline-flex items-center justify-center rounded-lg border border-golden/40 px-8 py-4 font-subheading text-sm font-semibold text-golden hover:bg-golden/10 transition-colors duration-300">
+                className="inline-flex items-center justify-center rounded-lg border border-primary/40 px-8 py-4 font-subheading text-sm font-semibold text-primary-light hover:bg-primary/10 transition-colors duration-300">
 
                 Learn More
               </Link>
@@ -170,7 +167,7 @@ const Index = () => {
                     Who We Are
                   </h2>
                   <div className="w-16 h-1 bg-golden mb-6" />
-                  <p className="font-subheading text-lg text-golden mb-4">
+                  <p className="font-subheading text-lg text-primary-light mb-4">
                     Bridging Africa's Digital Divide
                   </p>
                   <p className="font-body font-light text-foreground/75 leading-relaxed mb-4">Holaweb Media Group is a South African digital solutions company focused on inclusive, cloud‑powered products that turn strategy into measurable outcomes. Founded with a bold vision, we set out to ensure every entrepreneur and institution—from township to enterprise—can compete and grow through simple, affordable technology.
@@ -208,8 +205,8 @@ const Index = () => {
                   <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-2">
                     Scaling Ventures Across Africa
                   </h2>
-                  <div className="w-16 h-1 bg-golden mb-6" />
-                  <p className="font-subheading text-lg text-golden mb-4">
+                  <div className="w-16 h-1 bg-primary mb-6" />
+                  <p className="font-subheading text-lg text-primary-light mb-4">
                     Investment, Innovation & Ecosystem Building
                   </p>
                   <p className="font-body font-light text-foreground/75 leading-relaxed mb-6">
@@ -220,19 +217,26 @@ const Index = () => {
                     real-world strategies for thriving in Africa's emerging markets.
                   </p>
                   <a
-                    href="https://www.youtube.com/watch?v=ikVCVdDhMsU"
+                    href="https://www.youtube.com/watch?v=wrQK_BdQxQY&pp=ygUNdnV5aXNhIHFhYmFrYdIHCQmHCgGHKiGM7w%3D%3D"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-golden hover:text-golden/80 font-subheading text-sm font-medium transition-colors">
-
+                    className="inline-flex items-center gap-2 text-primary-light hover:text-primary font-subheading text-sm font-medium transition-colors"
+                  >
                     Watch on YouTube
                     <ExternalLink className="h-4 w-4" />
                   </a>
                 </div>
 
                 <div className="relative">
-                <div className="aspect-video rounded-none border border-golden/20 overflow-hidden shadow-2xl shadow-background/60">
-                    <YouTubePlayer videoId="ikVCVdDhMsU" title="Holaweb Media Group" />
+                  <div className="aspect-video rounded-none border border-primary/20 overflow-hidden shadow-2xl shadow-background/60">
+                    <video
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className="w-full h-full object-cover"
+                      src="/videos/vuyisa-qabaka.mp4"
+                    />
                   </div>
                 </div>
               </div>
@@ -249,7 +253,7 @@ const Index = () => {
                   What We Offer
                 </h2>
                 <div className="w-16 h-1 bg-golden mx-auto mb-4" />
-                <p className="font-subheading text-lg text-golden">
+                <p className="font-subheading text-lg text-primary-light">
                   Comprehensive Digital Solutions
                 </p>
               </div>
@@ -271,7 +275,7 @@ const Index = () => {
                       <p className="font-body font-light text-sm text-muted-foreground leading-relaxed">
                         {service.description}
                       </p>
-                      <div className="mt-4 flex items-center gap-1 text-golden text-sm font-subheading font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="mt-4 flex items-center gap-1 text-primary-light text-sm font-subheading font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         Learn more <ChevronRight className="h-4 w-4" />
                       </div>
                     </Link>
@@ -291,7 +295,7 @@ const Index = () => {
                   What Our Clients Say
                 </h2>
                 <div className="w-16 h-1 bg-golden mx-auto mb-4" />
-                <p className="font-subheading text-lg text-golden">
+                <p className="font-subheading text-lg text-primary-light">
                   Trusted by Businesses Across Africa
                 </p>
               </div>
