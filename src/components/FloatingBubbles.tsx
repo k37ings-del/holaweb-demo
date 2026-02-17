@@ -7,6 +7,7 @@ interface Bubble {
   vx: number;
   vy: number;
   opacity: number;
+  phase: number;
 }
 
 const FloatingBubbles = () => {
@@ -25,51 +26,60 @@ const FloatingBubbles = () => {
     };
     resize();
 
-    const count = Math.min(25, Math.floor(window.innerWidth / 60));
+    const count = Math.min(30, Math.floor(window.innerWidth / 50));
     const bubbles: Bubble[] = Array.from({ length: count }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
-      radius: Math.random() * 30 + 8,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: -Math.random() * 0.4 - 0.1,
+      radius: Math.random() * 35 + 10,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: -Math.random() * 0.5 - 0.15,
       opacity: 0.3,
+      phase: Math.random() * Math.PI * 2,
     }));
 
+    let time = 0;
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      time += 0.01;
 
       for (const b of bubbles) {
-        b.x += b.vx;
+        // Pulsing radius and opacity
+        const pulse = Math.sin(time * 2 + b.phase) * 0.3 + 1;
+        const currentRadius = b.radius * pulse;
+        const currentOpacity = b.opacity * (0.7 + Math.sin(time * 1.5 + b.phase) * 0.3);
+
+        // Gentle sway
+        b.x += b.vx + Math.sin(time + b.phase) * 0.15;
         b.y += b.vy;
 
-        if (b.y + b.radius < 0) {
-          b.y = canvas.height + b.radius;
+        if (b.y + currentRadius < 0) {
+          b.y = canvas.height + currentRadius;
           b.x = Math.random() * canvas.width;
         }
-        if (b.x < -b.radius) b.x = canvas.width + b.radius;
-        if (b.x > canvas.width + b.radius) b.x = -b.radius;
+        if (b.x < -currentRadius) b.x = canvas.width + currentRadius;
+        if (b.x > canvas.width + currentRadius) b.x = -currentRadius;
 
         // Outer glow
-        const gradient = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.radius);
-        gradient.addColorStop(0, `hsla(352, 66%, 47%, ${b.opacity * 0.15})`);
-        gradient.addColorStop(0.7, `hsla(352, 66%, 47%, ${b.opacity * 0.05})`);
+        const gradient = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, currentRadius);
+        gradient.addColorStop(0, `hsla(352, 66%, 47%, ${currentOpacity * 0.18})`);
+        gradient.addColorStop(0.7, `hsla(352, 66%, 47%, ${currentOpacity * 0.06})`);
         gradient.addColorStop(1, `hsla(352, 66%, 47%, 0)`);
         ctx.beginPath();
-        ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
+        ctx.arc(b.x, b.y, currentRadius, 0, Math.PI * 2);
         ctx.fillStyle = gradient;
         ctx.fill();
 
         // Bubble ring
         ctx.beginPath();
-        ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
-        ctx.strokeStyle = `hsla(352, 66%, 47%, ${b.opacity * 0.3})`;
+        ctx.arc(b.x, b.y, currentRadius, 0, Math.PI * 2);
+        ctx.strokeStyle = `hsla(352, 66%, 47%, ${currentOpacity * 0.35})`;
         ctx.lineWidth = 1;
         ctx.stroke();
 
         // Highlight
         ctx.beginPath();
-        ctx.arc(b.x - b.radius * 0.25, b.y - b.radius * 0.25, b.radius * 0.2, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(0, 0%, 100%, ${b.opacity * 0.15})`;
+        ctx.arc(b.x - currentRadius * 0.25, b.y - currentRadius * 0.25, currentRadius * 0.2, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(0, 0%, 100%, ${currentOpacity * 0.15})`;
         ctx.fill();
       }
 
