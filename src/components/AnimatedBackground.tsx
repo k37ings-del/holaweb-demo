@@ -12,11 +12,11 @@ interface Particle {
 
 const COLORS = [
   "hsl(352, 66%, 47%)",   // cherry
-  "hsl(42, 100%, 67%)",   // golden pollen
-  "hsl(205, 55%, 30%)",   // yale blue lighter
   "hsl(352, 60%, 62%)",   // cherry light
-  "hsl(42, 80%, 55%)",    // golden darker
-  "hsl(205, 55%, 40%)",   // yale blue mid
+  "hsl(0, 0%, 30%)",      // grey mid
+  "hsl(0, 0%, 20%)",      // grey dark
+  "hsl(352, 50%, 35%)",   // cherry muted
+  "hsl(0, 0%, 40%)",      // grey lighter
 ];
 
 const AnimatedBackground = () => {
@@ -36,7 +36,6 @@ const AnimatedBackground = () => {
     };
     resize();
 
-    // Create particles
     const count = Math.min(40, Math.floor(window.innerWidth / 35));
     particlesRef.current = Array.from({ length: count }, () => ({
       x: Math.random() * canvas.width,
@@ -59,13 +58,11 @@ const AnimatedBackground = () => {
         if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
         if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
 
-        // Draw atom-like particle with glow
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         ctx.fillStyle = p.color.replace(")", `, ${p.opacity})`).replace("hsl(", "hsla(");
         ctx.fill();
 
-        // Faint orbit ring
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius * 4, 0, Math.PI * 2);
         ctx.strokeStyle = p.color.replace(")", `, ${p.opacity * 0.3})`).replace("hsl(", "hsla(");
@@ -73,7 +70,6 @@ const AnimatedBackground = () => {
         ctx.stroke();
       }
 
-      // Draw faint connections between nearby particles
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
@@ -83,7 +79,7 @@ const AnimatedBackground = () => {
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `hsla(205, 55%, 30%, ${0.04 * (1 - dist / 150)})`;
+            ctx.strokeStyle = `hsla(0, 0%, 30%, ${0.04 * (1 - dist / 150)})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }

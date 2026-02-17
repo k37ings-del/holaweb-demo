@@ -20,15 +20,15 @@ export const THEME = {
     body: "Poppins",
   },
   colors: {
-    background: "hsl(205, 55%, 8%)",
+    background: "hsl(0, 0%, 5%)",
     foreground: "hsl(0, 0%, 100%)",
     primary: "hsl(352, 66%, 47%)",      // Intense Cherry
     primaryLight: "hsl(352, 60%, 62%)",
-    secondary: "hsl(205, 55%, 24%)",     // Yale Blue
-    accent: "hsl(15, 78%, 61%)",         // Burnt Peach
-    golden: "hsl(42, 100%, 67%)",        // Golden Pollen
-    card: "hsl(205, 45%, 12%)",
-    muted: "hsl(205, 30%, 16%)",
+    secondary: "hsl(0, 0%, 12%)",       // Dark Grey
+    accent: "hsl(352, 60%, 62%)",       // Cherry Light
+    golden: "hsl(352, 66%, 47%)",       // Now maps to Cherry
+    card: "hsl(0, 0%, 10%)",
+    muted: "hsl(0, 0%, 14%)",
   },
   social: {
     facebook: "https://facebook.com",

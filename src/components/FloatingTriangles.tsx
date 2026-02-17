@@ -19,8 +19,8 @@ const FloatingTriangles = () => {
             height: 0,
             borderLeft: "190px solid transparent",
             borderRight: "190px solid transparent",
-            borderBottom: "330px solid hsla(205, 55%, 18%, 0.12)",
-            filter: "drop-shadow(0 25px 50px hsla(205, 55%, 8%, 0.4))",
+            borderBottom: "330px solid hsla(0, 0%, 15%, 0.12)",
+            filter: "drop-shadow(0 25px 50px hsla(0, 0%, 5%, 0.4))",
           }}
         />
       </div>
