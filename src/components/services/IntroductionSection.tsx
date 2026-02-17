@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import techPartnerImg from "@/assets/tech-partner.jpg";
 
 const IntroductionSection = () => {
   return (
@@ -30,13 +31,8 @@ const IntroductionSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.2 }}
           >
-            <div className="w-72 h-72 md:w-96 md:h-96 border-2 border-primary/30 bg-muted/30 flex items-center justify-center overflow-hidden aspect-square">
-              <div className="text-muted-foreground/50 text-sm font-body text-center px-8">
-                <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-primary/10 flex items-center justify-center">
-                  <span className="text-primary text-2xl">🌍</span>
-                </div>
-                Image Placeholder
-              </div>
+            <div className="w-72 h-72 md:w-96 md:h-96 overflow-hidden rounded-2xl">
+              <img src={techPartnerImg} alt="Technology Partner" className="w-full h-full object-cover" />
             </div>
           </motion.div>
         </div>
