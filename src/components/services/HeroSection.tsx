@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowDown, Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
+import servicesHeroImg from "@/assets/services-hero.png";
 
 const HeroSection = () => {
   const scrollToServices = () => {
@@ -9,7 +10,10 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-secondary/30 to-background" />
+      <div className="absolute inset-0">
+        <img src={servicesHeroImg} alt="Services hero" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-background/80" />
+      </div>
 
       {/* Floating cherry particles */}
       {[...Array(6)].map((_, i) => (

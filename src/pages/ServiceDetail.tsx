@@ -157,7 +157,7 @@ const ServiceDetail = () => {
             </div>
 
             {/* Service image */}
-            <div className="w-full max-w-3xl h-64 md:h-80 rounded-2xl border-2 border-primary/20 bg-muted/20 overflow-hidden mb-12">
+            <div className="w-full max-w-3xl h-64 md:h-80 rounded-2xl overflow-hidden mb-12">
               <img
                 src={serviceImages[slug || ""]}
                 alt={service.title}
