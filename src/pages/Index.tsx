@@ -107,8 +107,8 @@ const Index = () => {
             <h1 className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold text-foreground mb-4 animate-fade-in-up tracking-tight">
               Holaweb Media Group
             </h1>
-            <p
-              className="font-subheading text-lg md:text-2xl text-primary-light font-medium mb-4 animate-fade-in-up tracking-wide uppercase"
+             <p
+              className="font-subheading text-lg md:text-2xl text-primary font-medium mb-4 animate-fade-in-up tracking-wide uppercase"
               style={{ animationDelay: "0.15s" }}>
 
               Your Digital Inclusion Enablement Partner
@@ -133,7 +133,7 @@ const Index = () => {
               </Link>
               <Link
                 to="/services"
-                className="inline-flex items-center justify-center rounded-lg border border-primary/40 px-8 py-4 font-subheading text-sm font-semibold text-primary-light hover:bg-primary/10 transition-colors duration-300">
+                className="inline-flex items-center justify-center rounded-lg border border-primary/40 px-8 py-4 font-subheading text-sm font-semibold text-primary hover:bg-primary/10 transition-colors duration-300">
 
                 Learn More
               </Link>
@@ -167,7 +167,7 @@ const Index = () => {
                     Who We Are
                   </h2>
                   <div className="w-16 h-1 bg-golden mb-6" />
-                  <p className="font-subheading text-lg text-primary-light mb-4">
+                 <p className="font-subheading text-lg text-primary mb-4">
                     Bridging Africa's Digital Divide
                   </p>
                   <p className="font-body font-light text-foreground/75 leading-relaxed mb-4">Holaweb Media Group is a South African digital solutions company focused on inclusive, cloud‑powered products that turn strategy into measurable outcomes. Founded with a bold vision, we set out to ensure every entrepreneur and institution—from township to enterprise—can compete and grow through simple, affordable technology.
@@ -206,7 +206,7 @@ const Index = () => {
                     Scaling Ventures Across Africa
                   </h2>
                   <div className="w-16 h-1 bg-primary mb-6" />
-                  <p className="font-subheading text-lg text-primary-light mb-4">
+                  <p className="font-subheading text-lg text-primary mb-4">
                     Investment, Innovation & Ecosystem Building
                   </p>
                   <p className="font-body font-light text-foreground/75 leading-relaxed mb-6">
@@ -220,7 +220,7 @@ const Index = () => {
                     href="https://www.youtube.com/watch?v=wrQK_BdQxQY&pp=ygUNdnV5aXNhIHFhYmFrYdIHCQmHCgGHKiGM7w%3D%3D"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-primary-light hover:text-primary font-subheading text-sm font-medium transition-colors"
+                    className="inline-flex items-center gap-2 text-primary hover:text-accent font-subheading text-sm font-medium transition-colors"
                   >
                     Watch on YouTube
                     <ExternalLink className="h-4 w-4" />
@@ -230,9 +230,7 @@ const Index = () => {
                 <div className="relative">
                   <div className="aspect-video rounded-none border border-primary/20 overflow-hidden shadow-2xl shadow-background/60">
                     <video
-                      autoPlay
-                      muted
-                      loop
+                      controls
                       playsInline
                       className="w-full h-full object-cover"
                       src="/videos/vuyisa-qabaka.mp4"
@@ -253,7 +251,7 @@ const Index = () => {
                   What We Offer
                 </h2>
                 <div className="w-16 h-1 bg-golden mx-auto mb-4" />
-                <p className="font-subheading text-lg text-primary-light">
+                <p className="font-subheading text-lg text-primary">
                   Comprehensive Digital Solutions
                 </p>
               </div>
@@ -275,7 +273,7 @@ const Index = () => {
                       <p className="font-body font-light text-sm text-muted-foreground leading-relaxed">
                         {service.description}
                       </p>
-                      <div className="mt-4 flex items-center gap-1 text-primary-light text-sm font-subheading font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="mt-4 flex items-center gap-1 text-primary text-sm font-subheading font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         Learn more <ChevronRight className="h-4 w-4" />
                       </div>
                     </Link>
@@ -286,8 +284,8 @@ const Index = () => {
           </div>
         </section>
 
-        {/* ─── Testimonials ─── */}
-        <section className="py-24 bg-secondary/20 backdrop-blur-sm">
+        {/* ─── Testimonials (hidden for now) ─── */}
+        <section className="py-24 bg-secondary/20 backdrop-blur-sm hidden">
           <div className="container mx-auto px-6">
             <ScrollSection>
               <div className="text-center mb-16">
@@ -295,7 +293,7 @@ const Index = () => {
                   What Our Clients Say
                 </h2>
                 <div className="w-16 h-1 bg-golden mx-auto mb-4" />
-                <p className="font-subheading text-lg text-primary-light">
+                <p className="font-subheading text-lg text-primary">
                   Trusted by Businesses Across Africa
                 </p>
               </div>
@@ -327,8 +325,8 @@ const Index = () => {
           </div>
         </section>
 
-        {/* ─── Brand Logos Carousel ─── */}
-        <section className="py-16 border-t border-border border-b">
+        {/* ─── Brand Logos Carousel (hidden for now) ─── */}
+        <section className="py-16 border-t border-border border-b hidden">
           <div className="container mx-auto px-6 mb-8 text-center">
             <p className="font-subheading text-sm uppercase tracking-widest text-muted-foreground">
               Brands We've Worked With

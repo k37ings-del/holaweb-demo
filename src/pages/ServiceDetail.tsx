@@ -116,7 +116,7 @@ const ServiceDetail = () => {
           <div className="container mx-auto px-4 lg:px-8">
             <Link
               to="/services"
-              className="inline-flex items-center gap-2 text-primary-light text-sm font-body mb-8 hover:underline"
+              className="inline-flex items-center gap-2 text-primary text-sm font-body mb-8 hover:underline"
             >
               <ArrowLeft className="w-4 h-4" /> Back to Services
             </Link>
@@ -199,7 +199,7 @@ const ServiceDetail = () => {
               </Link>
               <Link
                 to="/services"
-                className="inline-flex items-center gap-2 rounded-lg border border-primary/40 px-6 py-3 font-subheading text-sm font-semibold text-primary-light hover:bg-primary/10 transition-colors duration-300"
+                className="inline-flex items-center gap-2 rounded-lg border border-primary/40 px-6 py-3 font-subheading text-sm font-semibold text-primary hover:bg-primary/10 transition-colors duration-300"
               >
                 <ArrowLeft className="w-4 h-4" />
                 All Services
