@@ -1,7 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import AnimatedBackground from "@/components/AnimatedBackground";
-import FloatingTriangles from "@/components/FloatingTriangles";
+import FloatingBubbles from "@/components/FloatingBubbles";
 import HeroSection from "@/components/services/HeroSection";
 import IntroductionSection from "@/components/services/IntroductionSection";
 import AboutSection from "@/components/services/AboutSection";
@@ -15,13 +14,11 @@ import CTASection from "@/components/services/CTASection";
 const Services = () => {
   return (
     <div className="min-h-screen bg-background relative">
-      <AnimatedBackground />
-      <FloatingTriangles />
+      <FloatingBubbles />
 
       <div className="relative" style={{ zIndex: 2 }}>
         <Header />
         <HeroSection />
-        {/* ─── Hero / Body Separator ─── */}
         <div className="w-full h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
         <IntroductionSection />
         <AboutSection />

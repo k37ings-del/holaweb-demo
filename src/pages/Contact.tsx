@@ -13,9 +13,8 @@ import {
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import AnimatedBackground from "@/components/AnimatedBackground";
+import FloatingBubbles from "@/components/FloatingBubbles";
 import contactSupportImg from "@/assets/contact-support.jpg";
-import FloatingTriangles from "@/components/FloatingTriangles";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
@@ -176,8 +175,7 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-background relative">
-      <AnimatedBackground />
-      <FloatingTriangles />
+      <FloatingBubbles />
 
       <div className="relative" style={{ zIndex: 2 }}>
         <Header />
