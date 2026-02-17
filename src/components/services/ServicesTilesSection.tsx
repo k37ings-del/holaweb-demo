@@ -9,7 +9,7 @@ const services = [
     title: "Cloud Services",
     description: "Enterprise-grade AWS cloud solutions for migration, optimization, and scalable infrastructure.",
     features: ["AWS Migration & Setup", "Cost Optimization", "Security & Compliance", "24/7 Monitoring"],
-    to: "/services/cloud",
+    to: "/services/cloud-services",
   },
   {
     icon: Code,
@@ -17,7 +17,7 @@ const services = [
     title: "Web & App Development",
     description: "Custom-built responsive websites, web platforms, and mobile applications with stunning UI/UX.",
     features: ["Responsive Websites", "Web Platforms", "Mobile Applications", "UI/UX Design"],
-    to: "/services/apps",
+    to: "/services/web-app-development",
   },
   {
     icon: TrendingUp,
@@ -25,7 +25,7 @@ const services = [
     title: "Market Access",
     description: "Strategic distribution, customer acquisition, and market penetration to grow your revenue.",
     features: ["Customer Acquisition", "Distribution Networks", "Market Feedback", "Revenue Growth"],
-    to: "/services/gtm",
+    to: "/services/market-access",
   },
   {
     icon: MessageSquare,
@@ -33,7 +33,7 @@ const services = [
     title: "META Solutions",
     description: "WhatsApp Business API integration for automated messaging, payments, and CRM workflows.",
     features: ["WhatsApp Business API", "Chatbot Automation", "Payment Integration", "CRM Connection"],
-    to: "/services/integrations",
+    to: "/services/meta-solutions",
   },
 ];
 

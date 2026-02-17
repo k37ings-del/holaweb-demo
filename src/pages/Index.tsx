@@ -27,38 +27,26 @@ const serviceCards = [
 {
   title: "Cloud Services",
   icon: Cloud,
-  href: "/services/cloud",
+  href: "/services/cloud-services",
   description: "Cloud architecture, hosting, cost optimization & disaster recovery."
 },
 {
-  title: "Apps Development",
+  title: "Web & App Development",
   icon: Smartphone,
-  href: "/services/apps",
+  href: "/services/web-app-development",
   description: "Web and mobile apps, microservices, APIs & QA automation."
 },
 {
-  title: "Go-To-Market Support",
+  title: "Market Access",
   icon: Megaphone,
-  href: "/services/gtm",
+  href: "/services/market-access",
   description: "Adoption strategies, onboarding playbooks & enablement programs."
 },
 {
-  title: "Integrations",
+  title: "META Solutions",
   icon: Link2,
-  href: "/services/integrations",
+  href: "/services/meta-solutions",
   description: "WhatsApp Business bots, payment gateways & customer workflows."
-},
-{
-  title: "Tech Reseller",
-  icon: ShoppingCart,
-  href: "/services/reseller",
-  description: "Advisory on best-fit SaaS, licensing & partner coordination."
-},
-{
-  title: "Business Strategy",
-  icon: BarChart3,
-  href: "/services/strategy",
-  description: "CRM, data enablement, analytics dashboards & growth planning."
 }];
 
 
