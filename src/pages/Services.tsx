@@ -1,22 +1,38 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import AnimatedBackground from "@/components/AnimatedBackground";
+import FloatingTriangles from "@/components/FloatingTriangles";
+import HeroSection from "@/components/services/HeroSection";
+import IntroductionSection from "@/components/services/IntroductionSection";
+import AboutSection from "@/components/services/AboutSection";
+import TransformationPartnerSection from "@/components/services/TransformationPartnerSection";
+import ServicesTilesSection from "@/components/services/ServicesTilesSection";
+import WhyChooseSection from "@/components/services/WhyChooseSection";
+import HowWeWorkSection from "@/components/services/HowWeWorkSection";
+import BusinessTypesSection from "@/components/services/BusinessTypesSection";
+import CTASection from "@/components/services/CTASection";
 
 const Services = () => {
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <section className="pt-32 pb-24">
-        <div className="container mx-auto px-6 text-center">
-          <h1 className="font-heading text-4xl md:text-6xl font-bold text-foreground mb-4">Our Services</h1>
-          <div className="w-16 h-1 bg-golden mx-auto mb-6" />
-          <p className="font-body font-light text-foreground/70 max-w-xl mx-auto">
-            This page is under construction. Explore our comprehensive digital solutions coming soon.
-          </p>
-        </div>
-      </section>
-      {/* ─── Hero / Body Separator ─── */}
-      <div className="w-full h-px bg-gradient-to-r from-transparent via-golden/40 to-transparent" />
-      <Footer />
+    <div className="min-h-screen bg-background relative">
+      <AnimatedBackground />
+      <FloatingTriangles />
+
+      <div className="relative" style={{ zIndex: 2 }}>
+        <Header />
+        <HeroSection />
+        {/* ─── Hero / Body Separator ─── */}
+        <div className="w-full h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+        <IntroductionSection />
+        <AboutSection />
+        <TransformationPartnerSection />
+        <ServicesTilesSection />
+        <WhyChooseSection />
+        <HowWeWorkSection />
+        <BusinessTypesSection />
+        <CTASection />
+        <Footer />
+      </div>
     </div>
   );
 };

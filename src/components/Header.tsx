@@ -4,12 +4,10 @@ import { Menu, X, ChevronDown } from "lucide-react";
 import logo from "@/assets/HW_Logo.png";
 
 const serviceSubpages = [
-  { label: "Cloud Services", href: "/services/cloud" },
-  { label: "Apps Development", href: "/services/apps" },
-  { label: "Go-To-Market Support", href: "/services/gtm" },
-  { label: "Integrations", href: "/services/integrations" },
-  { label: "Tech Reseller", href: "/services/reseller" },
-  { label: "Business Strategy", href: "/services/strategy" },
+  { label: "Cloud Services", href: "/services/cloud-services" },
+  { label: "Web & App Development", href: "/services/web-app-development" },
+  { label: "Market Access", href: "/services/market-access" },
+  { label: "META Solutions", href: "/services/meta-solutions" },
 ];
 
 const navItems = [
