@@ -25,14 +25,14 @@ const FloatingBubbles = () => {
     };
     resize();
 
-    const count = Math.min(50, Math.floor(window.innerWidth / 30));
+    const count = Math.min(25, Math.floor(window.innerWidth / 60));
     const bubbles: Bubble[] = Array.from({ length: count }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
       radius: Math.random() * 30 + 8,
       vx: (Math.random() - 0.5) * 0.3,
       vy: -Math.random() * 0.4 - 0.1,
-      opacity: 0.4,
+      opacity: 0.3,
     }));
 
     const animate = () => {

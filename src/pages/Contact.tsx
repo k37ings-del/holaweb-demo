@@ -2,9 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import {
-  Mail,
-  Phone,
-  MapPin,
   ChevronRight,
   Send,
   Clock,
@@ -14,7 +11,6 @@ import {
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FloatingBubbles from "@/components/FloatingBubbles";
-import contactSupportImg from "@/assets/contact-support.jpg";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
@@ -337,93 +333,26 @@ const Contact = () => {
               {/* Contact Info Sidebar */}
               <div className="lg:col-span-2">
                 <ScrollSection>
-                  <div className="mb-6 overflow-hidden rounded-lg">
-                    <img
-                      src={contactSupportImg}
-                      alt="Contact support"
-                      className="w-full aspect-square object-cover"
-                    />
-                  </div>
                   <div className="rounded-none bg-card/80 backdrop-blur-sm border border-border p-8 sticky top-28">
                     <h3 className="font-heading text-xl font-bold text-foreground mb-6">
-                      Contact Information
+                      Who Should Reach Out
                     </h3>
-
-                    <div className="space-y-6">
-                      <div className="flex items-start gap-4">
-                        <div className="w-10 h-10 rounded-full bg-golden/20 flex items-center justify-center flex-shrink-0">
-                          <Mail className="h-4 w-4 text-golden" />
-                        </div>
-                        <div>
-                          <p className="font-subheading text-sm font-medium text-foreground">
-                            Email
-                          </p>
-                          <a
-                            href="mailto:siya@holaweb.co.za"
-                            className="font-body text-sm text-golden hover:text-golden/80 transition-colors"
-                          >
-                            siya@holaweb.co.za
-                          </a>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start gap-4">
-                        <div className="w-10 h-10 rounded-full bg-golden/20 flex items-center justify-center flex-shrink-0">
-                          <Phone className="h-4 w-4 text-golden" />
-                        </div>
-                        <div>
-                          <p className="font-subheading text-sm font-medium text-foreground">
-                            Phone
-                          </p>
-                          <a
-                            href="https://wa.me/27715138219"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="font-body text-sm text-golden hover:text-golden/80 transition-colors"
-                          >
-                            +27 71 513 8219
-                          </a>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start gap-4">
-                        <div className="w-10 h-10 rounded-full bg-golden/20 flex items-center justify-center flex-shrink-0">
-                          <MapPin className="h-4 w-4 text-golden" />
-                        </div>
-                        <div>
-                          <p className="font-subheading text-sm font-medium text-foreground">
-                            Location
-                          </p>
-                          <p className="font-body text-sm text-muted-foreground">
-                            4382 Wild Current, Riverside,
-                            <br />
-                            Fourways, Gauteng, 2189
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="mt-8 pt-6 border-t border-border">
-                      <h4 className="font-subheading text-sm font-semibold text-foreground mb-3">
-                        Who Should Reach Out
-                      </h4>
-                      <ul className="space-y-2">
-                        {[
-                          "Startups looking to scale with cloud solutions",
-                          "Enterprises exploring digital transformation",
-                          "Tech companies needing distribution partners",
-                          "Organizations seeking META integrations",
-                        ].map((item) => (
-                          <li
-                            key={item}
-                            className="flex items-start gap-2 font-body text-xs text-muted-foreground"
-                          >
-                            <ChevronRight className="h-3 w-3 text-golden mt-0.5 flex-shrink-0" />
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                    <ul className="space-y-2">
+                      {[
+                        "Startups looking to scale with cloud solutions",
+                        "Enterprises exploring digital transformation",
+                        "Tech companies needing distribution partners",
+                        "Organizations seeking META integrations",
+                      ].map((item) => (
+                        <li
+                          key={item}
+                          className="flex items-start gap-2 font-body text-xs text-muted-foreground"
+                        >
+                          <ChevronRight className="h-3 w-3 text-golden mt-0.5 flex-shrink-0" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </ScrollSection>
               </div>
