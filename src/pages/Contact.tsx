@@ -191,7 +191,7 @@ const Contact = () => {
 
           <div className="relative z-10 container mx-auto px-6 text-left max-w-4xl">
             <h1 className="font-heading text-4xl md:text-6xl font-bold text-foreground mb-4 animate-fade-in-up tracking-tight">
-              Let's Start a Conversation
+              Let's Start a <span className="text-primary">Conversation</span>
             </h1>
             <p
               className="max-w-2xl text-base md:text-lg text-foreground/70 font-body font-light animate-fade-in-up"

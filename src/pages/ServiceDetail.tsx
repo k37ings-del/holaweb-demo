@@ -5,6 +5,17 @@ import { motion, AnimatePresence } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FloatingBubbles from "@/components/FloatingBubbles";
+import cloudSolutionsImg from "@/assets/cloud-solutions.png";
+import webAppDevImg from "@/assets/web-app-development.jpg";
+import marketAccessImg from "@/assets/market-access.png";
+import metaSolutionsImg from "@/assets/meta-solutions.jpg";
+
+const serviceImages: Record<string, string> = {
+  "cloud-services": cloudSolutionsImg,
+  "web-app-development": webAppDevImg,
+  "market-access": marketAccessImg,
+  "meta-solutions": metaSolutionsImg,
+};
 
 const serviceData: Record<string, {
   icon: any;
@@ -145,14 +156,13 @@ const ServiceDetail = () => {
               ))}
             </div>
 
-            {/* Image placeholder */}
-            <div className="w-full max-w-3xl h-64 md:h-80 rounded-2xl border-2 border-primary/20 bg-muted/20 flex items-center justify-center mb-12">
-              <div className="text-muted-foreground/50 text-sm font-body text-center">
-                <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-primary/10 flex items-center justify-center">
-                  <IconComp className="w-6 h-6 text-primary/50" />
-                </div>
-                Image Placeholder
-              </div>
+            {/* Service image */}
+            <div className="w-full max-w-3xl h-64 md:h-80 rounded-2xl border-2 border-primary/20 bg-muted/20 overflow-hidden mb-12">
+              <img
+                src={serviceImages[slug || ""]}
+                alt={service.title}
+                className="w-full h-full object-contain bg-muted/10"
+              />
             </div>
 
             {/* Clickable features */}

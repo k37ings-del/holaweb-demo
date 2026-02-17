@@ -135,7 +135,7 @@ const About = () => {
             <h1 className="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4 animate-fade-in-up tracking-tight">
               Your Digital Inclusion
               <br />
-              Enablement Partner
+              <span className="text-primary">Enablement Partner</span>
             </h1>
             <p
               className="max-w-2xl mx-auto text-base md:text-lg text-foreground/70 font-body font-light mb-8 animate-fade-in-up"
