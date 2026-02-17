@@ -105,7 +105,7 @@ const Index = () => {
 
           <div className="relative z-10 container mx-auto px-6 text-center">
             <h1 className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold text-foreground mb-4 animate-fade-in-up tracking-tight">
-              Holaweb Media Group
+              Holaweb <span className="text-primary">Media Group</span>
             </h1>
              <p
               className="font-subheading text-lg md:text-2xl text-primary font-medium mb-4 animate-fade-in-up tracking-wide uppercase"
