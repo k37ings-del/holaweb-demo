@@ -5,16 +5,7 @@ import {
   Megaphone,
   Link2,
   ChevronRight,
-  ExternalLink,
-  Quote,
   Monitor,
-  Users,
-  BarChart3,
-  Shield,
-  Zap,
-  Globe,
-  TrendingUp,
-  Award,
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -24,6 +15,7 @@ import aboutImage from "@/assets/about-image.jpg";
 import awsPartnerBadge from "@/assets/aws-partner-badge.png";
 import zohoAffiliateBadge from "@/assets/zoho-affiliate-badge.png";
 import backgroundTech from "@/assets/background-technology.png";
+import awsLogo from "@/assets/logos/aws.png";
 
 const WhatsAppIcon = ({ className = "h-5 w-5" }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
@@ -54,7 +46,7 @@ const Index = () => {
       <div className="relative" style={{ zIndex: 2 }}>
         <Header />
 
-        {/* ─── Hero Section (linkage-style split layout) ─── */}
+        {/* ─── Hero Section ─── */}
         <section className="relative min-h-screen flex items-center overflow-hidden pt-32 lg:pt-20">
           <img
             src={backgroundTech}
@@ -65,15 +57,8 @@ const Index = () => {
 
           <div className="relative z-10 container mx-auto px-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
-              {/* Left — Zoho badge + Text Content */}
+              {/* Left — Text Content */}
               <div>
-                {/* Zoho Affiliate Badge — top left, linkage style */}
-                <div className="mb-8">
-                  <div className="bg-white rounded-2xl p-2 shadow-xl w-36 h-36 flex items-center justify-center">
-                    <img src={zohoAffiliateBadge} alt="Zoho Affiliate" className="max-w-full max-h-full object-contain rounded-xl" />
-                  </div>
-                </div>
-
                 <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-2 animate-fade-in-up leading-tight">
                   Connecting{" "}
                   <span className="text-primary">opportunity</span>
@@ -115,16 +100,16 @@ const Index = () => {
                 </div>
               </div>
 
-              {/* Right — Image placeholder with badge overlapping corners */}
+              {/* Right — Image placeholder with badges overlapping corners */}
               <div className="relative flex justify-center lg:justify-end">
-                {/* AWS Partner badge — overlapping top-right corner of image */}
+                {/* AWS Partner badge — overlapping top-right corner */}
                 <div className="absolute -top-6 -right-6 lg:-right-4 z-20">
                   <div className="bg-white rounded-2xl p-3 shadow-xl w-32 h-32 flex items-center justify-center">
                     <img src={awsPartnerBadge} alt="AWS Partner" className="max-w-full max-h-full object-contain" />
                   </div>
                 </div>
 
-                {/* Image placeholder with Intense Cherry shadow like linkage gold border */}
+                {/* Image placeholder with Intense Cherry shadow */}
                 <div className="relative w-full max-w-md lg:max-w-lg">
                   <div className="aspect-[4/5] bg-secondary/40 flex items-center justify-center overflow-hidden shadow-[8px_8px_0px_0px_hsl(352,66%,47%)]">
                     <div className="text-center text-muted-foreground">
@@ -135,6 +120,13 @@ const Index = () => {
                     </div>
                   </div>
                 </div>
+
+                {/* Zoho Affiliate badge — overlapping bottom-left corner */}
+                <div className="absolute -bottom-6 -left-6 lg:-left-4 z-20">
+                  <div className="bg-white rounded-2xl p-2 shadow-xl w-36 h-36 flex items-center justify-center">
+                    <img src={zohoAffiliateBadge} alt="Zoho Affiliate" className="max-w-full max-h-full object-contain rounded-xl" />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -143,25 +135,17 @@ const Index = () => {
         {/* ─── Separator ─── */}
         <div className="w-full h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
 
-        {/* ─── Section 1: Digitalise & Automate (ESD → SME Impact) ─── */}
+        {/* ─── Section 1: Digitalise & Automate (SME Impact) ─── */}
         <section className="py-24">
           <div className="container mx-auto px-6">
             <ScrollSection>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                {/* Left — Illustration placeholders (linkage graphic style) */}
+                {/* Left — Single image placeholder */}
                 <div className="relative">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="aspect-square bg-secondary/50 border border-border flex items-center justify-center shadow-[6px_6px_0px_0px_hsl(352,66%,47%)]">
-                      <Monitor className="h-12 w-12 text-primary/40" />
-                    </div>
-                    <div className="aspect-square bg-secondary/50 border border-border flex items-center justify-center shadow-[6px_6px_0px_0px_hsl(352,66%,47%)]">
-                      <Users className="h-12 w-12 text-primary/40" />
-                    </div>
-                    <div className="aspect-square bg-secondary/50 border border-border flex items-center justify-center shadow-[6px_6px_0px_0px_hsl(352,66%,47%)]">
-                      <BarChart3 className="h-12 w-12 text-primary/40" />
-                    </div>
-                    <div className="aspect-square bg-secondary/50 border border-border flex items-center justify-center shadow-[6px_6px_0px_0px_hsl(352,66%,47%)]">
-                      <Globe className="h-12 w-12 text-primary/40" />
+                  <div className="aspect-[4/3] bg-secondary/40 border border-border flex items-center justify-center shadow-[8px_8px_0px_0px_hsl(352,66%,47%)]">
+                    <div className="text-center text-muted-foreground">
+                      <Monitor className="h-16 w-16 mx-auto mb-3 text-primary/30" />
+                      <p className="font-subheading text-sm">Image Placeholder</p>
                     </div>
                   </div>
                 </div>
@@ -224,18 +208,12 @@ const Index = () => {
                   </Link>
                 </div>
 
-                {/* Right — Illustration */}
+                {/* Right — Image placeholder */}
                 <div className="relative flex justify-center">
-                  <div className="relative">
-                    <div className="w-64 h-64 md:w-80 md:h-80 bg-secondary/50 border border-border flex items-center justify-center shadow-[8px_8px_0px_0px_hsl(352,66%,47%)]">
-                      <Cloud className="h-20 w-20 text-primary/40" />
-                    </div>
-                    {/* Floating accent icons */}
-                    <div className="absolute -top-4 -right-4 w-16 h-16 bg-card border border-primary/30 flex items-center justify-center shadow-lg">
-                      <Shield className="h-8 w-8 text-primary/60" />
-                    </div>
-                    <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-card border border-primary/30 flex items-center justify-center shadow-lg">
-                      <Zap className="h-8 w-8 text-primary/60" />
+                  <div className="aspect-[4/3] w-full bg-secondary/40 border border-border flex items-center justify-center shadow-[8px_8px_0px_0px_hsl(352,66%,47%)]">
+                    <div className="text-center text-muted-foreground">
+                      <Cloud className="h-16 w-16 mx-auto mb-3 text-primary/30" />
+                      <p className="font-subheading text-sm">Image Placeholder</p>
                     </div>
                   </div>
                 </div>
@@ -249,9 +227,10 @@ const Index = () => {
           <div className="container mx-auto px-6">
             <ScrollSection>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                {/* Left — Platform image placeholder */}
+                {/* Left — Platform image placeholder with label */}
                 <div className="relative">
-                  <div className="aspect-[4/3] bg-secondary/50 border border-border overflow-hidden shadow-[8px_8px_0px_0px_hsl(352,66%,47%)]">
+                  <p className="font-subheading text-sm font-semibold text-primary mb-3 uppercase tracking-wider">Our Platform</p>
+                  <div className="aspect-[4/3] bg-secondary/40 border border-border overflow-hidden shadow-[8px_8px_0px_0px_hsl(352,66%,47%)]">
                     <div className="w-full h-full flex items-center justify-center">
                       <div className="text-center text-muted-foreground">
                         <Monitor className="h-16 w-16 mx-auto mb-3 text-primary/30" />
@@ -300,7 +279,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* ─── Section 4: CloudLink Services ─── */}
+        {/* ─── Section 4: Our Cloud Services ─── */}
         <section className="py-24 bg-secondary/20 backdrop-blur-sm">
           <div className="container mx-auto px-6">
             <ScrollSection>
@@ -308,14 +287,14 @@ const Index = () => {
                 {/* Left — Content */}
                 <div>
                   <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-2">
-                    Our <span className="text-primary">CloudLink</span> Services
+                    Our <span className="text-primary">Cloud</span> Services
                   </h2>
                   <div className="w-16 h-1 bg-primary mb-6" />
                   <p className="font-body font-light text-foreground/75 leading-relaxed mb-6">
                     To advance cloud computing adoption for SMMEs, we provide AWS Cloud
                     Adoption Services as part of our development packages. Enterprises
                     can support their beneficiaries to automate and digitalise their
-                    businesses through our CloudLink services — from cloud architecture
+                    businesses through our cloud services — from cloud architecture
                     and migration to managed hosting and disaster recovery.
                   </p>
                   <Link
@@ -327,15 +306,10 @@ const Index = () => {
                   </Link>
                 </div>
 
-                {/* Right — Illustration */}
+                {/* Right — AWS Logo */}
                 <div className="relative flex justify-center">
-                  <div className="relative">
-                    <div className="w-72 h-72 md:w-96 md:h-80 bg-secondary/50 border border-border flex items-center justify-center shadow-[8px_8px_0px_0px_hsl(352,66%,47%)]">
-                      <div className="text-center">
-                        <Cloud className="h-16 w-16 mx-auto mb-2 text-primary/40" />
-                        <p className="font-subheading text-xs text-muted-foreground">CloudLink Illustration</p>
-                      </div>
-                    </div>
+                  <div className="w-72 h-72 md:w-96 md:h-80 bg-secondary/40 border border-border flex items-center justify-center shadow-[8px_8px_0px_0px_hsl(352,66%,47%)]">
+                    <img src={awsLogo} alt="AWS" className="max-w-[60%] max-h-[60%] object-contain" />
                   </div>
                 </div>
               </div>
@@ -343,7 +317,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* ─── Section 5: One Holaweb / About ─── */}
+        {/* ─── Section 5: Who is Holaweb ─── */}
         <section className="py-24">
           <div className="container mx-auto px-6">
             <ScrollSection>
@@ -362,42 +336,19 @@ const Index = () => {
                 {/* Right — Content */}
                 <div>
                   <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-2">
-                    One <span className="text-primary">Holaweb</span>
+                    Who is <span className="text-primary">Holaweb</span>
                   </h2>
                   <div className="w-16 h-1 bg-primary mb-6" />
                   <p className="font-body font-light text-foreground/75 leading-relaxed mb-6">
-                    Holaweb Media Group is a South African digital solutions company
-                    that plans, builds, runs, optimises, and manages cloud technology
-                    solutions and services for enterprises and SMEs driving digital
-                    inclusion and economic participation.
+                    Holaweb Media Group is a South African digital solutions company focused on inclusive, cloud‑powered products that turn strategy into measurable outcomes. Founded with a bold vision, we set out to ensure every entrepreneur and institution—from township to enterprise—can compete and grow through simple, affordable technology.
+                  </p>
+                  <p className="font-body font-light text-foreground/75 leading-relaxed mb-6">
+                    Our multidisciplinary team blends product strategy, software engineering, design, data, and change management, ensuring not only build quality but also adoption, skills transfer, and sustainability. We are known for pragmatic delivery, transparent governance, and deep contextual understanding of African operating realities.
                   </p>
                   <p className="font-body font-light text-foreground/75 leading-relaxed">
-                    We are an AWS Partner and Zoho Affiliate focused on making
-                    enterprise-grade technology accessible, simple, and affordable
-                    for Africa's growing businesses.
+                    We help SMEs, enterprises, and public‑sector entities modernize citizen and customer experiences through high‑performance websites, e‑commerce, WhatsApp and payment integrations, CRM and data tools, and managed cloud services.
                   </p>
                 </div>
-              </div>
-            </ScrollSection>
-
-            {/* Stats Row */}
-            <ScrollSection className="mt-20">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                {[
-                  { value: "5+", label: "Years empowering SMEs" },
-                  { value: "100+", label: "SMEs supported digitally" },
-                  { value: "13", label: "African countries reached" },
-                  { value: "50+", label: "Cloud solutions deployed" },
-                ].map((stat) => (
-                  <div key={stat.label} className="text-center p-6 bg-card/80 backdrop-blur-sm border border-border">
-                    <p className="font-heading text-4xl md:text-5xl font-bold text-primary mb-2">
-                      {stat.value}
-                    </p>
-                    <p className="font-body font-light text-sm text-muted-foreground">
-                      {stat.label}
-                    </p>
-                  </div>
-                ))}
               </div>
             </ScrollSection>
           </div>
