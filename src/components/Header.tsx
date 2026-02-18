@@ -12,13 +12,13 @@ const serviceSubpages = [
 
 const navItems = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Services", href: "/services", hasDropdown: true },
   {
     label: "SME Impact",
     href: "https://smeimpact.co.za/",
     external: true,
   },
+  { label: "About", href: "/about" },
+  { label: "Services", href: "/services", hasDropdown: true },
   {
     label: "Quick Start",
     href: "https://docs.google.com/forms/d/e/1FAIpQLScjWbZKNcccQRYIBX6oQo-n6vVlJ8UduH3iknn5YQj8xcnDzA/viewform?usp=sharing&ouid=106739550657489478981",
