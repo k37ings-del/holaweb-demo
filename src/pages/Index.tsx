@@ -121,8 +121,8 @@ const Index = () => {
                   </div>
                 </div>
 
-                {/* Zoho Affiliate badge — overlapping bottom-left corner */}
-                <div className="absolute -bottom-6 -left-6 lg:-left-4 z-20">
+                {/* Zoho Affiliate badge — overlapping top-left corner */}
+                <div className="absolute -top-6 -left-6 lg:-left-4 z-20">
                   <div className="bg-white rounded-2xl p-2 shadow-xl w-36 h-36 flex items-center justify-center">
                     <img src={zohoAffiliateBadge} alt="Zoho Affiliate" className="max-w-full max-h-full object-contain rounded-xl" />
                   </div>
@@ -181,7 +181,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* ─── Section 2: Capacitate SMMEs with Cloud ─── */}
+        {/* ─── Section 2: Capacitate SMEs with Cloud ─── */}
         <section className="py-24 bg-secondary/20 backdrop-blur-sm">
           <div className="container mx-auto px-6">
             <ScrollSection>
@@ -189,7 +189,7 @@ const Index = () => {
                 {/* Left — Content */}
                 <div>
                   <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">
-                    Do you want to capacitate your SMMEs with{" "}
+                    Do you want to capacitate your SMEs with{" "}
                     <span className="text-primary">cloud technologies</span> and skills?
                   </h2>
                   <p className="font-body font-light text-foreground/75 leading-relaxed mb-8">
@@ -199,13 +199,16 @@ const Index = () => {
                     cloud infrastructure at affordable price points, complete with
                     skills transfer and ongoing support.
                   </p>
-                  <Link
-                    to="/services/cloud-services"
-                    className="btn-cherry inline-flex items-center justify-center rounded-lg px-8 py-4 font-subheading text-sm font-semibold shadow-lg"
+                  <a
+                    href="https://wa.me/27715138219"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center rounded-lg border-2 border-primary px-8 py-4 font-subheading text-sm font-semibold transition-colors duration-300 hover:bg-primary/10"
+                    style={{ color: "#25D366" }}
                   >
-                    LEARN MORE
-                    <ChevronRight className="ml-2 h-4 w-4" />
-                  </Link>
+                    <WhatsAppIcon className="mr-2 h-4 w-4" />
+                    WhatsApp
+                  </a>
                 </div>
 
                 {/* Right — Image placeholder */}
@@ -255,22 +258,20 @@ const Index = () => {
                     in the SMME Sector.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <a
-                      href="https://smeimpact.co.za/"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <Link
+                      to="/services"
                       className="btn-cherry inline-flex items-center justify-center rounded-lg px-8 py-4 font-subheading text-sm font-semibold shadow-lg"
                     >
                       LEARN MORE
                       <ChevronRight className="ml-2 h-4 w-4" />
-                    </a>
+                    </Link>
                     <a
-                      href="https://smeimpact.co.za/"
+                      href="https://docs.google.com/forms/d/e/1FAIpQLScjWbZKNcccQRYIBX6oQo-n6vVlJ8UduH3iknn5YQj8xcnDzA/viewform?usp=sharing&ouid=106739550657489478981"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center rounded-lg border border-primary px-8 py-4 font-subheading text-sm font-semibold text-primary transition-colors duration-300 hover:bg-primary/10"
                     >
-                      Start Free Trial
+                      Get Started Now
                     </a>
                   </div>
                 </div>
@@ -418,6 +419,48 @@ const Index = () => {
                 );
               })}
             </div>
+          </div>
+        </section>
+
+        {/* ─── AWS Credentials & Expertise ─── */}
+        <section className="py-24">
+          <div className="container mx-auto px-6">
+            <ScrollSection>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 text-center">
+                <div className="flex flex-col items-center">
+                  <div className="w-28 h-28 border-2 border-primary/30 rounded-xl flex items-center justify-center mb-4 p-3">
+                    <img src={awsPartnerBadge} alt="AWS Select Tier Services Partner" className="max-w-full max-h-full object-contain" />
+                  </div>
+                  <p className="font-body font-light text-foreground/75 text-sm leading-relaxed">
+                    Holaweb is an <strong className="text-foreground">AWS Select Tier Services Partner.</strong>
+                  </p>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-28 h-28 border-2 border-primary/30 rounded-xl flex items-center justify-center mb-4 p-3">
+                    <img src={awsLogo} alt="AWS Qualified Software" className="max-w-full max-h-full object-contain" />
+                  </div>
+                  <p className="font-body font-light text-foreground/75 text-sm leading-relaxed">
+                    Our SME Impact platform is built according to the <strong className="text-foreground">AWS Well-Architected Framework</strong>, an FTR approved SaaS.
+                  </p>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-28 h-28 border-2 border-primary/30 rounded-xl flex items-center justify-center mb-4 p-3">
+                    <img src={awsPartnerBadge} alt="AWS RDS Delivery Partner" className="max-w-full max-h-full object-contain" />
+                  </div>
+                  <p className="font-body font-light text-foreground/75 text-sm leading-relaxed">
+                    Holaweb is an <strong className="text-foreground">AWS RDS Delivery Partner.</strong>
+                  </p>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-28 h-28 border-2 border-primary/30 rounded-xl flex items-center justify-center mb-4 p-3">
+                    <Cloud className="h-12 w-12 text-primary/50" />
+                  </div>
+                  <p className="font-body font-light text-foreground/75 text-sm leading-relaxed">
+                    <strong className="text-foreground">Solutions Architects, DevOps, and Agile expertise.</strong>
+                  </p>
+                </div>
+              </div>
+            </ScrollSection>
           </div>
         </section>
 
