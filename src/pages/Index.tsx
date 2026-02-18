@@ -115,7 +115,7 @@ const Index = () => {
 
                 {/* Image placeholder with Intense Cherry shadow */}
                 <div className="relative w-full max-w-md lg:max-w-lg">
-                  <div className="aspect-[4/5] bg-secondary/40 flex items-center justify-center overflow-hidden shadow-[8px_8px_0px_0px_hsl(352,66%,47%)]">
+                  <div className="aspect-[4/5] bg-secondary/40 flex items-center justify-center overflow-hidden shadow-[-23px_23px_0px_0px_hsl(352,66%,47%)]">
                     <div className="text-center text-muted-foreground">
                       <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-muted flex items-center justify-center">
                         <Smartphone className="h-8 w-8 text-muted-foreground/60" />
@@ -146,7 +146,7 @@ const Index = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 {/* Left — Single image placeholder */}
                 <div className="relative">
-                  <div className="aspect-[4/3] bg-secondary/40 border border-border flex items-center justify-center shadow-[8px_8px_0px_0px_hsl(352,66%,47%)]">
+                  <div className="aspect-[4/3] bg-secondary/40 border border-border flex items-center justify-center shadow-[-23px_23px_0px_0px_hsl(352,66%,47%)]">
                     <div className="text-center text-muted-foreground">
                       <Monitor className="h-16 w-16 mx-auto mb-3 text-primary/30" />
                       <p className="font-subheading text-sm">Image Placeholder</p>
@@ -217,7 +217,7 @@ const Index = () => {
 
                 {/* Right — Image placeholder */}
                 <div className="relative flex justify-center">
-                  <div className="aspect-[4/3] w-full bg-secondary/40 border border-border flex items-center justify-center shadow-[8px_8px_0px_0px_hsl(352,66%,47%)]">
+                  <div className="aspect-[4/3] w-full bg-secondary/40 border border-border flex items-center justify-center shadow-[-23px_23px_0px_0px_hsl(352,66%,47%)]">
                     <div className="text-center text-muted-foreground">
                       <Cloud className="h-16 w-16 mx-auto mb-3 text-primary/30" />
                       <p className="font-subheading text-sm">Image Placeholder</p>
@@ -237,7 +237,7 @@ const Index = () => {
                 {/* Left — Platform image placeholder with label */}
                 <div className="relative">
                   <p className="font-subheading text-sm font-semibold text-primary mb-3 uppercase tracking-wider">Our Platform</p>
-                  <div className="aspect-[4/3] bg-secondary/40 border border-border overflow-hidden shadow-[8px_8px_0px_0px_hsl(352,66%,47%)]">
+                  <div className="aspect-[4/3] bg-secondary/40 border border-border overflow-hidden shadow-[-23px_23px_0px_0px_hsl(352,66%,47%)]">
                     <div className="w-full h-full flex items-center justify-center">
                       <div className="text-center text-muted-foreground">
                         <Monitor className="h-16 w-16 mx-auto mb-3 text-primary/30" />
@@ -313,7 +313,7 @@ const Index = () => {
 
                 {/* Right — AWS Logo */}
                 <div className="relative flex justify-center">
-                  <div className="w-72 h-72 md:w-96 md:h-80 bg-secondary/40 border border-border flex items-center justify-center shadow-[8px_8px_0px_0px_hsl(352,66%,47%)]">
+                  <div className="w-72 h-72 md:w-96 md:h-80 bg-secondary/40 border border-border flex items-center justify-center shadow-[-23px_23px_0px_0px_hsl(352,66%,47%)]">
                     <img src={awsLogo} alt="AWS" className="max-w-[60%] max-h-[60%] object-contain" />
                   </div>
                 </div>
@@ -329,7 +329,7 @@ const Index = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 {/* Left — Image */}
                 <div className="relative">
-                  <div className="aspect-[4/3] bg-secondary/50 border border-border overflow-hidden shadow-[8px_8px_0px_0px_hsl(352,66%,47%)]">
+                  <div className="aspect-[4/3] bg-secondary/50 border border-border overflow-hidden shadow-[-23px_23px_0px_0px_hsl(352,66%,47%)]">
                     <img
                       src={aboutImage}
                       alt="Holaweb team"
