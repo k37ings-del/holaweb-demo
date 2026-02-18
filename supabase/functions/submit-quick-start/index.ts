@@ -8,7 +8,7 @@ const corsHeaders = {
 };
 
 const SPREADSHEET_ID = "1HpeHhsMDkJxKcALH4RnXxhb1RRxYlyMiHu5EOYmRTsk";
-const SHEET_NAME = "Sheet1";
+const SHEET_NAME = "Form Responses 1";
 
 async function getAccessToken(serviceAccountKey: any): Promise<string> {
   const toBase64Url = (str: string) =>
@@ -116,7 +116,8 @@ serve(async (req) => {
       body.anythingElse || "",
     ];
 
-    const appendUrl = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/Sheet1!A1:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`;
+    const range = encodeURIComponent(`${SHEET_NAME}!A1`);
+    const appendUrl = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${range}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`;
 
     const sheetsRes = await fetch(appendUrl, {
       method: "POST",
