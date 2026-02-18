@@ -106,15 +106,15 @@ const Index = () => {
 
               {/* Right — Image placeholder with badges overlapping corners */}
               <div className="relative flex justify-center lg:justify-end">
-                {/* AWS Partner badge — overlapping top-right corner */}
-                <div className="absolute -top-6 -right-6 lg:-right-4 z-20">
-                  <div className="bg-white rounded-2xl p-3 shadow-xl w-32 h-32 flex items-center justify-center">
-                    <img src={awsPartnerBadge} alt="AWS Partner" className="max-w-full max-h-full object-contain" />
+                {/* Image placeholder with Intense Cherry shadow — 25% smaller */}
+                <div className="relative w-full max-w-xs lg:max-w-sm">
+                  {/* AWS Partner badge — overlapping top-right corner */}
+                  <div className="absolute -top-5 -right-5 z-20">
+                    <div className="bg-white rounded-2xl p-3 shadow-xl w-28 h-28 flex items-center justify-center">
+                      <img src={awsPartnerBadge} alt="AWS Partner" className="max-w-full max-h-full object-contain" />
+                    </div>
                   </div>
-                </div>
 
-                {/* Image placeholder with Intense Cherry shadow */}
-                <div className="relative w-full max-w-md lg:max-w-lg">
                   <div className="aspect-[4/5] bg-secondary/40 flex items-center justify-center overflow-hidden shadow-[-23px_23px_0px_0px_hsl(352,66%,47%)]">
                     <div className="text-center text-muted-foreground">
                       <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-muted flex items-center justify-center">
@@ -123,12 +123,12 @@ const Index = () => {
                       <p className="font-subheading text-sm">Image Placeholder</p>
                     </div>
                   </div>
-                </div>
 
-                {/* Zoho Affiliate badge — overlapping bottom-left corner */}
-                <div className="absolute -bottom-6 -left-6 lg:-left-4 z-20">
-                  <div className="bg-white rounded-2xl p-2 shadow-xl w-36 h-36 flex items-center justify-center">
-                    <img src={zohoAffiliateBadge} alt="Zoho Affiliate" className="max-w-full max-h-full object-contain rounded-xl" />
+                  {/* Zoho Affiliate badge — overlapping bottom-left corner */}
+                  <div className="absolute -bottom-5 -left-5 z-20">
+                    <div className="bg-white rounded-2xl p-2 shadow-xl w-32 h-32 flex items-center justify-center">
+                      <img src={zohoAffiliateBadge} alt="Zoho Affiliate" className="max-w-full max-h-full object-contain rounded-xl" />
+                    </div>
                   </div>
                 </div>
               </div>
