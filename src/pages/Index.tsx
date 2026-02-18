@@ -20,6 +20,7 @@ import awsSelectTier from "@/assets/aws-select-tier.png";
 import awsQualifiedSoftware from "@/assets/aws-qualified-software.png";
 import awsRdsDelivery from "@/assets/aws-rds-delivery.png";
 import awsCloudSolutions from "@/assets/aws-cloud-solutions.png";
+import cloudSolutions from "@/assets/cloud-solutions.png";
 import connectingBusiness from "@/assets/connecting-business.png";
 import smeDigitalise from "@/assets/sme-digitalise.png";
 import smeCloud from "@/assets/sme-cloud.png";
@@ -299,10 +300,10 @@ const Index = () => {
                   </Link>
                 </div>
 
-                {/* Right — AWS Logo */}
+                {/* Right — Cloud Solutions Image */}
                 <div className="relative flex justify-center">
-                  <div className="w-72 h-72 md:w-96 md:h-80 bg-secondary/40 border border-border flex items-center justify-center shadow-[-23px_23px_0px_0px_hsl(352,66%,47%)]">
-                    <img src={awsLogo} alt="AWS" className="max-w-[60%] max-h-[60%] object-contain" />
+                  <div className="w-72 h-72 md:w-96 md:h-80 bg-secondary/40 border border-border overflow-hidden shadow-[-23px_23px_0px_0px_hsl(352,66%,47%)]">
+                    <img src={cloudSolutions} alt="AWS Cloud Solutions" className="w-full h-full object-cover" />
                   </div>
                 </div>
               </div>
