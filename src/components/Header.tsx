@@ -142,9 +142,12 @@ const Header = () => {
           <nav className="hidden lg:flex items-center gap-6">
             {navItems.map((item) =>
               item.hasDropdown ? (
-                <div key={item.href} className="relative" ref={dropdownRef}>
-                  <button
-                    onClick={() => setServicesOpen(!servicesOpen)}
+                <div key={item.href} className="relative" ref={dropdownRef}
+                  onMouseEnter={() => setServicesOpen(true)}
+                  onMouseLeave={() => setServicesOpen(false)}
+                >
+                  <Link
+                    to={item.href}
                     className={`flex items-center gap-1 font-subheading text-sm font-medium tracking-wide uppercase transition-colors duration-300 ${
                       isServicesActive
                         ? "text-golden"
@@ -157,7 +160,7 @@ const Header = () => {
                         servicesOpen ? "rotate-180" : ""
                       }`}
                     />
-                  </button>
+                  </Link>
 
                   {servicesOpen && (
                     <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-56 bg-card border border-border shadow-xl z-50">
