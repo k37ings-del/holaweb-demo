@@ -76,7 +76,14 @@ serve(async (req) => {
 
   try {
     const body = await req.json();
-    const serviceAccountKey = JSON.parse(Deno.env.get("GOOGLE_SERVICE_ACCOUNT_KEY") || "{}");
+    const rawKey = Deno.env.get("GOOGLE_SERVICE_ACCOUNT_KEY") || "{}";
+    console.log("Key starts with:", rawKey.substring(0, 20));
+    let serviceAccountKey;
+    try {
+      serviceAccountKey = JSON.parse(rawKey);
+    } catch (e) {
+      throw new Error(`Failed to parse GOOGLE_SERVICE_ACCOUNT_KEY as JSON. Make sure you paste the ENTIRE JSON file content (starts with {"type": "service_account"...}). Got: ${rawKey.substring(0, 30)}...`);
+    }
 
     if (!serviceAccountKey.client_email) {
       throw new Error("Google service account key not configured");
