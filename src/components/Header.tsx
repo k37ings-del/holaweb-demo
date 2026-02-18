@@ -19,11 +19,7 @@ const navItems = [
   },
   { label: "About", href: "/about" },
   { label: "Services", href: "/services", hasDropdown: true },
-  {
-    label: "Quick Start",
-    href: "https://docs.google.com/forms/d/e/1FAIpQLScjWbZKNcccQRYIBX6oQo-n6vVlJ8UduH3iknn5YQj8xcnDzA/viewform?usp=sharing&ouid=106739550657489478981",
-    external: true,
-  },
+  { label: "Quick Start", href: "/quick_start" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -107,10 +103,10 @@ const Header = () => {
               <Phone className="h-3 w-3" />
               <span className="font-body">Tel: +27 71 513 8219</span>
             </a>
-            <a href="mailto:siya@holaweb.co.za" className="hidden sm:flex items-center gap-1.5 hover:text-primary transition-colors">
+            <Link to="/contact" className="hidden sm:flex items-center gap-1.5 hover:text-primary transition-colors">
               <Mail className="h-3 w-3" />
               <span className="font-body">Email: siya@holaweb.co.za</span>
-            </a>
+            </Link>
           </div>
           <div className="flex items-center gap-3">
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" aria-label="Facebook">

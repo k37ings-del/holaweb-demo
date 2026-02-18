@@ -257,14 +257,12 @@ const Index = () => {
                       LEARN MORE
                       <ChevronRight className="ml-2 h-4 w-4" />
                     </Link>
-                    <a
-                      href="https://docs.google.com/forms/d/e/1FAIpQLScjWbZKNcccQRYIBX6oQo-n6vVlJ8UduH3iknn5YQj8xcnDzA/viewform?usp=sharing&ouid=106739550657489478981"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <Link
+                      to="/quick_start"
                       className="inline-flex items-center justify-center rounded-lg border border-primary px-8 py-4 font-subheading text-sm font-semibold text-primary transition-colors duration-300 hover:bg-primary/10"
                     >
                       Get Started Now
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
