@@ -20,6 +20,9 @@ import awsSelectTier from "@/assets/aws-select-tier.png";
 import awsQualifiedSoftware from "@/assets/aws-qualified-software.png";
 import awsRdsDelivery from "@/assets/aws-rds-delivery.png";
 import awsCloudSolutions from "@/assets/aws-cloud-solutions.png";
+import connectingBusiness from "@/assets/connecting-business.png";
+import smeDigitalise from "@/assets/sme-digitalise.png";
+import smeCloud from "@/assets/sme-cloud.png";
 
 const WhatsAppIcon = ({ className = "h-5 w-5" }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
@@ -115,13 +118,8 @@ const Index = () => {
                     </div>
                   </div>
 
-                  <div className="aspect-[4/5] bg-secondary/40 flex items-center justify-center overflow-hidden shadow-[-23px_23px_0px_0px_hsl(352,66%,47%)]">
-                    <div className="text-center text-muted-foreground">
-                      <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-muted flex items-center justify-center">
-                        <Smartphone className="h-8 w-8 text-muted-foreground/60" />
-                      </div>
-                      <p className="font-subheading text-sm">Image Placeholder</p>
-                    </div>
+                  <div className="aspect-[4/5] bg-secondary/40 overflow-hidden shadow-[-23px_23px_0px_0px_hsl(352,66%,47%)]">
+                    <img src={connectingBusiness} alt="Connecting business" className="w-full h-full object-cover" />
                   </div>
 
                   {/* Zoho Affiliate badge — overlapping bottom-left corner */}
@@ -146,11 +144,8 @@ const Index = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 {/* Left — Single image placeholder */}
                 <div className="relative">
-                  <div className="aspect-[4/3] bg-secondary/40 border border-border flex items-center justify-center shadow-[-23px_23px_0px_0px_hsl(352,66%,47%)]">
-                    <div className="text-center text-muted-foreground">
-                      <Monitor className="h-16 w-16 mx-auto mb-3 text-primary/30" />
-                      <p className="font-subheading text-sm">Image Placeholder</p>
-                    </div>
+                  <div className="aspect-[4/3] bg-secondary/40 border border-border overflow-hidden shadow-[-23px_23px_0px_0px_hsl(352,66%,47%)]">
+                    <img src={smeDigitalise} alt="Digitalise and scale SME development programmes" className="w-full h-full object-cover" />
                   </div>
                 </div>
 
@@ -217,11 +212,8 @@ const Index = () => {
 
                 {/* Right — Image placeholder */}
                 <div className="relative flex justify-center">
-                  <div className="aspect-[4/3] w-full bg-secondary/40 border border-border flex items-center justify-center shadow-[-23px_23px_0px_0px_hsl(352,66%,47%)]">
-                    <div className="text-center text-muted-foreground">
-                      <Cloud className="h-16 w-16 mx-auto mb-3 text-primary/30" />
-                      <p className="font-subheading text-sm">Image Placeholder</p>
-                    </div>
+                  <div className="aspect-[4/3] w-full bg-secondary/40 border border-border overflow-hidden shadow-[-23px_23px_0px_0px_hsl(352,66%,47%)]">
+                    <img src={smeCloud} alt="Capacitate SMEs with cloud technologies" className="w-full h-full object-cover" />
                   </div>
                 </div>
               </div>
