@@ -23,6 +23,7 @@ import awsCloudSolutions from "@/assets/aws-cloud-solutions.png";
 import connectingBusiness from "@/assets/connecting-business.png";
 import smeDigitalise from "@/assets/sme-digitalise.png";
 import smeCloud from "@/assets/sme-cloud.png";
+import smePlatform from "@/assets/sme-platform.png";
 
 const WhatsAppIcon = ({ className = "h-5 w-5" }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
@@ -230,12 +231,7 @@ const Index = () => {
                 <div className="relative">
                   <p className="font-subheading text-sm font-semibold text-primary mb-3 uppercase tracking-wider">Our Platform</p>
                   <div className="aspect-[4/3] bg-secondary/40 border border-border overflow-hidden shadow-[-23px_23px_0px_0px_hsl(352,66%,47%)]">
-                    <div className="w-full h-full flex items-center justify-center">
-                      <div className="text-center text-muted-foreground">
-                        <Monitor className="h-16 w-16 mx-auto mb-3 text-primary/30" />
-                        <p className="font-subheading text-sm">Platform Screenshot</p>
-                      </div>
-                    </div>
+                    <img src={smePlatform} alt="Our SME Impact Platform" className="w-full h-full object-cover" />
                   </div>
                 </div>
 
