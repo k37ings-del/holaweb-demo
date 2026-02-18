@@ -11,9 +11,12 @@ const SPREADSHEET_ID = "1HpeHhsMDkJxKcALH4RnXxhb1RRxYlyMiHu5EOYmRTsk";
 const SHEET_NAME = "Sheet1";
 
 async function getAccessToken(serviceAccountKey: any): Promise<string> {
-  const header = btoa(JSON.stringify({ alg: "RS256", typ: "JWT" }));
+  const toBase64Url = (str: string) =>
+    btoa(str).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+
+  const header = toBase64Url(JSON.stringify({ alg: "RS256", typ: "JWT" }));
   const now = Math.floor(Date.now() / 1000);
-  const claimSet = btoa(
+  const claimSet = toBase64Url(
     JSON.stringify({
       iss: serviceAccountKey.client_email,
       scope: "https://www.googleapis.com/auth/spreadsheets",
@@ -27,9 +30,10 @@ async function getAccessToken(serviceAccountKey: any): Promise<string> {
 
   // Import the private key
   const pemContents = serviceAccountKey.private_key
-    .replace(/-----BEGIN PRIVATE KEY-----/, "")
-    .replace(/-----END PRIVATE KEY-----/, "")
-    .replace(/\n/g, "");
+    .replace(/-----BEGIN PRIVATE KEY-----/g, "")
+    .replace(/-----END PRIVATE KEY-----/g, "")
+    .replace(/[\n\r\s]/g, "");
+
   const binaryKey = Uint8Array.from(atob(pemContents), (c) => c.charCodeAt(0));
 
   const cryptoKey = await crypto.subtle.importKey(
@@ -51,10 +55,7 @@ async function getAccessToken(serviceAccountKey: any): Promise<string> {
     .replace(/\//g, "_")
     .replace(/=+$/, "");
 
-  const jwt = `${header.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "")}.${claimSet
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "")}.${signatureB64}`;
+  const jwt = `${header}.${claimSet}.${signatureB64}`;
 
   const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
     method: "POST",
