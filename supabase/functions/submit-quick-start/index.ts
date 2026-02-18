@@ -8,7 +8,7 @@ const corsHeaders = {
 };
 
 const SPREADSHEET_ID = "1HpeHhsMDkJxKcALH4RnXxhb1RRxYlyMiHu5EOYmRTsk";
-const SHEET_NAME = "Form Responses";
+const SHEET_NAME = "Sheet1";
 
 async function getAccessToken(serviceAccountKey: any): Promise<string> {
   const header = btoa(JSON.stringify({ alg: "RS256", typ: "JWT" }));
