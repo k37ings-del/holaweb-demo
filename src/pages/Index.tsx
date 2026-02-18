@@ -124,7 +124,7 @@ const Index = () => {
                   </div>
 
                   {/* Zoho Affiliate badge — overlapping bottom-left corner */}
-                  <div className="absolute -bottom-5 -left-5 z-20">
+                  <div className="absolute -bottom-8 -left-8 z-20">
                     <div className="bg-white rounded-2xl p-2 shadow-xl w-32 h-32 flex items-center justify-center">
                       <img src={zohoAffiliateBadge} alt="Zoho Affiliate" className="max-w-full max-h-full object-contain rounded-xl" />
                     </div>
