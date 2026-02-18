@@ -47,7 +47,7 @@ const Index = () => {
         <Header />
 
         {/* ─── Hero Section ─── */}
-        <section className="relative min-h-screen flex items-center overflow-hidden pt-32 lg:pt-20">
+        <section className="relative min-h-screen flex items-center overflow-visible pt-32 lg:pt-20">
           <img
             src={backgroundTech}
             alt=""
@@ -56,7 +56,7 @@ const Index = () => {
           <div className="absolute inset-0 bg-background/80" />
 
           <div className="relative z-10 container mx-auto px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[80vh] pb-12">
               {/* Left — Text Content */}
               <div>
                 <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-2 animate-fade-in-up leading-tight">
@@ -121,8 +121,8 @@ const Index = () => {
                   </div>
                 </div>
 
-                {/* Zoho Affiliate badge — overlapping top-left corner */}
-                <div className="absolute -top-6 -left-6 lg:-left-4 z-20">
+                {/* Zoho Affiliate badge — overlapping bottom-left corner */}
+                <div className="absolute -bottom-6 -left-6 lg:-left-4 z-20">
                   <div className="bg-white rounded-2xl p-2 shadow-xl w-36 h-36 flex items-center justify-center">
                     <img src={zohoAffiliateBadge} alt="Zoho Affiliate" className="max-w-full max-h-full object-contain rounded-xl" />
                   </div>
