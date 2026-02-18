@@ -109,7 +109,7 @@ const Index = () => {
                 {/* Image placeholder with Intense Cherry shadow — 25% smaller */}
                 <div className="relative w-full max-w-xs lg:max-w-sm">
                   {/* AWS Partner badge — overlapping top-right corner */}
-                  <div className="absolute -top-5 -right-5 z-20">
+                  <div className="absolute top-2 -right-5 z-20">
                     <div className="bg-white rounded-2xl p-3 shadow-xl w-28 h-28 flex items-center justify-center">
                       <img src={awsPartnerBadge} alt="AWS Partner" className="max-w-full max-h-full object-contain" />
                     </div>
