@@ -9,6 +9,7 @@ import About from "./pages/About";
 import Services from "./pages/Services";
 import ServiceDetail from "./pages/ServiceDetail";
 import Contact from "./pages/Contact";
+import QuickStart from "./pages/QuickStart";
 import NotFound from "./pages/NotFound";
 
 const ScrollToTop = () => {
@@ -34,6 +35,7 @@ const App = () => (
           <Route path="/services" element={<Services />} />
           <Route path="/services/:slug" element={<ServiceDetail />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/quick_start" element={<QuickStart />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
