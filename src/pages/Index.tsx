@@ -16,6 +16,10 @@ import awsPartnerBadge from "@/assets/aws-partner-badge.png";
 import zohoAffiliateBadge from "@/assets/zoho-affiliate-badge.png";
 import backgroundTech from "@/assets/background-technology.png";
 import awsLogo from "@/assets/logos/aws.png";
+import awsSelectTier from "@/assets/aws-select-tier.png";
+import awsQualifiedSoftware from "@/assets/aws-qualified-software.png";
+import awsRdsDelivery from "@/assets/aws-rds-delivery.png";
+import awsCloudSolutions from "@/assets/aws-cloud-solutions.png";
 
 const WhatsAppIcon = ({ className = "h-5 w-5" }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
@@ -429,7 +433,7 @@ const Index = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 text-center">
                 <div className="flex flex-col items-center">
                   <div className="w-28 h-28 border-2 border-primary/30 rounded-xl flex items-center justify-center mb-4 p-3">
-                    <img src={awsPartnerBadge} alt="AWS Select Tier Services Partner" className="max-w-full max-h-full object-contain" />
+                    <img src={awsSelectTier} alt="AWS Select Tier Services Partner" className="max-w-full max-h-full object-contain" />
                   </div>
                   <p className="font-body font-light text-foreground/75 text-sm leading-relaxed">
                     Holaweb is an <strong className="text-foreground">AWS Select Tier Services Partner.</strong>
@@ -437,7 +441,7 @@ const Index = () => {
                 </div>
                 <div className="flex flex-col items-center">
                   <div className="w-28 h-28 border-2 border-primary/30 rounded-xl flex items-center justify-center mb-4 p-3">
-                    <img src={awsLogo} alt="AWS Qualified Software" className="max-w-full max-h-full object-contain" />
+                    <img src={awsQualifiedSoftware} alt="AWS Qualified Software" className="max-w-full max-h-full object-contain" />
                   </div>
                   <p className="font-body font-light text-foreground/75 text-sm leading-relaxed">
                     Our SME Impact platform is built according to the <strong className="text-foreground">AWS Well-Architected Framework</strong>, an FTR approved SaaS.
@@ -445,7 +449,7 @@ const Index = () => {
                 </div>
                 <div className="flex flex-col items-center">
                   <div className="w-28 h-28 border-2 border-primary/30 rounded-xl flex items-center justify-center mb-4 p-3">
-                    <img src={awsPartnerBadge} alt="AWS RDS Delivery Partner" className="max-w-full max-h-full object-contain" />
+                    <img src={awsRdsDelivery} alt="AWS RDS Delivery Partner" className="max-w-full max-h-full object-contain" />
                   </div>
                   <p className="font-body font-light text-foreground/75 text-sm leading-relaxed">
                     Holaweb is an <strong className="text-foreground">AWS RDS Delivery Partner.</strong>
@@ -453,7 +457,7 @@ const Index = () => {
                 </div>
                 <div className="flex flex-col items-center">
                   <div className="w-28 h-28 border-2 border-primary/30 rounded-xl flex items-center justify-center mb-4 p-3">
-                    <Cloud className="h-12 w-12 text-primary/50" />
+                    <img src={awsCloudSolutions} alt="AWS Cloud Solutions" className="max-w-full max-h-full object-contain" />
                   </div>
                   <p className="font-body font-light text-foreground/75 text-sm leading-relaxed">
                     <strong className="text-foreground">Solutions Architects, DevOps, and Agile expertise.</strong>
