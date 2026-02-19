@@ -156,8 +156,8 @@ const ChatAssistant = () => {
                   className="w-full h-full object-cover object-top"
                 />
               </div>
-              <span className="font-subheading text-sm font-semibold text-foreground whitespace-nowrap">
-                Chat with <span className="text-primary">Ola!</span>
+              <span className="font-subheading text-sm font-semibold whitespace-nowrap">
+                <span className="text-black">Hola, Chat with</span> <span className="text-primary">Ola!</span>
               </span>
             </motion.button>
           </motion.div>
