@@ -11,6 +11,7 @@ import ServiceDetail from "./pages/ServiceDetail";
 import Contact from "./pages/Contact";
 import QuickStart from "./pages/QuickStart";
 import NotFound from "./pages/NotFound";
+import ChatAssistant from "./components/ChatAssistant";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -38,6 +39,7 @@ const App = () => (
           <Route path="/quick_start" element={<QuickStart />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <ChatAssistant />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
