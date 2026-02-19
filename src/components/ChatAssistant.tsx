@@ -175,7 +175,7 @@ const ChatAssistant = () => {
             {/* Mascot button */}
             <motion.button
               onClick={handleOpen}
-              className="w-20 h-20 rounded-full bg-card border-2 border-primary/30 shadow-xl overflow-hidden hover:border-primary/60 transition-colors relative"
+              className="w-20 h-20 rounded-full bg-white border-2 border-primary/30 shadow-xl overflow-hidden hover:border-primary/60 transition-colors relative"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               animate={{ y: [0, -6, 0] }}
@@ -185,7 +185,6 @@ const ChatAssistant = () => {
                 src={mascotImg}
                 alt="Hola - Holaweb Assistant"
                 className="w-full h-full object-cover object-top"
-                style={{ mixBlendMode: "multiply" }}
               />
             </motion.button>
           </motion.div>
@@ -204,8 +203,8 @@ const ChatAssistant = () => {
           >
             {/* Header */}
             <div className="flex items-center gap-3 px-4 py-3 border-b border-border bg-muted/30">
-              <div className="w-10 h-10 rounded-full overflow-hidden border border-primary/20 flex-shrink-0">
-                <img src={mascotImg} alt="Hola" className="w-full h-full object-cover object-top" style={{ mixBlendMode: "multiply" }} />
+              <div className="w-10 h-10 rounded-full overflow-hidden border border-primary/20 flex-shrink-0 bg-white">
+                <img src={mascotImg} alt="Hola" className="w-full h-full object-cover object-top" />
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="font-subheading text-sm font-semibold text-foreground">Hola</h3>
@@ -220,8 +219,8 @@ const ChatAssistant = () => {
             <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
               {messages.length === 0 && (
                 <div className="text-center py-8">
-                  <div className="w-16 h-16 rounded-full overflow-hidden mx-auto mb-3 border border-primary/20">
-                    <img src={mascotImg} alt="Hola" className="w-full h-full object-cover object-top" style={{ mixBlendMode: "multiply" }} />
+                  <div className="w-16 h-16 rounded-full overflow-hidden mx-auto mb-3 border border-primary/20 bg-white">
+                    <img src={mascotImg} alt="Hola" className="w-full h-full object-cover object-top" />
                   </div>
                   <p className="font-body text-sm text-muted-foreground mb-4">
                     Hey there! 👋 I'm <span className="text-primary font-semibold">Hola</span>, your guide to everything Holaweb. Ask me anything!
