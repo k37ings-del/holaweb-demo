@@ -83,18 +83,9 @@ const ChatAssistant = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [showBubble, setShowBubble] = useState(true);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  useEffect(() => {
-    if (isOpen) inputRef.current?.focus();
-  }, [isOpen]);
 
   const send = useCallback(async (text: string) => {
     if (!text.trim() || isLoading) return;
@@ -135,10 +126,7 @@ const ChatAssistant = () => {
     }
   };
 
-  const handleOpen = () => {
-    setIsOpen(true);
-    setShowBubble(false);
-  };
+
 
   return (
     <>
@@ -152,40 +140,25 @@ const ChatAssistant = () => {
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: "spring", stiffness: 260, damping: 20 }}
           >
-            {/* Speech bubble */}
-            {showBubble && (
-              <motion.div
-                className="mb-2 mr-2 bg-card border border-primary/20 rounded-2xl rounded-br-sm px-4 py-3 shadow-lg max-w-[220px]"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-              >
-                <p className="text-sm font-body text-foreground leading-snug">
-                  What would you like to know about <span className="text-primary font-semibold">Holaweb</span>?
-                </p>
-                <button
-                  onClick={() => setShowBubble(false)}
-                  className="absolute -top-2 -right-2 w-5 h-5 bg-muted rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <X className="w-3 h-3" />
-                </button>
-              </motion.div>
-            )}
-
-            {/* Mascot button */}
+            {/* Mascot button with label */}
             <motion.button
-              onClick={handleOpen}
-              className="w-20 h-20 rounded-full bg-white border-2 border-primary/30 shadow-xl overflow-hidden hover:border-primary/60 transition-colors relative"
-              whileHover={{ scale: 1.1 }}
+              onClick={() => setIsOpen(true)}
+              className="flex items-center gap-3 rounded-full bg-white border-2 border-primary/30 shadow-xl pr-5 pl-1 py-1 hover:border-primary/60 transition-colors"
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               animate={{ y: [0, -6, 0] }}
               transition={{ y: { repeat: Infinity, duration: 3, ease: "easeInOut" } }}
             >
-              <img
-                src={mascotImg}
-                alt="Hola - Holaweb Assistant"
-                className="w-full h-full object-cover object-top"
-              />
+              <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0">
+                <img
+                  src={mascotImg}
+                  alt="Ola - Holaweb Assistant"
+                  className="w-full h-full object-cover object-top"
+                />
+              </div>
+              <span className="font-subheading text-sm font-semibold text-foreground whitespace-nowrap">
+                Chat with <span className="text-primary">Ola!</span>
+              </span>
             </motion.button>
           </motion.div>
         )}
@@ -204,10 +177,10 @@ const ChatAssistant = () => {
             {/* Header */}
             <div className="flex items-center gap-3 px-4 py-3 border-b border-border bg-muted/30">
               <div className="w-10 h-10 rounded-full overflow-hidden border border-primary/20 flex-shrink-0 bg-white">
-                <img src={mascotImg} alt="Hola" className="w-full h-full object-cover object-top" />
+                <img src={mascotImg} alt="Ola" className="w-full h-full object-cover object-top" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-subheading text-sm font-semibold text-foreground">Hola</h3>
+                <h3 className="font-subheading text-sm font-semibold text-foreground">Ola</h3>
                 <p className="text-xs text-muted-foreground">Holaweb Assistant</p>
               </div>
               <button onClick={() => setIsOpen(false)} className="w-8 h-8 rounded-full hover:bg-muted flex items-center justify-center transition-colors">
@@ -220,10 +193,10 @@ const ChatAssistant = () => {
               {messages.length === 0 && (
                 <div className="text-center py-8">
                   <div className="w-16 h-16 rounded-full overflow-hidden mx-auto mb-3 border border-primary/20 bg-white">
-                    <img src={mascotImg} alt="Hola" className="w-full h-full object-cover object-top" />
+                    <img src={mascotImg} alt="Ola" className="w-full h-full object-cover object-top" />
                   </div>
                   <p className="font-body text-sm text-muted-foreground mb-4">
-                    Hey there! 👋 I'm <span className="text-primary font-semibold">Hola</span>, your guide to everything Holaweb. Ask me anything!
+                    Hey there! 👋 I'm <span className="text-primary font-semibold">Ola</span>, your guide to everything Holaweb. Ask me anything!
                   </p>
                   <div className="flex flex-wrap gap-2 justify-center">
                     {["What does Holaweb do?", "Show me your services", "How can I get started?"].map(q => (
