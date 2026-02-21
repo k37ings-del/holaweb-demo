@@ -113,13 +113,14 @@ const QuickStart = () => {
   const update = (field: keyof FormData, value: string) =>
     setFormData((prev) => ({ ...prev, [field]: value }));
 
-  const toggleCheckbox = (field: "primaryGoals" | "pagesNeeded" | "imageryPreferences", value: string) => {
+  const toggleCheckbox = (field: "primaryGoals" | "pagesNeeded" | "imageryPreferences", value: string, max?: number) => {
     setFormData((prev) => {
       const arr = prev[field] as string[];
-      return {
-        ...prev,
-        [field]: arr.includes(value) ? arr.filter((v) => v !== value) : [...arr, value],
-      };
+      if (arr.includes(value)) {
+        return { ...prev, [field]: arr.filter((v) => v !== value) };
+      }
+      if (max && arr.length >= max) return prev;
+      return { ...prev, [field]: [...arr, value] };
     });
   };
 
@@ -193,14 +194,16 @@ const QuickStart = () => {
     options,
     field,
     otherField,
+    max,
   }: {
     options: string[];
     field: "primaryGoals" | "pagesNeeded" | "imageryPreferences";
     otherField?: keyof FormData;
+    max?: number;
   }) => (
     <div className="space-y-2">
       {options.map((opt) => (
-        <label key={opt} className="flex items-center gap-3 cursor-pointer group">
+        <label key={opt} className="flex items-center gap-3 cursor-pointer group" onClick={() => toggleCheckbox(field, opt, max)}>
           <div
             className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
               (formData[field] as string[]).includes(opt)
@@ -332,7 +335,7 @@ const QuickStart = () => {
               </div>
               <div>
                 <label className={labelClass}>What is the PRIMARY goal of this website? (Choose 2 most important outcomes){requiredStar}</label>
-                <CheckboxGroup options={goalOptions} field="primaryGoals" otherField="primaryGoalOther" />
+                <CheckboxGroup options={goalOptions} field="primaryGoals" otherField="primaryGoalOther" max={2} />
               </div>
               <div>
                 <label className={labelClass}>What is the main action you want users to take? (e.g. Book a call, Buy now, Contact us, Subscribe, Download){requiredStar}</label>
