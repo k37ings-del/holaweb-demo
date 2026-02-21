@@ -128,7 +128,7 @@ const ChatAssistant = () => {
       upsert(e.message || "Sorry, something went wrong. Please try again!");
       setIsLoading(false);
     }
-  }, [messages, isLoading]);
+  }, [messages, isLoading, language]);
 
   const handleAction = (action: ActionButton) => {
     if (action.type === "navigate") {
