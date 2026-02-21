@@ -199,10 +199,11 @@ const ChatAssistant = () => {
               <div className="relative">
                 <button
                   onClick={() => setShowLangMenu(!showLangMenu)}
-                  className="w-8 h-8 rounded-full hover:bg-muted flex items-center justify-center transition-colors"
+                  className="flex items-center gap-1 h-8 px-2 rounded-full hover:bg-muted transition-colors"
                   title="Change language"
                 >
-                  <Globe className="w-4 h-4 text-muted-foreground" />
+                  <Globe className="w-4 h-4 text-primary" />
+                  <span className="text-xs font-semibold text-primary uppercase">{language}</span>
                 </button>
                 {showLangMenu && (
                   <div className="absolute right-0 top-10 bg-card border border-border rounded-lg shadow-lg py-1 z-50 min-w-[130px]">
@@ -210,9 +211,10 @@ const ChatAssistant = () => {
                       <button
                         key={l.code}
                         onClick={() => { setLanguage(l.code); setShowLangMenu(false); }}
-                        className={`w-full text-left px-3 py-1.5 text-sm font-body hover:bg-muted transition-colors ${language === l.code ? "text-primary font-semibold" : "text-foreground"}`}
+                        className={`w-full text-left px-3 py-1.5 text-sm font-body hover:bg-muted transition-colors flex items-center justify-between ${language === l.code ? "text-primary font-semibold bg-primary/10" : "text-foreground"}`}
                       >
                         {l.label}
+                        {language === l.code && <span className="w-2 h-2 rounded-full bg-primary" />}
                       </button>
                     ))}
                   </div>
