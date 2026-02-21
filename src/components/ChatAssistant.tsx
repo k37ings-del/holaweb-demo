@@ -1,11 +1,19 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Send, ExternalLink } from "lucide-react";
+import { X, Send, ExternalLink, Globe } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import mascotImg from "@/assets/holaweb-mascot.png";
 
 type Message = { role: "user" | "assistant"; content: string };
+
+const LANGUAGES = [
+  { code: "en", label: "English" },
+  { code: "xh", label: "isiXhosa" },
+  { code: "zu", label: "isiZulu" },
+  { code: "af", label: "Afrikaans" },
+  { code: "nl", label: "Dutch" },
+] as const;
 
 interface ActionButton {
   type: "navigate" | "link";
@@ -29,10 +37,12 @@ const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/holaweb-chat
 
 async function streamChat({
   messages,
+  language,
   onDelta,
   onDone,
 }: {
   messages: Message[];
+  language: string;
   onDelta: (t: string) => void;
   onDone: () => void;
 }) {
@@ -42,7 +52,7 @@ async function streamChat({
       "Content-Type": "application/json",
       Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
     },
-    body: JSON.stringify({ messages }),
+    body: JSON.stringify({ messages, language }),
   });
 
   if (!resp.ok) {
@@ -83,6 +93,8 @@ const ChatAssistant = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [language, setLanguage] = useState("en");
+  const [showLangMenu, setShowLangMenu] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
@@ -108,6 +120,7 @@ const ChatAssistant = () => {
     try {
       await streamChat({
         messages: [...messages, userMsg],
+        language,
         onDelta: upsert,
         onDone: () => setIsLoading(false),
       });
@@ -182,6 +195,28 @@ const ChatAssistant = () => {
               <div className="flex-1 min-w-0">
                 <h3 className="font-subheading text-sm font-semibold text-foreground">Ola</h3>
                 <p className="text-xs text-muted-foreground">Holaweb Assistant</p>
+              </div>
+              <div className="relative">
+                <button
+                  onClick={() => setShowLangMenu(!showLangMenu)}
+                  className="w-8 h-8 rounded-full hover:bg-muted flex items-center justify-center transition-colors"
+                  title="Change language"
+                >
+                  <Globe className="w-4 h-4 text-muted-foreground" />
+                </button>
+                {showLangMenu && (
+                  <div className="absolute right-0 top-10 bg-card border border-border rounded-lg shadow-lg py-1 z-50 min-w-[130px]">
+                    {LANGUAGES.map((l) => (
+                      <button
+                        key={l.code}
+                        onClick={() => { setLanguage(l.code); setShowLangMenu(false); }}
+                        className={`w-full text-left px-3 py-1.5 text-sm font-body hover:bg-muted transition-colors ${language === l.code ? "text-primary font-semibold" : "text-foreground"}`}
+                      >
+                        {l.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
               <button onClick={() => setIsOpen(false)} className="w-8 h-8 rounded-full hover:bg-muted flex items-center justify-center transition-colors">
                 <X className="w-4 h-4 text-muted-foreground" />

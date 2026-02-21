@@ -72,9 +72,18 @@ serve(async (req) => {
   }
 
   try {
-    const { messages } = await req.json();
+    const { messages, language } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
+
+    const LANGUAGE_MAP: Record<string, string> = {
+      en: "",
+      xh: "\n\nIMPORTANT: You MUST respond entirely in isiXhosa (Xhosa). Translate your entire response into isiXhosa. Keep action tags [ACTION:...] in English.",
+      zu: "\n\nIMPORTANT: You MUST respond entirely in isiZulu (Zulu). Translate your entire response into isiZulu. Keep action tags [ACTION:...] in English.",
+      af: "\n\nIMPORTANT: You MUST respond entirely in Afrikaans. Translate your entire response into Afrikaans. Keep action tags [ACTION:...] in English.",
+      nl: "\n\nIMPORTANT: You MUST respond entirely in Dutch (Nederlands). Translate your entire response into Dutch. Keep action tags [ACTION:...] in English.",
+    };
+    const langSuffix = LANGUAGE_MAP[language] || "";
 
     const response = await fetch(
       "https://ai.gateway.lovable.dev/v1/chat/completions",
@@ -87,7 +96,7 @@ serve(async (req) => {
         body: JSON.stringify({
           model: "google/gemini-3-flash-preview",
           messages: [
-            { role: "system", content: HOLAWEB_CONTEXT },
+            { role: "system", content: HOLAWEB_CONTEXT + langSuffix },
             ...messages,
           ],
           stream: true,
