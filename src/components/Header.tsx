@@ -163,7 +163,8 @@ const Header = () => {
                   </Link>
 
                   {servicesOpen && (
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-56 bg-card border border-border shadow-xl z-50">
+                <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-56 z-50">
+                <div className="bg-card border border-border shadow-xl">
                       <div className="py-2">
                         <Link
                           to="/services"
@@ -183,9 +184,10 @@ const Header = () => {
                             }`}
                           >
                             {sub.label}
-                          </Link>
-                        ))}
+                      </Link>
+                    ))}
                       </div>
+                    </div>
                     </div>
                   )}
                 </div>

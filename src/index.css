@@ -97,7 +97,7 @@
 
 /* Cherry button hover */
 .btn-cherry {
-  @apply bg-primary text-primary-foreground transition-all duration-300;
+  @apply bg-primary text-primary-foreground transition-all duration-500 ease-in-out;
 }
 .btn-cherry:hover {
   background-color: hsl(352 60% 62%);

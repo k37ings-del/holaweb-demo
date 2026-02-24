@@ -12,14 +12,10 @@ import Footer from "@/components/Footer";
 import FloatingBubbles from "@/components/FloatingBubbles";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import aboutImage from "@/assets/about-image.jpg";
-import awsPartnerBadge from "@/assets/aws-partner-badge.png";
+import awsPartnerLogo from "@/assets/aws-partner-logo.png";
 import zohoAffiliateBadge from "@/assets/zoho-affiliate-badge.png";
 import backgroundTech from "@/assets/background-technology.png";
 import awsLogo from "@/assets/logos/aws.png";
-import awsSelectTier from "@/assets/aws-select-tier.png";
-import awsQualifiedSoftware from "@/assets/aws-qualified-software.png";
-import awsRdsDelivery from "@/assets/aws-rds-delivery.png";
-import awsCloudSolutions from "@/assets/aws-cloud-solutions.png";
 import connectingBusiness from "@/assets/connecting-business.png";
 import smeDigitalise from "@/assets/sme-digitalise.png";
 import smeCloud from "@/assets/sme-cloud.png";
@@ -115,7 +111,7 @@ const Index = () => {
                   {/* AWS Partner badge — overlapping top-right corner */}
                   <div className="absolute top-2 -right-5 z-20">
                     <div className="bg-white rounded-2xl p-3 shadow-xl w-28 h-28 flex items-center justify-center">
-                      <img src={awsPartnerBadge} alt="AWS Partner" className="max-w-full max-h-full object-contain" />
+                      <img src={awsPartnerLogo} alt="AWS Partner" className="max-w-full max-h-full object-contain" />
                     </div>
                   </div>
 
@@ -281,12 +277,15 @@ const Index = () => {
                     Our <span className="text-primary">Cloud</span> Services
                   </h2>
                   <div className="w-16 h-1 bg-primary mb-6" />
-                  <p className="font-body font-light text-foreground/75 leading-relaxed mb-6">
+                  <p className="font-body font-light text-foreground/75 leading-relaxed mb-4">
                     To advance cloud computing adoption for SMMEs, we provide AWS Cloud
                     Adoption Services as part of our development packages. Enterprises
                     can support their beneficiaries to automate and digitalise their
                     businesses through our cloud services — from cloud architecture
                     and migration to managed hosting and disaster recovery.
+                  </p>
+                  <p className="font-subheading text-sm font-semibold text-primary mb-6 tracking-wide">
+                    Solutions Architects, DevOps, and Agile expertise.
                   </p>
                   <Link
                     to="/services/cloud-services"
@@ -409,48 +408,6 @@ const Index = () => {
                 );
               })}
             </div>
-          </div>
-        </section>
-
-        {/* ─── AWS Credentials & Expertise ─── */}
-        <section className="py-24">
-          <div className="container mx-auto px-6">
-            <ScrollSection>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 text-center">
-                <div className="flex flex-col items-center">
-                  <div className="w-28 h-28 border-2 border-primary/30 rounded-xl flex items-center justify-center mb-4 p-3">
-                    <img src={awsSelectTier} alt="AWS Select Tier Services Partner" className="max-w-full max-h-full object-contain" />
-                  </div>
-                  <p className="font-body font-light text-foreground/75 text-sm leading-relaxed">
-                    Holaweb is an <strong className="text-foreground">AWS Select Tier Services Partner.</strong>
-                  </p>
-                </div>
-                <div className="flex flex-col items-center">
-                  <div className="w-28 h-28 border-2 border-primary/30 rounded-xl flex items-center justify-center mb-4 p-3">
-                    <img src={awsQualifiedSoftware} alt="AWS Qualified Software" className="max-w-full max-h-full object-contain" />
-                  </div>
-                  <p className="font-body font-light text-foreground/75 text-sm leading-relaxed">
-                    Our SME Impact platform is built according to the <strong className="text-foreground">AWS Well-Architected Framework</strong>, an FTR approved SaaS.
-                  </p>
-                </div>
-                <div className="flex flex-col items-center">
-                  <div className="w-28 h-28 border-2 border-primary/30 rounded-xl flex items-center justify-center mb-4 p-3">
-                    <img src={awsRdsDelivery} alt="AWS RDS Delivery Partner" className="max-w-full max-h-full object-contain" />
-                  </div>
-                  <p className="font-body font-light text-foreground/75 text-sm leading-relaxed">
-                    Holaweb is an <strong className="text-foreground">AWS RDS Delivery Partner.</strong>
-                  </p>
-                </div>
-                <div className="flex flex-col items-center">
-                  <div className="w-28 h-28 border-2 border-primary/30 rounded-xl flex items-center justify-center mb-4 p-3">
-                    <img src={awsCloudSolutions} alt="AWS Cloud Solutions" className="max-w-full max-h-full object-contain" />
-                  </div>
-                  <p className="font-body font-light text-foreground/75 text-sm leading-relaxed">
-                    <strong className="text-foreground">Solutions Architects, DevOps, and Agile expertise.</strong>
-                  </p>
-                </div>
-              </div>
-            </ScrollSection>
           </div>
         </section>
 
