@@ -343,6 +343,7 @@ const Contact = () => {
                         "Enterprises exploring digital transformation",
                         "Tech companies needing distribution partners",
                         "Organizations seeking META integrations",
+                        "Enterprise Development Partners",
                       ].map((item) => (
                         <li
                           key={item}
