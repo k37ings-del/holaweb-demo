@@ -141,15 +141,10 @@ const Contact = () => {
         console.error("Email send error:", emailError);
       }
 
-      // 3. Open WhatsApp with the message
-      const whatsappMessage = encodeURIComponent(
-        `Hi Holaweb! My name is ${result.data.name}. ${result.data.subject ? `Subject: ${result.data.subject}. ` : ""}${result.data.message}`
-      );
-      window.open(`https://wa.me/27715138219?text=${whatsappMessage}`, "_blank");
-
       toast({
         title: "Message sent!",
-        description: "Thank you for reaching out. We'll get back to you within 48 hours.",
+        description: "Your message has been sent, a Holaweb Representative will reach out to you within 48 hours.",
+        duration: 15000,
       });
 
       setForm({ name: "", email: "", subject: "", phone: "", message: "" });
