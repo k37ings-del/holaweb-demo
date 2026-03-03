@@ -81,6 +81,14 @@ const Header = () => {
           target="_blank"
           rel="noopener noreferrer"
           className={baseClass}
+          onClick={() => {
+            if (typeof (window as any).gtag === 'function') {
+              (window as any).gtag('event', 'click', {
+                event_category: 'navigation',
+                event_label: 'SME Impact Tab',
+              });
+            }
+          }}
         >
           {item.label}
         </a>
@@ -282,6 +290,14 @@ const Header = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="py-3 font-subheading text-sm font-medium uppercase tracking-wide text-foreground/80 hover:text-golden transition-colors"
+                    onClick={() => {
+                      if (typeof (window as any).gtag === 'function') {
+                        (window as any).gtag('event', 'click', {
+                          event_category: 'navigation',
+                          event_label: 'SME Impact Tab',
+                        });
+                      }
+                    }}
                   >
                     {item.label}
                   </a>
