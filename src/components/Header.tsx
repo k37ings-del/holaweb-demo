@@ -109,13 +109,13 @@ const Header = () => {
             </Link>
           </div>
           <div className="flex items-center gap-3">
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" aria-label="Facebook">
+            <a href="https://www.facebook.com/holaweb.africa/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" aria-label="Facebook">
               <Facebook className="h-4 w-4" />
             </a>
-            <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" aria-label="X">
+            <a href="https://x.com/holaweb_africa" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" aria-label="X">
               <XIcon className="h-4 w-4" />
             </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" aria-label="Instagram">
+            <a href="https://www.instagram.com/holaweb.africa" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" aria-label="Instagram">
               <Instagram className="h-4 w-4" />
             </a>
             <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" aria-label="LinkedIn">
