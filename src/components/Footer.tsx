@@ -45,11 +45,11 @@ const Footer = () => {
             {/* Social Media Icons */}
             <div className="flex items-center gap-4 mt-6">
               <a
-                href="#"
-                onClick={(e) => e.preventDefault()}
-                className="text-gray-500 hover:text-gray-900 transition-colors cursor-default"
-                aria-label="Facebook (coming soon)"
-                title="Coming soon"
+                href="https://www.facebook.com/holaweb.africa/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-500 hover:text-blue-600 transition-colors"
+                aria-label="Facebook"
               >
                 <Facebook className="h-5 w-5" />
               </a>
@@ -65,11 +65,11 @@ const Footer = () => {
                 </svg>
               </a>
               <a
-                href="#"
-                onClick={(e) => e.preventDefault()}
-                className="text-gray-500 hover:text-gray-900 transition-colors cursor-default"
-                aria-label="Instagram (coming soon)"
-                title="Coming soon"
+                href="https://www.instagram.com/holaweb.africa"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-500 hover:text-pink-600 transition-colors"
+                aria-label="Instagram"
               >
                 <Instagram className="h-5 w-5" />
               </a>
