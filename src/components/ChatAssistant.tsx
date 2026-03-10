@@ -144,17 +144,38 @@ const ChatAssistant = () => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // When language changes, auto-send a greeting in the new language
+  // When language changes, translate existing conversation or greet
   useEffect(() => {
     if (isFirstLang.current) {
       isFirstLang.current = false;
       return;
     }
     const langLabel = LANGUAGES.find(l => l.code === language)?.label || language;
-    setMessages([]);
-    setTimeout(() => {
+    if (messages.length === 0) {
       send(`Greet me in ${langLabel} and tell me briefly what you can help with.`);
-    }, 100);
+    } else {
+      const translatePrompt = `The user has switched the language to ${langLabel}. Please translate our entire conversation above into ${langLabel} and continue in ${langLabel}. Format your response as the full translated conversation (label each as "You:" for user, "Ola:" for yourself), then add a short note that you'll continue in ${langLabel}.`;
+      const userMsg: Message = { role: "user", content: translatePrompt };
+      const currentMessages = [...messages];
+      setMessages(prev => [...prev, userMsg]);
+      setIsLoading(true);
+
+      let soFar = "";
+      streamChat({
+        messages: [...currentMessages, userMsg],
+        language,
+        onDelta: (chunk) => {
+          soFar += chunk;
+          setMessages(prev => {
+            const last = prev[prev.length - 1];
+            if (last?.role === "assistant")
+              return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: soFar } : m);
+            return [...prev, { role: "assistant", content: soFar }];
+          });
+        },
+        onDone: () => setIsLoading(false),
+      }).catch(() => setIsLoading(false));
+    }
   }, [language]);
 
 
