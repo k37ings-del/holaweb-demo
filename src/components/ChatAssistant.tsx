@@ -95,6 +95,7 @@ const ChatAssistant = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [language, setLanguage] = useState("en");
   const [showLangMenu, setShowLangMenu] = useState(false);
+  const isFirstLang = useRef(true);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
