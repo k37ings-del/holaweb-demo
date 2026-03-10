@@ -139,7 +139,23 @@ const ChatAssistant = () => {
       window.open(action.url, "_blank", "noopener,noreferrer");
     }
   };
+  // Auto-scroll
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
+  // When language changes, auto-send a greeting in the new language
+  useEffect(() => {
+    if (isFirstLang.current) {
+      isFirstLang.current = false;
+      return;
+    }
+    const langLabel = LANGUAGES.find(l => l.code === language)?.label || language;
+    setMessages([]);
+    setTimeout(() => {
+      send(`Greet me in ${langLabel} and tell me briefly what you can help with.`);
+    }, 100);
+  }, [language]);
 
 
   return (
