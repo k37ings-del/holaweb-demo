@@ -12,6 +12,7 @@ import Contact from "./pages/Contact";
 import QuickStart from "./pages/QuickStart";
 import NotFound from "./pages/NotFound";
 import ChatAssistant from "./components/ChatAssistant";
+import BackToTopButton from "./components/BackToTopButton";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
         <ChatAssistant />
+        <BackToTopButton />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
