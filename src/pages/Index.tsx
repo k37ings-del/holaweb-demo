@@ -12,6 +12,7 @@ import Footer from "@/components/Footer";
 import FloatingBubbles from "@/components/FloatingBubbles";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import aboutImage from "@/assets/about-image.jpg";
+import whoIsHolawebImage from "@/assets/who-is-holaweb.jpg";
 import awsPartnerLogo from "@/assets/aws-partner-logo.png";
 import zohoAffiliateBadge from "@/assets/zoho-affiliate-badge.png";
 import backgroundTech from "@/assets/background-technology.png";
