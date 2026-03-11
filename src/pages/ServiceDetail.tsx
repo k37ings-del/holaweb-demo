@@ -201,7 +201,7 @@ const ServiceDetail = () => {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
-                to="/contact"
+                to="/quick_start"
                 className="btn-cherry inline-flex items-center justify-center rounded-lg px-8 py-3 font-subheading text-sm font-semibold shadow-lg"
               >
                 Get Started
