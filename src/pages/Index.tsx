@@ -317,8 +317,8 @@ const Index = () => {
                 <div className="relative">
                   <div className="aspect-[4/3] bg-secondary/50 border border-border overflow-hidden shadow-[-23px_23px_0px_0px_hsl(352,66%,47%)]">
                     <img
-                      src={aboutImage}
-                      alt="Holaweb team"
+                      src={whoIsHolawebImage}
+                      alt="Home-based entrepreneur using laptop"
                       className="w-full h-full object-cover"
                     />
                   </div>
