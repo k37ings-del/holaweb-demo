@@ -17,7 +17,7 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useToast } from "@/hooks/use-toast";
 import siyabongaImg from "@/assets/siyabonga-tiwana.png";
 import vuyisaImg from "@/assets/vuyisa-qabaka.jpeg";
-import aboutWorkspaceImg from "@/assets/about-workspace.jpg";
+import aboutWorkspaceImg from "@/assets/about-workspace-new.jpg";
 
 const whyChooseUs = [
   {
