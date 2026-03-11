@@ -12,6 +12,7 @@ import Footer from "@/components/Footer";
 import FloatingBubbles from "@/components/FloatingBubbles";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import aboutImage from "@/assets/about-image.jpg";
+import whoIsHolawebImage from "@/assets/who-is-holaweb.jpg";
 import awsPartnerLogo from "@/assets/aws-partner-logo.png";
 import zohoAffiliateBadge from "@/assets/zoho-affiliate-badge.png";
 import backgroundTech from "@/assets/background-technology.png";
@@ -316,8 +317,8 @@ const Index = () => {
                 <div className="relative">
                   <div className="aspect-[4/3] bg-secondary/50 border border-border overflow-hidden shadow-[-23px_23px_0px_0px_hsl(352,66%,47%)]">
                     <img
-                      src={aboutImage}
-                      alt="Holaweb team"
+                      src={whoIsHolawebImage}
+                      alt="Home-based entrepreneur using laptop"
                       className="w-full h-full object-cover"
                     />
                   </div>
