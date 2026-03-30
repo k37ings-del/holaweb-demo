@@ -10,9 +10,23 @@ import Services from "./pages/Services";
 import ServiceDetail from "./pages/ServiceDetail";
 import Contact from "./pages/Contact";
 import QuickStart from "./pages/QuickStart";
+import Platform from "./pages/Platform";
+import Auth from "./pages/Auth";
+import Onboarding from "./pages/Onboarding";
+import Dashboard from "./pages/Dashboard";
+import Checkout from "./pages/Checkout";
 import NotFound from "./pages/NotFound";
 import ChatAssistant from "./components/ChatAssistant";
 import BackToTopButton from "./components/BackToTopButton";
+
+// Dashboard sub-pages
+import Products from "./pages/dashboard/Products";
+import Payments from "./pages/dashboard/Payments";
+import Customers from "./pages/dashboard/Customers";
+import Messaging from "./pages/dashboard/Messaging";
+import Website from "./pages/dashboard/Website";
+import Analytics from "./pages/dashboard/Analytics";
+import DashboardSettings from "./pages/dashboard/DashboardSettings";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -38,6 +52,19 @@ const App = () => (
           <Route path="/services/:slug" element={<ServiceDetail />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/quick_start" element={<QuickStart />} />
+          <Route path="/platform" element={<Platform />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/onboarding" element={<Onboarding />} />
+          <Route path="/checkout/:slug" element={<Checkout />} />
+          <Route path="/dashboard" element={<Dashboard />}>
+            <Route path="products" element={<Products />} />
+            <Route path="payments" element={<Payments />} />
+            <Route path="customers" element={<Customers />} />
+            <Route path="messaging" element={<Messaging />} />
+            <Route path="website" element={<Website />} />
+            <Route path="analytics" element={<Analytics />} />
+            <Route path="settings" element={<DashboardSettings />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
         <ChatAssistant />
