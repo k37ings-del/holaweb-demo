@@ -19,6 +19,7 @@ const navItems = [
   },
   { label: "About", href: "/about" },
   { label: "Services", href: "/services", hasDropdown: true },
+  { label: "Platform", href: "/platform" },
   { label: "Quick Start", href: "/quick_start" },
   { label: "Contact", href: "/contact" },
 ];
