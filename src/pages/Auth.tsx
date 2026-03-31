@@ -87,7 +87,7 @@ const Auth = () => {
         </div>
 
         <div className="bg-card border border-border rounded-lg p-6">
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4" autoComplete="on">
             {!isLogin && (
               <div>
                 <label className="block font-body text-sm text-foreground mb-1.5">Full Name</label>
@@ -96,9 +96,10 @@ const Auth = () => {
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   required={!isLogin}
-                  className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-                  placeholder="Your full name"
-                />
+                   className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                   placeholder="Your full name"
+                   autoComplete="name"
+                 />
               </div>
             )}
 
@@ -111,6 +112,7 @@ const Auth = () => {
                 required
                 className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                 placeholder="you@example.com"
+                autoComplete="email"
               />
             </div>
 
@@ -125,6 +127,7 @@ const Auth = () => {
                   minLength={6}
                   className="w-full bg-muted border border-border rounded-lg px-4 py-3 pr-12 text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                   placeholder="••••••••"
+                  autoComplete={isLogin ? "current-password" : "new-password"}
                 />
                 <button
                   type="button"
