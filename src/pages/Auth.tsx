@@ -112,6 +112,7 @@ const Auth = () => {
                 required
                 className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                 placeholder="you@example.com"
+                autoComplete="email"
               />
             </div>
 
