@@ -87,7 +87,7 @@ const Auth = () => {
         </div>
 
         <div className="bg-card border border-border rounded-lg p-6">
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4" autoComplete="on">
             {!isLogin && (
               <div>
                 <label className="block font-body text-sm text-foreground mb-1.5">Full Name</label>
