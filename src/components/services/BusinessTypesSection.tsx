@@ -63,8 +63,8 @@ const BusinessTypesSection = () => {
                 {biz.badge}
               </span>
               <div>
-                <Link to="/contact" className="btn-cherry inline-block text-sm rounded-lg px-6 py-3">
-                  Get Quote
+                <Link to="/auth" className="btn-cherry inline-block text-sm rounded-lg px-6 py-3">
+                  Get Started
                 </Link>
               </div>
             </motion.div>
