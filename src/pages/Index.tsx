@@ -21,6 +21,10 @@ import connectingBusiness from "@/assets/connecting-business.png";
 import smeDigitalise from "@/assets/sme-digitalise.png";
 import smeCloud from "@/assets/sme-cloud.png";
 import smePlatform from "@/assets/sme-platform.png";
+import ServicesTilesSection from "@/components/services/ServicesTilesSection";
+import TransformationPartnerSection from "@/components/services/TransformationPartnerSection";
+import WhyChooseSection from "@/components/services/WhyChooseSection";
+import BusinessTypesSection from "@/components/services/BusinessTypesSection";
 
 const WhatsAppIcon = ({ className = "h-5 w-5" }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
@@ -86,7 +90,7 @@ const Index = () => {
                   style={{ animationDelay: "0.45s" }}
                 >
                   <Link
-                    to="/contact"
+                    to="/auth"
                     className="btn-cherry inline-flex items-center justify-center rounded-lg px-8 py-4 font-subheading text-sm font-semibold shadow-lg"
                   >
                     Get Started
@@ -107,9 +111,7 @@ const Index = () => {
 
               {/* Right — Image placeholder with badges overlapping corners */}
               <div className="relative flex justify-center lg:justify-end">
-                {/* Image placeholder with Intense Cherry shadow — 25% smaller */}
                 <div className="relative w-full max-w-xs lg:max-w-sm">
-                  {/* AWS Partner badge — overlapping top-right corner */}
                   <div className="absolute top-2 -right-5 z-20">
                     <div className="bg-white rounded-2xl p-3 shadow-xl w-28 h-28 flex items-center justify-center">
                       <img src={awsPartnerLogo} alt="AWS Partner" className="max-w-full max-h-full object-contain" />
@@ -120,7 +122,6 @@ const Index = () => {
                     <img src={connectingBusiness} alt="Connecting business" className="w-full h-full object-cover" />
                   </div>
 
-                  {/* Zoho Affiliate badge — overlapping bottom-left corner */}
                   <div className="absolute -bottom-8 -left-8 z-20">
                     <div className="bg-white rounded-2xl p-2 shadow-xl w-32 h-32 flex items-center justify-center">
                       <img src={zohoAffiliateBadge} alt="Zoho Affiliate" className="max-w-full max-h-full object-contain rounded-xl" />
@@ -140,14 +141,12 @@ const Index = () => {
           <div className="container mx-auto px-6">
             <ScrollSection>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                {/* Left — Single image placeholder */}
                 <div className="relative">
                   <div className="aspect-[4/3] bg-secondary/40 border border-border overflow-hidden shadow-[-23px_23px_0px_0px_hsl(352,66%,47%)]">
                     <img src={smeDigitalise} alt="Digitalise and scale SME development programmes" className="w-full h-full object-cover" />
                   </div>
                 </div>
 
-                {/* Right — Content */}
                 <div>
                   <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">
                     Do you want to digitalise and scale your{" "}
@@ -183,7 +182,6 @@ const Index = () => {
           <div className="container mx-auto px-6">
             <ScrollSection>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                {/* Left — Content */}
                 <div>
                   <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">
                     Do you want to capacitate your SMEs with{" "}
@@ -208,7 +206,6 @@ const Index = () => {
                   </a>
                 </div>
 
-                {/* Right — Image placeholder */}
                 <div className="relative flex justify-center">
                   <div className="aspect-[4/3] w-full bg-secondary/40 border border-border overflow-hidden shadow-[-23px_23px_0px_0px_hsl(352,66%,47%)]">
                     <img src={smeCloud} alt="Capacitate SMEs with cloud technologies" className="w-full h-full object-cover" />
@@ -224,7 +221,6 @@ const Index = () => {
           <div className="container mx-auto px-6">
             <ScrollSection>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                {/* Left — Platform image placeholder with label */}
                 <div className="relative">
                   <p className="font-subheading text-sm font-semibold text-primary mb-3 uppercase tracking-wider">Our Platform</p>
                   <div className="aspect-[4/3] bg-secondary/40 border border-border overflow-hidden shadow-[-23px_23px_0px_0px_hsl(352,66%,47%)]">
@@ -232,7 +228,6 @@ const Index = () => {
                   </div>
                 </div>
 
-                {/* Right — Content */}
                 <div>
                   <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-2">
                     Our <span className="text-primary">SME Impact</span> Platform
@@ -248,14 +243,14 @@ const Index = () => {
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Link
-                      to="/services"
+                      to="/auth"
                       className="btn-cherry inline-flex items-center justify-center rounded-lg px-8 py-4 font-subheading text-sm font-semibold shadow-lg"
                     >
                       LEARN MORE
                       <ChevronRight className="ml-2 h-4 w-4" />
                     </Link>
                     <Link
-                      to="/quick_start"
+                      to="/auth"
                       className="inline-flex items-center justify-center rounded-lg border border-primary px-8 py-4 font-subheading text-sm font-semibold text-primary transition-colors duration-300 hover:bg-primary/10"
                     >
                       Get Started Now
@@ -272,7 +267,6 @@ const Index = () => {
           <div className="container mx-auto px-6">
             <ScrollSection>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                {/* Left — Content */}
                 <div>
                   <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-2">
                     Our <span className="text-primary">Cloud</span> Services
@@ -297,7 +291,6 @@ const Index = () => {
                   </Link>
                 </div>
 
-                {/* Right — AWS Logo */}
                 <div className="relative flex justify-center">
                   <div className="w-72 h-72 md:w-96 md:h-80 bg-secondary/40 border border-border flex items-center justify-center shadow-[-23px_23px_0px_0px_hsl(352,66%,47%)]">
                     <img src={awsLogo} alt="AWS" className="max-w-[60%] max-h-[60%] object-contain" />
@@ -313,7 +306,6 @@ const Index = () => {
           <div className="container mx-auto px-6">
             <ScrollSection>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                {/* Left — Image */}
                 <div className="relative">
                   <div className="aspect-[4/3] bg-secondary/50 border border-border overflow-hidden shadow-[-23px_23px_0px_0px_hsl(352,66%,47%)]">
                     <img
@@ -324,7 +316,6 @@ const Index = () => {
                   </div>
                 </div>
 
-                {/* Right — Content */}
                 <div>
                   <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-2">
                     Who is <span className="text-primary">Holaweb</span>
@@ -345,72 +336,17 @@ const Index = () => {
           </div>
         </section>
 
-        {/* ─── What We Offer ─── */}
-        <section className="py-24 bg-secondary/20 backdrop-blur-sm">
-          <div className="container mx-auto px-6">
-            <ScrollSection>
-              <div className="text-center mb-16">
-                <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-2">
-                  What We <span className="text-primary">Offer</span>
-                </h2>
-                <div className="w-16 h-1 bg-primary mx-auto mb-4" />
-                <p className="font-subheading text-lg text-primary">
-                  Comprehensive Digital Solutions
-                </p>
-              </div>
-            </ScrollSection>
+        {/* ─── What We Offer (Services Tiles from Services page) ─── */}
+        <ServicesTilesSection />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              {[
-                {
-                  title: "Cloud Services",
-                  icon: Cloud,
-                  href: "/services/cloud-services",
-                  description: "Cloud architecture, hosting, cost optimization & disaster recovery.",
-                },
-                {
-                  title: "Web & App Development",
-                  icon: Smartphone,
-                  href: "/services/web-app-development",
-                  description: "Web and mobile apps, microservices, APIs & QA automation.",
-                },
-                {
-                  title: "Market Access",
-                  icon: Megaphone,
-                  href: "/services/market-access",
-                  description: "Adoption strategies, onboarding playbooks & enablement programs.",
-                },
-                {
-                  title: "META Solutions",
-                  icon: Link2,
-                  href: "/services/meta-solutions",
-                  description: "WhatsApp Business bots, payment gateways & customer workflows.",
-                },
-              ].map((service) => {
-                const Icon = service.icon;
-                return (
-                  <ScrollSection key={service.href}>
-                    <Link
-                      to={service.href}
-                      className="service-card group block bg-card/80 backdrop-blur-sm border border-border p-8 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300"
-                    >
-                      <Icon className="service-icon h-10 w-10 text-primary/60 mb-5 transition-colors duration-300 group-hover:text-accent" />
-                      <h3 className="font-subheading text-lg font-semibold text-foreground mb-2">
-                        {service.title}
-                      </h3>
-                      <p className="font-body font-light text-sm text-muted-foreground leading-relaxed">
-                        {service.description}
-                      </p>
-                      <div className="mt-4 flex items-center gap-1 text-primary text-sm font-subheading font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        Learn more <ChevronRight className="h-4 w-4" />
-                      </div>
-                    </Link>
-                  </ScrollSection>
-                );
-              })}
-            </div>
-          </div>
-        </section>
+        {/* ─── Our Approach (from Services page) ─── */}
+        <TransformationPartnerSection />
+
+        {/* ─── Why Choose Us (from Services page) ─── */}
+        <WhyChooseSection />
+
+        {/* ─── Tailored Solutions (from Services page) ─── */}
+        <BusinessTypesSection />
 
         <Footer />
       </div>

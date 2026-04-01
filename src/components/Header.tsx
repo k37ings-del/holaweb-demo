@@ -18,7 +18,6 @@ const navItems = [
     external: true,
   },
   { label: "About", href: "/about" },
-  { label: "Services", href: "/services", hasDropdown: true },
   { label: "Platform", href: "/platform" },
   { label: "Quick Start", href: "/quick_start" },
   { label: "Contact", href: "/contact" },
@@ -39,10 +38,7 @@ const XIcon = ({ className = "h-4 w-4" }: { className?: string }) => (
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
-  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const location = useLocation();
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -52,21 +48,7 @@ const Header = () => {
 
   useEffect(() => {
     setMobileOpen(false);
-    setServicesOpen(false);
-    setMobileServicesOpen(false);
   }, [location]);
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setServicesOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const isServicesActive = location.pathname.startsWith("/services");
 
   const renderNavLink = (item: typeof navItems[0]) => {
     const isActive = item.href === "/" ? location.pathname === "/" : location.pathname.startsWith(item.href);
@@ -159,61 +141,7 @@ const Header = () => {
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-6">
-            {navItems.map((item) =>
-              item.hasDropdown ? (
-                <div key={item.href} className="relative" ref={dropdownRef}
-                  onMouseEnter={() => setServicesOpen(true)}
-                  onMouseLeave={() => setServicesOpen(false)}
-                >
-                  <Link
-                    to={item.href}
-                    className={`flex items-center gap-1 font-subheading text-sm font-medium tracking-wide uppercase transition-colors duration-300 ${
-                      isServicesActive
-                        ? "text-golden"
-                        : "text-foreground/80 hover:text-golden"
-                    }`}
-                  >
-                    {item.label}
-                    <ChevronDown
-                      className={`h-3.5 w-3.5 transition-transform duration-200 ${
-                        servicesOpen ? "rotate-180" : ""
-                      }`}
-                    />
-                  </Link>
-
-                  {servicesOpen && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-56 z-50">
-                <div className="bg-card border border-border shadow-xl">
-                      <div className="py-2">
-                        <Link
-                          to="/services"
-                          className="block px-4 py-2.5 font-subheading text-xs font-semibold uppercase tracking-wider text-golden/80 hover:text-golden hover:bg-muted transition-colors"
-                        >
-                          All Services
-                        </Link>
-                        <div className="mx-3 h-px bg-border my-1" />
-                        {serviceSubpages.map((sub) => (
-                          <Link
-                            key={sub.href}
-                            to={sub.href}
-                            className={`block px-4 py-2.5 font-body text-sm transition-colors ${
-                              location.pathname === sub.href
-                                ? "text-golden bg-muted"
-                                : "text-foreground/70 hover:text-foreground hover:bg-muted"
-                            }`}
-                          >
-                            {sub.label}
-                      </Link>
-                    ))}
-                      </div>
-                    </div>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                renderNavLink(item)
-              )
-            )}
+            {navItems.map((item) => renderNavLink(item))}
 
             {/* WhatsApp Button */}
             <a
@@ -243,62 +171,13 @@ const Header = () => {
           <div className="lg:hidden bg-background border-t border-border">
             <nav className="container mx-auto px-6 py-4 flex flex-col gap-1">
               {navItems.map((item) =>
-                item.hasDropdown ? (
-                  <div key={item.href}>
-                    <button
-                      onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-                      className={`w-full flex items-center justify-between py-3 font-subheading text-sm font-medium uppercase tracking-wide transition-colors ${
-                        isServicesActive
-                          ? "text-golden"
-                          : "text-foreground/80 hover:text-golden"
-                      }`}
-                    >
-                      {item.label}
-                      <ChevronDown
-                        className={`h-4 w-4 transition-transform duration-200 ${
-                          mobileServicesOpen ? "rotate-180" : ""
-                        }`}
-                      />
-                    </button>
-                    {mobileServicesOpen && (
-                      <div className="pl-4 flex flex-col gap-1 mb-2">
-                        <Link
-                          to="/services"
-                          className="py-2 font-body text-xs font-semibold uppercase tracking-wider text-golden/80 hover:text-golden transition-colors"
-                        >
-                          All Services
-                        </Link>
-                        {serviceSubpages.map((sub) => (
-                          <Link
-                            key={sub.href}
-                            to={sub.href}
-                            className={`py-2 font-body text-sm transition-colors ${
-                              location.pathname === sub.href
-                                ? "text-golden"
-                                : "text-foreground/60 hover:text-foreground"
-                            }`}
-                          >
-                            {sub.label}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ) : item.external ? (
+                item.external ? (
                   <a
                     key={item.href}
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="py-3 font-subheading text-sm font-medium uppercase tracking-wide text-foreground/80 hover:text-golden transition-colors"
-                    onClick={() => {
-                      if (typeof (window as any).gtag === 'function') {
-                        (window as any).gtag('event', 'click', {
-                          event_category: 'navigation',
-                          event_label: 'SME Impact Tab',
-                        });
-                      }
-                    }}
                   >
                     {item.label}
                   </a>
