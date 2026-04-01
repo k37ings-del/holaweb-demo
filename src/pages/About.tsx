@@ -9,6 +9,9 @@ import {
   Layers,
   Handshake,
   Mail,
+  Shield,
+  Cpu,
+  TrendingUp,
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -73,6 +76,13 @@ const leaders = [
     initials: "VQ",
     image: vuyisaImg,
   },
+];
+
+const aboutHighlights = [
+  { icon: Shield, label: "Official AWS Partner" },
+  { icon: Cpu, label: "Cloud Innovation Specialists" },
+  { icon: Rocket, label: "Startup Go-to-Market Support" },
+  { icon: MessageSquare, label: "META Solutions Integration" },
 ];
 
 const ScrollSection = ({
@@ -203,7 +213,48 @@ const About = () => {
           </div>
         </section>
 
-        {/* ─── Image Placeholder ─── */}
+        {/* ─── About Holaweb (moved from Services page) ─── */}
+        <section className="py-24 bg-secondary/20 backdrop-blur-sm">
+          <div className="container mx-auto px-6">
+            <ScrollSection>
+              <div className="text-center mb-12">
+                <span className="text-primary text-sm font-subheading uppercase tracking-widest mb-3 block">About Holaweb</span>
+                <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">
+                  Your Technology Solutions Partner
+                </h2>
+                <p className="font-body font-light text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+                  At our core, we are a technology solutions partner committed to empowering businesses of all sizes through cloud innovation, digital product development, and smart distribution strategies.
+                </p>
+              </div>
+            </ScrollSection>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-4xl mx-auto">
+              {aboutHighlights.map((h, i) => (
+                <ScrollSection key={h.label}>
+                  <div className="flex flex-col items-center gap-2 p-3 border border-primary/10 bg-background hover:border-primary/30 transition-colors">
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                      <h.icon className="w-4 h-4 text-primary" />
+                    </div>
+                    <span className="font-subheading text-xs text-foreground font-medium text-center">{h.label}</span>
+                  </div>
+                </ScrollSection>
+              ))}
+            </div>
+
+            <ScrollSection>
+              <div className="max-w-4xl mx-auto">
+                <p className="font-body font-light text-muted-foreground text-sm leading-relaxed mb-4">
+                  As an official AWS Partner, we deliver scalable, secure, and high-performance cloud solutions tailored to meet the unique needs of startups, SMEs, and large enterprises. Our extended cloud support ensures long-term value by offering performance monitoring, security management, disaster recovery, and cost optimization.
+                </p>
+                <p className="font-body font-light text-muted-foreground text-sm leading-relaxed">
+                  We offer META solutions like WhatsApp integrations and embedded payment systems to enhance client engagement and automate internal business workflows. As a tech and industry-agnostic partner, our mission is to connect great products with the right markets—driving growth, efficiency, and impact across every engagement.
+                </p>
+              </div>
+            </ScrollSection>
+          </div>
+        </section>
+
+        {/* ─── Image ─── */}
         <section className="py-16">
           <div className="container mx-auto px-6">
             <ScrollSection>
@@ -307,7 +358,6 @@ const About = () => {
               {leaders.map((leader) => (
                 <ScrollSection key={leader.name}>
                   <div className="rounded-2xl bg-card/80 backdrop-blur-sm border border-border overflow-hidden hover:border-golden/30 transition-colors duration-300">
-                    {/* Photo area */}
                     <div className="aspect-square bg-secondary/40 flex items-center justify-center overflow-hidden">
                       {leader.image ? (
                         <img

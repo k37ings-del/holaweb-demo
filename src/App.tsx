@@ -6,8 +6,8 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import Index from "./pages/Index";
 import About from "./pages/About";
-import Services from "./pages/Services";
 import ServiceDetail from "./pages/ServiceDetail";
+import Demo from "./pages/Demo";
 import Contact from "./pages/Contact";
 import QuickStart from "./pages/QuickStart";
 import Platform from "./pages/Platform";
@@ -48,8 +48,8 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/about" element={<About />} />
-          <Route path="/services" element={<Services />} />
           <Route path="/services/:slug" element={<ServiceDetail />} />
+          <Route path="/demo" element={<Demo />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/quick_start" element={<QuickStart />} />
           <Route path="/platform" element={<Platform />} />
