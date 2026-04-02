@@ -275,7 +275,7 @@ const Index = () => {
                     Solutions Architects, DevOps, and Agile expertise.
                   </p>
                   <Link
-                    to="/services/cloud-services"
+                    to="/demo"
                     className="btn-cherry inline-flex items-center justify-center rounded-lg px-8 py-4 font-subheading text-sm font-semibold shadow-lg"
                   >
                     LEARN MORE
