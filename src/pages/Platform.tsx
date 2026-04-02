@@ -238,6 +238,7 @@ const Platform = () => {
                       Start Building Now <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   )}
+                </div>
 
                 <div className={index % 2 !== 0 ? "lg:order-1" : ""}>
                   <div className="aspect-[4/3] bg-card border border-border rounded-lg overflow-hidden">
