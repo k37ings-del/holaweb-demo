@@ -230,7 +230,14 @@ const Platform = () => {
                       </li>
                     ))}
                   </ul>
-                </div>
+                  {feature.title === "Custom Websites" && (
+                    <Link
+                      to="/dashboard/website"
+                      className="mt-4 btn-cherry inline-flex items-center gap-2 rounded-lg px-6 py-3 font-subheading text-xs font-semibold shadow-lg w-fit"
+                    >
+                      Start Building Now <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  )}
 
                 <div className={index % 2 !== 0 ? "lg:order-1" : ""}>
                   <div className="aspect-[4/3] bg-card border border-border rounded-lg overflow-hidden">
