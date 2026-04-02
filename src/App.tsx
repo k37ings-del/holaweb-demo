@@ -9,9 +9,11 @@ import About from "./pages/About";
 import ServiceDetail from "./pages/ServiceDetail";
 import Demo from "./pages/Demo";
 import Contact from "./pages/Contact";
-import QuickStart from "./pages/QuickStart";
 import Platform from "./pages/Platform";
+import Pricing from "./pages/Pricing";
 import Auth from "./pages/Auth";
+import AdminAuth from "./pages/AdminAuth";
+import AdminDashboard from "./pages/AdminDashboard";
 import Onboarding from "./pages/Onboarding";
 import Dashboard from "./pages/Dashboard";
 import Checkout from "./pages/Checkout";
@@ -51,9 +53,11 @@ const App = () => (
           <Route path="/services/:slug" element={<ServiceDetail />} />
           <Route path="/demo" element={<Demo />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/quick_start" element={<QuickStart />} />
           <Route path="/platform" element={<Platform />} />
+          <Route path="/pricing" element={<Pricing />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/admin" element={<AdminAuth />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/checkout/:slug" element={<Checkout />} />
           <Route path="/dashboard" element={<Dashboard />}>

@@ -1,14 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown, Phone, Mail, Facebook, Instagram, Linkedin } from "lucide-react";
+import { Menu, X, ChevronDown, Phone, Mail, Facebook, Instagram, Linkedin, LogIn } from "lucide-react";
 import logo from "@/assets/HW_Logo.png";
-
-const serviceSubpages = [
-  { label: "Cloud Services", href: "/services/cloud-services" },
-  { label: "Web & App Development", href: "/services/web-app-development" },
-  { label: "Market Access", href: "/services/market-access" },
-  { label: "META Solutions", href: "/services/meta-solutions" },
-];
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -19,7 +12,7 @@ const navItems = [
   },
   { label: "About", href: "/about" },
   { label: "Platform", href: "/platform" },
-  { label: "Quick Start", href: "/quick_start" },
+  { label: "Pricing", href: "/pricing" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -140,8 +133,17 @@ const Header = () => {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-6">
+          <nav className="hidden lg:flex items-center gap-5">
             {navItems.map((item) => renderNavLink(item))}
+
+            {/* Sign Up / Login Button */}
+            <Link
+              to="/auth"
+              className="inline-flex items-center gap-2 rounded-lg border border-primary px-4 py-2 text-sm font-semibold font-subheading text-primary transition-all duration-300 hover:bg-primary hover:text-primary-foreground"
+            >
+              <LogIn className="h-4 w-4" />
+              Sign Up / Login
+            </Link>
 
             {/* WhatsApp Button */}
             <a
@@ -196,12 +198,21 @@ const Header = () => {
                 )
               )}
 
+              {/* Mobile Sign Up / Login */}
+              <Link
+                to="/auth"
+                className="mt-2 inline-flex items-center justify-center gap-2 rounded-lg border border-primary px-5 py-3 text-sm font-semibold font-subheading text-primary transition-all duration-300 hover:bg-primary hover:text-primary-foreground"
+              >
+                <LogIn className="h-4 w-4" />
+                Sign Up / Login
+              </Link>
+
               {/* Mobile WhatsApp Button */}
               <a
                 href="https://wa.me/27715138219"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-2 inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 text-sm font-semibold font-subheading text-white transition-all duration-300"
+                className="mt-1 inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 text-sm font-semibold font-subheading text-white transition-all duration-300"
                 style={{ backgroundColor: "#25D366" }}
               >
                 <WhatsAppIcon className="h-4 w-4" />
