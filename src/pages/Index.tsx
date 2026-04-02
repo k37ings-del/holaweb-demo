@@ -96,16 +96,13 @@ const Index = () => {
                     Get Started
                     <ChevronRight className="ml-2 h-4 w-4" />
                   </Link>
-                  <a
-                    href="https://wa.me/27715138219"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center rounded-lg border-2 border-primary px-8 py-4 font-subheading text-sm font-semibold transition-colors duration-300 hover:bg-primary/10"
-                    style={{ color: "#25D366" }}
+                  <Link
+                    to="/demo"
+                    className="inline-flex items-center justify-center rounded-lg border-2 border-primary px-8 py-4 font-subheading text-sm font-semibold text-primary transition-colors duration-300 hover:bg-primary/10"
                   >
-                    <WhatsAppIcon className="mr-2 h-4 w-4" />
-                    WhatsApp
-                  </a>
+                    See Our Demo
+                    <ChevronRight className="ml-2 h-4 w-4" />
+                  </Link>
                 </div>
               </div>
 
