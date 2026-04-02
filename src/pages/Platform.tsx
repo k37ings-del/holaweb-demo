@@ -158,7 +158,7 @@ const Platform = () => {
                   to="/demo"
                   className="inline-flex items-center gap-2 rounded-lg border border-border px-8 py-4 font-subheading text-sm font-semibold text-foreground hover:bg-muted transition-colors"
                 >
-                  See How It Works
+                  See Our Demo
                 </Link>
               </div>
             </motion.div>
