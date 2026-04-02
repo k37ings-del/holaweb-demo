@@ -34,25 +34,25 @@ const WhatsAppIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
 const features = [
   {
     icon: Globe,
-    title: "Website Builder",
+    title: "Custom Websites",
     description:
-      "Create stunning landing pages, online stores, and booking pages — no coding required. Optimized for mobile and built to convert.",
-    highlights: ["Landing pages", "Online stores", "Booking pages", "Custom domains"],
+      "Get affordable, interactive, and fully responsive websites custom-built to your liking. Whether you need a sleek e-commerce store, a corporate-grade platform, a portfolio site, or a booking system — our team designs and develops it to match your brand, your audience, and your goals. Every site is mobile-optimised, SEO-ready, and built on secure cloud infrastructure.",
+    highlights: ["E-commerce stores", "Corporate platforms", "Portfolio & booking sites", "Mobile-optimised & SEO-ready", "Custom domains & SSL"],
     image: buildWebsitesImg,
   },
   {
     icon: CreditCard,
     title: "Payments",
     description:
-      "Accept payments instantly with shareable payment links, checkout pages, and subscription billing. Built for Africa.",
-    highlights: ["Payment links", "Checkout pages", "Subscriptions", "Mobile money"],
+      "Accept payments from anywhere in Africa and beyond with our Peach Payments-powered checkout system. Create shareable payment links in seconds, embed checkout pages on your website, set up subscription billing for recurring revenue, and support multiple currencies including ZAR, USD, and mobile money. Every transaction is secured with bank-level encryption.",
+    highlights: ["Shareable payment links", "Embeddable checkout pages", "Subscription billing", "Multi-currency & mobile money", "Bank-level encryption"],
     image: paymentSystemsImg,
   },
   {
     icon: Share2,
     title: "Meta Business Solutions",
     description:
-      "Supercharge your business with Meta's full suite — run targeted ads on Facebook and Instagram, automate customer conversations on WhatsApp, and manage everything from Meta Business Suite.",
+      "Supercharge your business reach with Meta's full suite of tools. Run highly targeted ads on Facebook and Instagram to reach your ideal customers, automate customer conversations on WhatsApp Business API with chatbots and quick replies, manage all your social interactions from Meta Business Suite, and leverage audience insights and retargeting to maximise your ROI on every campaign.",
     highlights: [
       "Facebook & Instagram Ads",
       "WhatsApp Business API",
@@ -66,8 +66,8 @@ const features = [
     icon: Users,
     title: "CRM & Data",
     description:
-      "Know your customers. Track purchases, segment audiences, and drive repeat business with smart engagement tools.",
-    highlights: ["Customer profiles", "Purchase history", "Tags & segments", "Engagement tracking"],
+      "Know your customers like never before. Build detailed customer profiles with purchase history, communication logs, and custom tags. Segment your audience for targeted campaigns, track engagement patterns to predict buying behaviour, and use data-driven insights to drive repeat business and increase lifetime value.",
+    highlights: ["Detailed customer profiles", "Purchase & engagement history", "Smart tags & segmentation", "Behavioural insights", "Zoho CRM integration"],
     image: ecommerceCrmImg,
   },
 ];
