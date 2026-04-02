@@ -14,6 +14,27 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_allowed_emails: {
+        Row: {
+          created_at: string
+          email_pattern: string
+          id: string
+          is_domain_pattern: boolean
+        }
+        Insert: {
+          created_at?: string
+          email_pattern: string
+          id?: string
+          is_domain_pattern?: boolean
+        }
+        Update: {
+          created_at?: string
+          email_pattern?: string
+          id?: string
+          is_domain_pattern?: boolean
+        }
+        Relationships: []
+      }
       businesses: {
         Row: {
           created_at: string
@@ -334,15 +355,216 @@ export type Database = {
         }
         Relationships: []
       }
+      referral_codes: {
+        Row: {
+          code: string
+          created_at: string
+          created_by: string | null
+          current_uses: number
+          discount_type: string
+          discount_value: number
+          id: string
+          is_active: boolean
+          max_uses: number | null
+          valid_from: string
+          valid_until: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          created_by?: string | null
+          current_uses?: number
+          discount_type?: string
+          discount_value?: number
+          id?: string
+          is_active?: boolean
+          max_uses?: number | null
+          valid_from?: string
+          valid_until?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          created_by?: string | null
+          current_uses?: number
+          discount_type?: string
+          discount_value?: number
+          id?: string
+          is_active?: boolean
+          max_uses?: number | null
+          valid_from?: string
+          valid_until?: string | null
+        }
+        Relationships: []
+      }
+      referral_usages: {
+        Row: {
+          applied_at: string
+          discount_amount: number
+          id: string
+          referral_code_id: string
+          user_id: string
+        }
+        Insert: {
+          applied_at?: string
+          discount_amount?: number
+          id?: string
+          referral_code_id: string
+          user_id: string
+        }
+        Update: {
+          applied_at?: string
+          discount_amount?: number
+          id?: string
+          referral_code_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referral_usages_referral_code_id_fkey"
+            columns: ["referral_code_id"]
+            isOneToOne: false
+            referencedRelation: "referral_codes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subscription_plans: {
+        Row: {
+          billing_period: string
+          created_at: string
+          currency: string
+          features: Json
+          id: string
+          is_active: boolean
+          name: string
+          plan_type: string
+          price: number
+          slug: string
+          trial_days: number
+          updated_at: string
+        }
+        Insert: {
+          billing_period?: string
+          created_at?: string
+          currency?: string
+          features?: Json
+          id?: string
+          is_active?: boolean
+          name: string
+          plan_type?: string
+          price: number
+          slug: string
+          trial_days?: number
+          updated_at?: string
+        }
+        Update: {
+          billing_period?: string
+          created_at?: string
+          currency?: string
+          features?: Json
+          id?: string
+          is_active?: boolean
+          name?: string
+          plan_type?: string
+          price?: number
+          slug?: string
+          trial_days?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_subscriptions: {
+        Row: {
+          business_id: string
+          created_at: string
+          ends_at: string | null
+          id: string
+          plan_id: string
+          started_at: string
+          status: string
+          trial_ends_at: string | null
+          trial_started_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          business_id: string
+          created_at?: string
+          ends_at?: string | null
+          id?: string
+          plan_id: string
+          started_at?: string
+          status?: string
+          trial_ends_at?: string | null
+          trial_started_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          business_id?: string
+          created_at?: string
+          ends_at?: string | null
+          id?: string
+          plan_id?: string
+          started_at?: string
+          status?: string
+          trial_ends_at?: string | null
+          trial_started_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_subscriptions_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_subscriptions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "subscription_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_admin_email: { Args: { _email: string }; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -469,6 +691,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const

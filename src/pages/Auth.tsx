@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import logo from "@/assets/HW_Logo.png";
 
 const Auth = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  const [mode, setMode] = useState<"login" | "signup" | "reset">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
@@ -34,7 +34,17 @@ const Auth = () => {
     setLoading(true);
 
     try {
-      if (isLogin) {
+      if (mode === "reset") {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/auth`,
+        });
+        if (error) throw error;
+        toast({
+          title: "Check your email",
+          description: "We've sent you a password reset link.",
+        });
+        setMode("login");
+      } else if (mode === "login") {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         toast({ title: "Welcome back!", description: "You've been signed in." });
@@ -77,29 +87,31 @@ const Auth = () => {
             <img src={logo} alt="Holaweb" className="h-10 mx-auto" />
           </Link>
           <h1 className="font-heading text-3xl font-bold text-foreground mb-2">
-            {isLogin ? "Welcome back" : "Create your account"}
+            {mode === "login" ? "Welcome back" : mode === "signup" ? "Create your account" : "Reset password"}
           </h1>
           <p className="font-body text-muted-foreground text-sm">
-            {isLogin
+            {mode === "login"
               ? "Sign in to your Business OS"
-              : "Start building your business today"}
+              : mode === "signup"
+              ? "Start building your business today"
+              : "Enter your email to receive a reset link"}
           </p>
         </div>
 
         <div className="bg-card border border-border rounded-lg p-6">
           <form onSubmit={handleSubmit} className="space-y-4" autoComplete="on">
-            {!isLogin && (
+            {mode === "signup" && (
               <div>
                 <label className="block font-body text-sm text-foreground mb-1.5">Full Name</label>
                 <input
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  required={!isLogin}
-                   className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-                   placeholder="Your full name"
-                   autoComplete="name"
-                 />
+                  required
+                  className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  placeholder="Your full name"
+                  autoComplete="name"
+                />
               </div>
             )}
 
@@ -116,48 +128,74 @@ const Auth = () => {
               />
             </div>
 
-            <div>
-              <label className="block font-body text-sm text-foreground mb-1.5">Password</label>
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  minLength={6}
-                  className="w-full bg-muted border border-border rounded-lg px-4 py-3 pr-12 text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-                  placeholder="••••••••"
-                  autoComplete={isLogin ? "current-password" : "new-password"}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
+            {mode !== "reset" && (
+              <div>
+                <label className="block font-body text-sm text-foreground mb-1.5">Password</label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    minLength={6}
+                    className="w-full bg-muted border border-border rounded-lg px-4 py-3 pr-12 text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    placeholder="••••••••"
+                    autoComplete={mode === "login" ? "current-password" : "new-password"}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+                {mode === "login" && (
+                  <button
+                    type="button"
+                    onClick={() => setMode("reset")}
+                    className="font-body text-xs text-primary hover:underline mt-1.5"
+                  >
+                    Forgot password?
+                  </button>
+                )}
               </div>
-            </div>
+            )}
 
             <button
               type="submit"
               disabled={loading}
               className="w-full btn-cherry rounded-lg px-4 py-3 font-subheading text-sm font-semibold disabled:opacity-50"
             >
-              {loading ? "Please wait..." : isLogin ? "Sign In" : "Create Account"}
+              {loading
+                ? "Please wait..."
+                : mode === "login"
+                ? "Sign In"
+                : mode === "signup"
+                ? "Create Account"
+                : "Send Reset Link"}
             </button>
           </form>
 
-          <div className="mt-6 text-center">
-            <button
-              onClick={() => setIsLogin(!isLogin)}
-              className="font-body text-sm text-muted-foreground hover:text-primary transition-colors"
-            >
-              {isLogin ? "Don't have an account? " : "Already have an account? "}
-              <span className="text-primary font-medium">
-                {isLogin ? "Sign up" : "Sign in"}
-              </span>
-            </button>
+          <div className="mt-6 text-center space-y-2">
+            {mode === "reset" ? (
+              <button
+                onClick={() => setMode("login")}
+                className="font-body text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                Back to <span className="text-primary font-medium">Sign in</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => setMode(mode === "login" ? "signup" : "login")}
+                className="font-body text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                {mode === "login" ? "Don't have an account? " : "Already have an account? "}
+                <span className="text-primary font-medium">
+                  {mode === "login" ? "Sign up" : "Sign in"}
+                </span>
+              </button>
+            )}
           </div>
         </div>
 
