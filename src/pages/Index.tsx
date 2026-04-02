@@ -227,20 +227,15 @@ const Index = () => {
 
                 <div>
                   <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-2">
-                    Our <span className="text-primary">SME Impact</span> Platform
+                    Our <span className="text-primary">Holaweb</span> Platform
                   </h2>
                   <div className="w-16 h-1 bg-primary mb-6" />
                   <p className="font-body font-light text-foreground/75 leading-relaxed mb-6">
-                    SME Impact is an integrated, cloud-based digital platform that
-                    empowers enterprise and supplier development stakeholders to
-                    collaborate effectively in SMME development, supplier diversity,
-                    and localisation of opportunities. It supports the drive towards
-                    Sustainable Development Goal No 8: Decent Work and Economic Growth
-                    in the SMME Sector.
+                    The Holaweb Platform is your all-in-one Business Operating System — a cloud-powered digital hub where entrepreneurs and growing businesses can build websites, accept payments, manage customers, and communicate across channels like WhatsApp, email, and social media. Designed specifically for African businesses, our platform removes the complexity of juggling multiple tools and replaces it with a single, intuitive dashboard that scales as you grow. From first sale to enterprise operations, Holaweb is your partner in digital independence.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Link
-                      to="/auth"
+                      to="/platform"
                       className="btn-cherry inline-flex items-center justify-center rounded-lg px-8 py-4 font-subheading text-sm font-semibold shadow-lg"
                     >
                       LEARN MORE
