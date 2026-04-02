@@ -206,7 +206,7 @@ const Platform = () => {
                     </span>
                   </div>
                   <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">
-                    {feature.title === "Website Builder" && (
+                    {feature.title === "Custom Websites" && (
                       <>Your storefront, <span className="text-primary">your way</span></>
                     )}
                     {feature.title === "Payments" && (
