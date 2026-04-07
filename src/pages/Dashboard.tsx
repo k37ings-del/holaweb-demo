@@ -16,15 +16,19 @@ import {
   ChevronRight,
   Plus,
   ArrowUpRight,
+  Share2,
+  RefreshCw,
 } from "lucide-react";
 import logo from "@/assets/HW_Logo.png";
+import SubscriptionBubble from "@/components/SubscriptionBubble";
+import NotificationsPanel from "@/components/NotificationsPanel";
 
 const sidebarItems = [
   { icon: LayoutDashboard, label: "Overview", href: "/dashboard" },
   { icon: ShoppingBag, label: "Products", href: "/dashboard/products" },
   { icon: CreditCard, label: "Payments", href: "/dashboard/payments" },
   { icon: Users, label: "Customers", href: "/dashboard/customers" },
-  { icon: MessageSquare, label: "Messaging", href: "/dashboard/messaging" },
+  { icon: Share2, label: "Meta Business", href: "/dashboard/messaging" },
   { icon: Globe, label: "Website", href: "/dashboard/website" },
   { icon: BarChart3, label: "Analytics", href: "/dashboard/analytics" },
   { icon: Settings, label: "Settings", href: "/dashboard/settings" },
@@ -160,10 +164,21 @@ const Dashboard = () => {
       <div className="flex-1 lg:ml-64">
         {/* Top bar */}
         <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-md border-b border-border px-6 py-3 flex items-center justify-between">
-          <button onClick={() => setSidebarOpen(true)} className="lg:hidden text-foreground">
-            <Menu className="w-5 h-5" />
-          </button>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            <button onClick={() => setSidebarOpen(true)} className="lg:hidden text-foreground">
+              <Menu className="w-5 h-5" />
+            </button>
+            <SubscriptionBubble />
+          </div>
+          <div className="flex items-center gap-2">
+            <Link
+              to="/pricing"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-primary/30 font-subheading text-xs font-semibold text-primary hover:bg-primary/10 transition-colors"
+            >
+              <RefreshCw className="w-3 h-3" />
+              Renew Plan
+            </Link>
+            <NotificationsPanel />
             <Link
               to="/"
               className="font-body text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
