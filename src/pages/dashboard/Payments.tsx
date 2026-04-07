@@ -81,6 +81,16 @@ const Payments = () => {
     }
   };
 
+  const deletePaymentLink = async (id: string) => {
+    const { error } = await supabase.from("payment_links").delete().eq("id", id);
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } else {
+      setPaymentLinks(paymentLinks.filter(l => l.id !== id));
+      toast({ title: "Payment link deleted" });
+    }
+  };
+
   const getCheckoutUrl = (slug: string) => `${window.location.origin}/checkout/${slug}`;
 
   const copyLink = (slug: string, id: string) => {
