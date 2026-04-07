@@ -18,33 +18,28 @@ const AdminAuth = () => {
   const { toast } = useToast();
 
   useEffect(() => {
+    const checkAdminAndRedirect = async (userId: string) => {
+      const { data: roles } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", userId)
+        .eq("role", "admin");
+
+      if (roles && roles.length > 0) {
+        navigate("/admin/dashboard", { replace: true });
+      }
+    };
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) checkAdminAndRedirect(session.user.id);
+    });
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session) {
-        // Check if user has admin role
-        const { data: roles } = await supabase
-          .from("user_roles")
-          .select("role")
-          .eq("user_id", session.user.id)
-          .eq("role", "admin");
-
-        if (roles && roles.length > 0) {
-          navigate("/admin/dashboard");
-        }
+      if (event === "SIGNED_IN" && session) {
+        checkAdminAndRedirect(session.user.id);
       }
     });
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      if (session) {
-        const { data: roles } = await supabase
-          .from("user_roles")
-          .select("role")
-          .eq("user_id", session.user.id)
-          .eq("role", "admin");
 
-        if (roles && roles.length > 0) {
-          navigate("/admin/dashboard");
-        }
-      }
-    });
     return () => subscription.unsubscribe();
   }, [navigate]);
 
@@ -78,7 +73,6 @@ const AdminAuth = () => {
           .eq("role", "admin");
 
         if (!existingRole || existingRole.length === 0) {
-          // Assign admin role
           await supabase.from("user_roles").insert({
             user_id: data.user.id,
             role: "admin",
@@ -86,7 +80,8 @@ const AdminAuth = () => {
         }
 
         toast({ title: "Welcome, Admin!", description: "You've been signed in to the admin panel." });
-        navigate("/admin/dashboard");
+        // Force navigation after a brief delay to ensure auth state is settled
+        setTimeout(() => navigate("/admin/dashboard", { replace: true }), 100);
       } else {
         const { error } = await supabase.auth.signUp({
           email,
