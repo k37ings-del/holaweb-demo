@@ -81,6 +81,16 @@ const Payments = () => {
     }
   };
 
+  const deletePaymentLink = async (id: string) => {
+    const { error } = await supabase.from("payment_links").delete().eq("id", id);
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } else {
+      setPaymentLinks(paymentLinks.filter(l => l.id !== id));
+      toast({ title: "Payment link deleted" });
+    }
+  };
+
   const getCheckoutUrl = (slug: string) => `${window.location.origin}/checkout/${slug}`;
 
   const copyLink = (slug: string, id: string) => {
@@ -214,6 +224,9 @@ const Payments = () => {
                   </a>
                   <button onClick={() => toggleActive(link.id, link.is_active)} className="flex items-center gap-1 bg-muted border border-border rounded-lg px-2.5 py-2 font-body text-xs text-foreground hover:bg-accent transition-colors" title={link.is_active ? "Deactivate" : "Activate"}>
                     {link.is_active ? <ToggleRight className="w-3.5 h-3.5 text-primary" /> : <ToggleLeft className="w-3.5 h-3.5" />}
+                  </button>
+                  <button onClick={() => deletePaymentLink(link.id)} className="flex items-center gap-1 bg-muted border border-border rounded-lg px-2.5 py-2 font-body text-xs text-destructive hover:bg-destructive/10 transition-colors" title="Delete">
+                    <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>

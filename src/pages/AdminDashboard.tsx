@@ -15,11 +15,22 @@ import {
   Trash2,
   ArrowUpRight,
   Settings,
+  Share2,
+  Calendar,
+  MapPin,
 } from "lucide-react";
 import logo from "@/assets/HW_Logo.png";
 import { useToast } from "@/hooks/use-toast";
 
-type Tab = "overview" | "clients" | "subscriptions" | "referrals" | "settings";
+type Tab = "overview" | "clients" | "subscriptions" | "referrals" | "meta" | "settings";
+
+const AFRICAN_REGIONS: Record<string, string[]> = {
+  "Eastern Africa": ["Kenya", "Tanzania", "Uganda", "Rwanda", "Ethiopia", "Somalia", "Burundi", "South Sudan", "Eritrea", "Djibouti", "Comoros", "Mauritius", "Seychelles", "Madagascar", "Mozambique"],
+  "Southern Africa": ["South Africa", "Botswana", "Namibia", "Zimbabwe", "Zambia", "Malawi", "Lesotho", "Eswatini", "Angola"],
+  "Western Africa": ["Nigeria", "Ghana", "Senegal", "Ivory Coast", "Mali", "Burkina Faso", "Niger", "Guinea", "Sierra Leone", "Liberia", "Togo", "Benin", "Gambia", "Cape Verde", "Guinea-Bissau", "Mauritania"],
+  "Central Africa": ["Democratic Republic of Congo", "Republic of Congo", "Cameroon", "Central African Republic", "Chad", "Gabon", "Equatorial Guinea", "São Tomé and Príncipe"],
+  "Northern Africa": ["Egypt", "Libya", "Tunisia", "Algeria", "Morocco", "Sudan"],
+};
 
 const AdminDashboard = () => {
   const [user, setUser] = useState<any>(null);
@@ -29,8 +40,18 @@ const AdminDashboard = () => {
   const [businesses, setBusinesses] = useState<any[]>([]);
   const [subscriptions, setSubscriptions] = useState<any[]>([]);
   const [referralCodes, setReferralCodes] = useState<any[]>([]);
-  const [newCode, setNewCode] = useState({ code: "", discount_type: "percentage", discount_value: 10, max_uses: 100 });
+  const [newCode, setNewCode] = useState({
+    code: "",
+    discount_type: "percentage",
+    discount_value: 10,
+    max_uses: 100,
+    valid_from: "",
+    valid_until: "",
+    valid_region: "",
+  });
   const [showNewCode, setShowNewCode] = useState(false);
+  const [selectedRegion, setSelectedRegion] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("");
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -48,6 +69,14 @@ const AdminDashboard = () => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (!session) { navigate("/admin"); return; }
       setUser(session.user);
+
+      // Verify admin role
+      const { data: roles } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", session.user.id)
+        .eq("role", "admin");
+      if (!roles || roles.length === 0) navigate("/admin");
     });
     return () => subscription.unsubscribe();
   }, [navigate]);
@@ -64,8 +93,6 @@ const AdminDashboard = () => {
       supabase.from("referral_codes").select("*"),
     ]);
 
-    // For admin, we use the RLS policies that allow admin to see all
-    // If businesses returns empty due to RLS, we show what we can
     setBusinesses(bizRes.data || []);
     setSubscriptions(subRes.data || []);
     setReferralCodes(refRes.data || []);
@@ -84,18 +111,29 @@ const AdminDashboard = () => {
 
   const createReferralCode = async () => {
     if (!newCode.code.trim()) return;
-    const { error } = await supabase.from("referral_codes").insert({
+
+    const regionValue = selectedCountry || selectedRegion || newCode.valid_region || null;
+
+    const insertData: any = {
       code: newCode.code.toUpperCase(),
       discount_type: newCode.discount_type,
       discount_value: newCode.discount_value,
       max_uses: newCode.max_uses,
       created_by: user.id,
-    });
+    };
+
+    if (newCode.valid_from) insertData.valid_from = newCode.valid_from;
+    if (newCode.valid_until) insertData.valid_until = newCode.valid_until;
+    if (regionValue) insertData.valid_region = regionValue;
+
+    const { error } = await supabase.from("referral_codes").insert(insertData);
     if (error) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     } else {
-      toast({ title: "Created!", description: `Promo code ${newCode.code.toUpperCase()} created.` });
-      setNewCode({ code: "", discount_type: "percentage", discount_value: 10, max_uses: 100 });
+      toast({ title: "Created!", description: `Promo code ${newCode.code.toUpperCase()} created and saved.` });
+      setNewCode({ code: "", discount_type: "percentage", discount_value: 10, max_uses: 100, valid_from: "", valid_until: "", valid_region: "" });
+      setSelectedRegion("");
+      setSelectedCountry("");
       setShowNewCode(false);
       loadData();
     }
@@ -111,6 +149,7 @@ const AdminDashboard = () => {
     { icon: Users, label: "Clients", id: "clients" as Tab },
     { icon: CreditCard, label: "Subscriptions", id: "subscriptions" as Tab },
     { icon: Tag, label: "Referral Codes", id: "referrals" as Tab },
+    { icon: Share2, label: "META Business", id: "meta" as Tab },
     { icon: Settings, label: "Settings", id: "settings" as Tab },
   ];
 
@@ -184,6 +223,7 @@ const AdminDashboard = () => {
         </header>
 
         <main className="p-6">
+          {/* Overview */}
           {tab === "overview" && (
             <div className="space-y-8">
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -203,9 +243,20 @@ const AdminDashboard = () => {
             </div>
           )}
 
+          {/* Clients */}
           {tab === "clients" && (
             <div className="space-y-4">
-              <p className="font-body text-sm text-muted-foreground">All registered businesses on the platform.</p>
+              <p className="font-body text-sm text-muted-foreground">All registered businesses on the platform. Integrated with Zoho CRM for customer management.</p>
+              <div className="bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20 rounded-lg p-4 flex items-center gap-4">
+                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
+                  <Users className="w-5 h-5 text-primary" />
+                </div>
+                <div className="flex-1">
+                  <p className="font-subheading text-sm font-semibold text-foreground">Zoho CRM Integration</p>
+                  <p className="font-body text-xs text-muted-foreground">Customer data syncs with Zoho CRM for advanced lead management, segmentation, and pipeline tracking.</p>
+                </div>
+                <span className="bg-accent text-accent-foreground px-3 py-1 rounded-full font-body text-xs font-medium shrink-0">Coming Soon</span>
+              </div>
               <div className="bg-card border border-border rounded-lg overflow-hidden">
                 <table className="w-full">
                   <thead>
@@ -241,6 +292,7 @@ const AdminDashboard = () => {
             </div>
           )}
 
+          {/* Subscriptions */}
           {tab === "subscriptions" && (
             <div className="space-y-4">
               <p className="font-body text-sm text-muted-foreground">Active and past subscriptions across all clients.</p>
@@ -250,12 +302,13 @@ const AdminDashboard = () => {
                     <tr className="border-b border-border bg-muted/50">
                       <th className="text-left px-4 py-3 font-subheading text-xs font-semibold text-muted-foreground uppercase">Plan</th>
                       <th className="text-left px-4 py-3 font-subheading text-xs font-semibold text-muted-foreground uppercase">Status</th>
+                      <th className="text-left px-4 py-3 font-subheading text-xs font-semibold text-muted-foreground uppercase">Region</th>
                       <th className="text-left px-4 py-3 font-subheading text-xs font-semibold text-muted-foreground uppercase">Started</th>
                     </tr>
                   </thead>
                   <tbody>
                     {subscriptions.length === 0 ? (
-                      <tr><td colSpan={3} className="px-4 py-8 text-center font-body text-sm text-muted-foreground">No subscriptions yet</td></tr>
+                      <tr><td colSpan={4} className="px-4 py-8 text-center font-body text-sm text-muted-foreground">No subscriptions yet</td></tr>
                     ) : (
                       subscriptions.map((sub: any) => (
                         <tr key={sub.id} className="border-b border-border last:border-0">
@@ -267,6 +320,7 @@ const AdminDashboard = () => {
                               {sub.status}
                             </span>
                           </td>
+                          <td className="px-4 py-3 font-body text-sm text-muted-foreground">{sub.region || "—"}</td>
                           <td className="px-4 py-3 font-body text-sm text-muted-foreground">{new Date(sub.started_at).toLocaleDateString()}</td>
                         </tr>
                       ))
@@ -277,6 +331,7 @@ const AdminDashboard = () => {
             </div>
           )}
 
+          {/* Referral Codes */}
           {tab === "referrals" && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
@@ -332,8 +387,71 @@ const AdminDashboard = () => {
                       />
                     </div>
                   </div>
+
+                  {/* Date Range */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="flex items-center gap-1.5 font-body text-xs text-foreground mb-1">
+                        <Calendar className="w-3 h-3" /> Valid From (optional)
+                      </label>
+                      <input
+                        type="date"
+                        value={newCode.valid_from}
+                        onChange={(e) => setNewCode({ ...newCode, valid_from: e.target.value })}
+                        className="w-full bg-muted border border-border rounded-lg px-3 py-2 font-body text-sm text-foreground"
+                      />
+                    </div>
+                    <div>
+                      <label className="flex items-center gap-1.5 font-body text-xs text-foreground mb-1">
+                        <Calendar className="w-3 h-3" /> Valid Until (optional)
+                      </label>
+                      <input
+                        type="date"
+                        value={newCode.valid_until}
+                        onChange={(e) => setNewCode({ ...newCode, valid_until: e.target.value })}
+                        className="w-full bg-muted border border-border rounded-lg px-3 py-2 font-body text-sm text-foreground"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Region */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="flex items-center gap-1.5 font-body text-xs text-foreground mb-1">
+                        <MapPin className="w-3 h-3" /> African Region (optional)
+                      </label>
+                      <select
+                        value={selectedRegion}
+                        onChange={(e) => { setSelectedRegion(e.target.value); setSelectedCountry(""); }}
+                        className="w-full bg-muted border border-border rounded-lg px-3 py-2 font-body text-sm text-foreground"
+                      >
+                        <option value="">All Regions</option>
+                        {Object.keys(AFRICAN_REGIONS).map((r) => (
+                          <option key={r} value={r}>{r}</option>
+                        ))}
+                      </select>
+                    </div>
+                    {selectedRegion && (
+                      <div>
+                        <label className="flex items-center gap-1.5 font-body text-xs text-foreground mb-1">
+                          <MapPin className="w-3 h-3" /> Country (optional)
+                        </label>
+                        <select
+                          value={selectedCountry}
+                          onChange={(e) => setSelectedCountry(e.target.value)}
+                          className="w-full bg-muted border border-border rounded-lg px-3 py-2 font-body text-sm text-foreground"
+                        >
+                          <option value="">Entire {selectedRegion}</option>
+                          {AFRICAN_REGIONS[selectedRegion]?.map((c) => (
+                            <option key={c} value={c}>{c}</option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
+                  </div>
+
                   <button onClick={createReferralCode} className="btn-cherry rounded-lg px-6 py-2 font-subheading text-xs font-semibold">
-                    Create Code
+                    Save Promo Code
                   </button>
                 </div>
               )}
@@ -344,6 +462,7 @@ const AdminDashboard = () => {
                     <tr className="border-b border-border bg-muted/50">
                       <th className="text-left px-4 py-3 font-subheading text-xs font-semibold text-muted-foreground uppercase">Code</th>
                       <th className="text-left px-4 py-3 font-subheading text-xs font-semibold text-muted-foreground uppercase">Discount</th>
+                      <th className="text-left px-4 py-3 font-subheading text-xs font-semibold text-muted-foreground uppercase">Region</th>
                       <th className="text-left px-4 py-3 font-subheading text-xs font-semibold text-muted-foreground uppercase">Uses</th>
                       <th className="text-left px-4 py-3 font-subheading text-xs font-semibold text-muted-foreground uppercase">Status</th>
                       <th className="text-right px-4 py-3 font-subheading text-xs font-semibold text-muted-foreground uppercase">Actions</th>
@@ -351,7 +470,7 @@ const AdminDashboard = () => {
                   </thead>
                   <tbody>
                     {referralCodes.length === 0 ? (
-                      <tr><td colSpan={5} className="px-4 py-8 text-center font-body text-sm text-muted-foreground">No promo codes yet</td></tr>
+                      <tr><td colSpan={6} className="px-4 py-8 text-center font-body text-sm text-muted-foreground">No promo codes yet</td></tr>
                     ) : (
                       referralCodes.map((rc: any) => (
                         <tr key={rc.id} className="border-b border-border last:border-0">
@@ -359,6 +478,7 @@ const AdminDashboard = () => {
                           <td className="px-4 py-3 font-body text-sm text-muted-foreground">
                             {rc.discount_type === "percentage" ? `${rc.discount_value}%` : `R${rc.discount_value}`}
                           </td>
+                          <td className="px-4 py-3 font-body text-sm text-muted-foreground">{rc.valid_region || "Global"}</td>
                           <td className="px-4 py-3 font-body text-sm text-muted-foreground">
                             {rc.current_uses}/{rc.max_uses || "∞"}
                           </td>
@@ -394,6 +514,41 @@ const AdminDashboard = () => {
             </div>
           )}
 
+          {/* META Business */}
+          {tab === "meta" && (
+            <div className="space-y-6">
+              <p className="font-body text-sm text-muted-foreground">Meta Business Suite integrations and services management.</p>
+
+              <div className="bg-gradient-to-r from-blue-500/5 to-blue-500/10 border border-blue-500/20 rounded-lg p-4 flex items-center gap-4">
+                <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center shrink-0">
+                  <Share2 className="w-5 h-5 text-blue-500" />
+                </div>
+                <div className="flex-1">
+                  <p className="font-subheading text-sm font-semibold text-foreground">Meta Business Suite Integration</p>
+                  <p className="font-body text-xs text-muted-foreground">Connect Facebook, Instagram, and WhatsApp Business for all clients.</p>
+                </div>
+                <span className="bg-accent text-accent-foreground px-3 py-1 rounded-full font-body text-xs font-medium shrink-0">Coming Soon</span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {[
+                  { title: "WhatsApp Business API", desc: "Manage WhatsApp catalogues, automated messaging, and broadcast lists for client businesses." },
+                  { title: "Facebook & Instagram Ads", desc: "Create and monitor ad campaigns, boost posts, and manage audiences across Meta platforms." },
+                  { title: "Product Catalogue Sync", desc: "Sync client products to Facebook Shops, Instagram Shopping, and WhatsApp catalogues automatically." },
+                  { title: "Messenger & Instagram DMs", desc: "Unified inbox for managing customer conversations from Facebook Messenger and Instagram DMs." },
+                  { title: "Audience Insights", desc: "Detailed analytics on ad reach, engagement, and conversion metrics across Meta platforms." },
+                  { title: "Automated Messaging", desc: "Set up welcome messages, order confirmations, and payment receipts via WhatsApp and Messenger." },
+                ].map((feature) => (
+                  <div key={feature.title} className="bg-card border border-border rounded-lg p-5 space-y-2">
+                    <p className="font-subheading text-sm font-semibold text-foreground">{feature.title}</p>
+                    <p className="font-body text-xs text-muted-foreground leading-relaxed">{feature.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Settings */}
           {tab === "settings" && (
             <div className="space-y-6">
               <div className="bg-card border border-border rounded-lg p-6">
@@ -403,7 +558,9 @@ const AdminDashboard = () => {
                 </p>
                 <button
                   onClick={async () => {
-                    const { error } = await supabase.auth.updateUser({ password: prompt("Enter new password:") || "" });
+                    const newPass = prompt("Enter new password:");
+                    if (!newPass) return;
+                    const { error } = await supabase.auth.updateUser({ password: newPass });
                     if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
                     else toast({ title: "Updated!", description: "Password changed successfully." });
                   }}

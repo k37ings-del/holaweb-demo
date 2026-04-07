@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Plus, ShoppingBag, Edit2, Trash2, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import WebsiteScraper from "@/components/WebsiteScraper";
 
 const Products = () => {
   const [products, setProducts] = useState<any[]>([]);
@@ -192,6 +193,9 @@ const Products = () => {
           ))}
         </div>
       )}
+
+      {/* Website Scraper */}
+      <WebsiteScraper />
     </div>
   );
 };
