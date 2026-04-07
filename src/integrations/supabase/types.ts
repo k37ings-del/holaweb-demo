@@ -367,6 +367,7 @@ export type Database = {
           is_active: boolean
           max_uses: number | null
           valid_from: string
+          valid_region: string | null
           valid_until: string | null
         }
         Insert: {
@@ -380,6 +381,7 @@ export type Database = {
           is_active?: boolean
           max_uses?: number | null
           valid_from?: string
+          valid_region?: string | null
           valid_until?: string | null
         }
         Update: {
@@ -393,6 +395,7 @@ export type Database = {
           is_active?: boolean
           max_uses?: number | null
           valid_from?: string
+          valid_region?: string | null
           valid_until?: string | null
         }
         Relationships: []
@@ -499,6 +502,7 @@ export type Database = {
           ends_at: string | null
           id: string
           plan_id: string
+          region: string | null
           started_at: string
           status: string
           trial_ends_at: string | null
@@ -512,6 +516,7 @@ export type Database = {
           ends_at?: string | null
           id?: string
           plan_id: string
+          region?: string | null
           started_at?: string
           status?: string
           trial_ends_at?: string | null
@@ -525,6 +530,7 @@ export type Database = {
           ends_at?: string | null
           id?: string
           plan_id?: string
+          region?: string | null
           started_at?: string
           status?: string
           trial_ends_at?: string | null
