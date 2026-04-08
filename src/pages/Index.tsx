@@ -220,8 +220,8 @@ const Index = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div className="relative">
                   <p className="font-subheading text-sm font-semibold text-primary mb-3 uppercase tracking-wider">Our Platform</p>
-                  <div className="aspect-[4/3] bg-secondary/40 border border-border overflow-hidden shadow-[-23px_23px_0px_0px_hsl(352,66%,47%)]">
-                    <img src={ourPlatformImage} alt="Our Holaweb Platform dashboard" className="w-full h-full object-cover" />
+                  <div className="aspect-[16/9] max-w-md bg-secondary/40 border border-border overflow-hidden shadow-[-23px_23px_0px_0px_hsl(352,66%,47%)]">
+                    <img src={ourPlatformImage} alt="Our Holaweb Platform dashboard" className="w-full h-full object-contain" />
                   </div>
                 </div>
 
