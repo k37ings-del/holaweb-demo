@@ -6,6 +6,7 @@ import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import logo from "@/assets/HW_Logo.png";
+import authBg from "@/assets/auth-bg.png";
 
 const Auth = () => {
   const [mode, setMode] = useState<"login" | "signup" | "reset">("login");
@@ -75,9 +76,13 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4 relative">
+      {/* Background image */}
+      <img src={authBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
+      <div className="absolute inset-0 bg-background/70 backdrop-blur-sm" />
+
       <motion.div
-        className="w-full max-w-md"
+        className="w-full max-w-md relative z-10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -98,7 +103,7 @@ const Auth = () => {
           </p>
         </div>
 
-        <div className="bg-card border border-border rounded-lg p-6">
+        <div className="bg-card/60 backdrop-blur-xl border border-border/50 rounded-lg p-6 shadow-2xl">
           <form onSubmit={handleSubmit} className="space-y-4" autoComplete="on">
             {mode === "signup" && (
               <div>
@@ -108,7 +113,7 @@ const Auth = () => {
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   required
-                  className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  className="w-full bg-muted/50 backdrop-blur border border-border rounded-lg px-4 py-3 text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                   placeholder="Your full name"
                   autoComplete="name"
                 />
@@ -122,7 +127,7 @@ const Auth = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="w-full bg-muted/50 backdrop-blur border border-border rounded-lg px-4 py-3 text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                 placeholder="you@example.com"
                 autoComplete="email"
               />
@@ -138,7 +143,7 @@ const Auth = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     minLength={6}
-                    className="w-full bg-muted border border-border rounded-lg px-4 py-3 pr-12 text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    className="w-full bg-muted/50 backdrop-blur border border-border rounded-lg px-4 py-3 pr-12 text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                     placeholder="••••••••"
                     autoComplete={mode === "login" ? "current-password" : "new-password"}
                   />

@@ -126,10 +126,10 @@ const ServiceDetail = () => {
         <section className="pt-32 pb-24">
           <div className="container mx-auto px-4 lg:px-8">
             <Link
-              to="/services"
+              to="/"
               className="inline-flex items-center gap-2 text-primary text-sm font-body mb-8 hover:underline"
             >
-              <ArrowLeft className="w-4 h-4" /> Back to Services
+              <ArrowLeft className="w-4 h-4" /> Back to Home
             </Link>
 
             {/* Title */}
@@ -201,18 +201,18 @@ const ServiceDetail = () => {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
-                to="/quick_start"
+                to="/auth"
                 className="btn-cherry inline-flex items-center justify-center rounded-lg px-8 py-3 font-subheading text-sm font-semibold shadow-lg"
               >
                 Get Started
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
               <Link
-                to="/services"
+                to="/"
                 className="inline-flex items-center gap-2 rounded-lg border border-primary/40 px-6 py-3 font-subheading text-sm font-semibold text-primary hover:bg-primary/10 transition-colors duration-300"
               >
                 <ArrowLeft className="w-4 h-4" />
-                All Services
+                Back to Home
               </Link>
             </div>
           </div>
