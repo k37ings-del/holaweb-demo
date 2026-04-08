@@ -10,57 +10,160 @@ import { supabase } from "@/integrations/supabase/client";
 const bundledPlans = [
   {
     name: "Starter",
-    price: "R299",
-    period: "/mo",
+    price: "R1,500",
+    period: " (once-off)",
     trial: "7-day free trial",
     icon: Zap,
-    description: "Perfect for solo entrepreneurs and micro businesses just getting started.",
-    features: [
-      "1 Payment link",
-      "Basic website template",
-      "Up to 50 customers",
-      "WhatsApp sharing",
-      "Email support",
+    description: "Perfect for individuals, startups, and small businesses who need a professional online presence.",
+    sections: [
+      {
+        title: "WEBSITE",
+        features: [
+          "3-page website (Home, About, Contact)",
+          "Mobile-responsive design",
+          "WhatsApp chat integration",
+          "Contact form (lead capture)",
+          "Basic SEO setup",
+          "Google Maps integration",
+        ],
+      },
+      {
+        title: "HOSTING & DOMAIN",
+        features: [
+          "Free .co.za domain (1 year)",
+          "1-year hosting (SSD)",
+          "Free SSL certificate",
+          "5 professional email accounts",
+        ],
+      },
+      {
+        title: "SUPPORT",
+        features: [
+          "1 revision round",
+          "Email support (48hr response)",
+          "30-day post-launch support",
+        ],
+      },
     ],
+    outcomes: ["You are online", "Customers can find and contact you"],
     cta: "Start 7-Day Free Trial",
     highlighted: false,
     slug: "starter",
   },
   {
     name: "Growth",
-    price: "R599",
-    period: "/mo",
+    price: "R3,000",
+    period: " (once-off)",
     trial: "14-day free trial",
     icon: Star,
-    description: "Everything you need to grow and manage a thriving small business.",
-    features: [
-      "Unlimited payment links",
-      "Full website builder",
-      "Unlimited customers",
-      "WhatsApp + Email + SMS",
-      "Analytics dashboard",
-      "Priority support",
-      "Custom domain",
+    description: "Designed for growing businesses that want to attract, engage, and convert customers.",
+    sections: [
+      {
+        title: "WEBSITE",
+        features: [
+          "5-page website (+ Services page)",
+          "Custom design (brand colours & identity)",
+          "WhatsApp + contact & enquiry forms",
+          "Blog/news section (CMS-enabled)",
+          "Full on-page SEO + Google Business setup",
+          "Google Analytics integration",
+          "Social media integration",
+          "Image gallery / portfolio",
+        ],
+      },
+      {
+        title: "LEAD & CUSTOMER TOOLS",
+        features: [
+          "Multi-step forms (lead capture)",
+          "Basic customer tracking (form submissions)",
+        ],
+      },
+      {
+        title: "HOSTING & DOMAIN",
+        features: [
+          "Free .co.za domain (1 year)",
+          "1-year hosting — 10GB SSD",
+          "Free SSL certificate",
+          "20 professional email accounts",
+          "Daily automated backups",
+        ],
+      },
+      {
+        title: "SUPPORT",
+        features: [
+          "2 revision rounds",
+          "WhatsApp + email support",
+          "60-day post-launch support",
+          "CMS training (30 min)",
+        ],
+      },
     ],
+    outcomes: ["You attract and capture leads", "You build credibility", "You start understanding your customers"],
     cta: "Start 14-Day Free Trial",
     highlighted: true,
     slug: "growth",
   },
   {
     name: "Business",
-    price: "R1,499",
-    period: "/mo",
+    price: "R5,000",
+    period: " (once-off)",
     trial: null,
     icon: Building2,
-    description: "Advanced tools for established businesses ready to scale operations.",
-    features: [
-      "Everything in Growth",
-      "Meta Business Suite integration",
-      "Advanced CRM & segmentation",
-      "Team collaboration (3 users)",
-      "API access",
-      "Dedicated onboarding",
+    description: "Built for businesses that want to sell products and accept payments online.",
+    sections: [
+      {
+        title: "WEBSITE & STORE",
+        features: [
+          "Up to 10 pages — fully custom designed",
+          "E-commerce store (up to 20 products)",
+          "Product catalog + categories",
+          "Optimized product pages",
+        ],
+      },
+      {
+        title: "PAYMENTS & SALES",
+        features: [
+          "Payment gateway integration (Paystack / Flutterwave)",
+          "Secure checkout experience",
+          "Payment link generation",
+          "Order management system",
+        ],
+      },
+      {
+        title: "CUSTOMER EXPERIENCE",
+        features: [
+          "WhatsApp integration (sales & enquiries)",
+          "Lead capture forms",
+          "Email notifications (orders & enquiries)",
+        ],
+      },
+      {
+        title: "PERFORMANCE & SEO",
+        features: [
+          "Full SEO (technical + on-page + schema)",
+          "Speed optimisation (Core Web Vitals)",
+        ],
+      },
+      {
+        title: "HOSTING & DOMAIN",
+        features: [
+          "Free .co.za domain (1 year)",
+          "1-year hosting — 20GB SSD",
+          "Free SSL certificate",
+          "50 professional email accounts",
+          "Daily backups + malware scanning",
+        ],
+      },
+      {
+        title: "SUPPORT",
+        features: [
+          "Priority support (WhatsApp + email)",
+          "60-day post-launch support",
+          "CMS training session",
+        ],
+      },
     ],
+    outcomes: ["You can sell online", "You can receive payments", "You have a working digital sales system"],
     cta: "Get Started",
     highlighted: false,
     slug: "business",
@@ -72,14 +175,20 @@ const bundledPlans = [
     trial: null,
     icon: Crown,
     description: "Tailored solutions for large organizations with complex requirements.",
-    features: [
-      "Everything in Business",
-      "Unlimited team members",
-      "Custom integrations",
-      "Dedicated account manager",
-      "SLA guarantee",
-      "White-label options",
+    sections: [
+      {
+        title: "INCLUDES",
+        features: [
+          "Everything in Business",
+          "Unlimited team members",
+          "Custom integrations",
+          "Dedicated account manager",
+          "SLA guarantee",
+          "White-label options",
+        ],
+      },
     ],
+    outcomes: [],
     cta: "Contact Sales",
     highlighted: false,
     slug: "enterprise",
@@ -194,7 +303,7 @@ const Pricing = () => {
                 Plans that grow <span className="text-primary">with you</span>
               </h1>
               <p className="font-body font-light text-lg text-muted-foreground max-w-2xl mx-auto mb-10">
-                Choose a bundled package for the complete Business OS experience, or pick individual services that match your needs. No hidden fees. Cancel anytime.
+                Choose a bundled package for the complete Business OS experience, or pick individual services that match your needs. No hidden fees.
               </p>
 
               {/* Tab switcher */}
@@ -247,7 +356,7 @@ const Pricing = () => {
         {activeTab === "bundled" && (
           <section className="py-8 pb-24">
             <div className="container mx-auto px-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto items-start">
                 {bundledPlans.map((plan, i) => (
                   <motion.div
                     key={plan.name}
@@ -273,20 +382,40 @@ const Pricing = () => {
                     <p className="font-body text-xs text-muted-foreground mb-4">{plan.description}</p>
                     <div className="mb-1">
                       <span className="font-heading text-3xl font-bold text-foreground">{plan.price}</span>
-                      {plan.period && <span className="font-body text-muted-foreground text-sm">{plan.period}</span>}
+                      {plan.period && <span className="font-body text-muted-foreground text-xs">{plan.period}</span>}
                     </div>
                     {plan.trial && (
                       <p className="font-subheading text-xs text-primary font-semibold mb-4">{plan.trial}</p>
                     )}
                     {!plan.trial && <div className="mb-4" />}
-                    <ul className="space-y-2.5 mb-6 flex-1">
-                      {plan.features.map((f) => (
-                        <li key={f} className="flex items-start gap-2 font-body text-xs text-foreground/80">
-                          <Check className="w-3.5 h-3.5 text-primary flex-shrink-0 mt-0.5" />
-                          {f}
-                        </li>
+
+                    {/* Sections */}
+                    <div className="space-y-4 mb-6 flex-1">
+                      {plan.sections.map((section) => (
+                        <div key={section.title}>
+                          <p className="font-subheading text-[10px] font-bold text-primary uppercase tracking-wider mb-1.5">{section.title}</p>
+                          <ul className="space-y-1.5">
+                            {section.features.map((f) => (
+                              <li key={f} className="flex items-start gap-2 font-body text-[11px] text-foreground/80">
+                                <Check className="w-3 h-3 text-primary flex-shrink-0 mt-0.5" />
+                                {f}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       ))}
-                    </ul>
+                    </div>
+
+                    {/* Outcomes */}
+                    {plan.outcomes.length > 0 && (
+                      <div className="mb-4 bg-primary/5 border border-primary/10 rounded-lg p-3">
+                        <p className="font-subheading text-[10px] font-bold text-primary uppercase tracking-wider mb-1.5">Outcome</p>
+                        {plan.outcomes.map((o) => (
+                          <p key={o} className="font-body text-[11px] text-foreground/80">✔ {o}</p>
+                        ))}
+                      </div>
+                    )}
+
                     <Link
                       to={plan.slug === "enterprise" ? "/contact" : "/auth"}
                       className={`text-center rounded-lg px-4 py-2.5 font-subheading text-xs font-semibold transition-all ${

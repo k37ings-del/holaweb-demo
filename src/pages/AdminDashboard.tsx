@@ -18,11 +18,15 @@ import {
   Share2,
   Calendar,
   MapPin,
+  DollarSign,
+  Edit,
+  ToggleLeft,
+  ToggleRight,
 } from "lucide-react";
 import logo from "@/assets/HW_Logo.png";
 import { useToast } from "@/hooks/use-toast";
 
-type Tab = "overview" | "clients" | "subscriptions" | "referrals" | "meta" | "settings";
+type Tab = "overview" | "clients" | "subscriptions" | "referrals" | "meta" | "pricing" | "settings";
 
 const AFRICAN_REGIONS: Record<string, string[]> = {
   "Eastern Africa": ["Kenya", "Tanzania", "Uganda", "Rwanda", "Ethiopia", "Somalia", "Burundi", "South Sudan", "Eritrea", "Djibouti", "Comoros", "Mauritius", "Seychelles", "Madagascar", "Mozambique"],
@@ -40,6 +44,7 @@ const AdminDashboard = () => {
   const [businesses, setBusinesses] = useState<any[]>([]);
   const [subscriptions, setSubscriptions] = useState<any[]>([]);
   const [referralCodes, setReferralCodes] = useState<any[]>([]);
+  const [plans, setPlans] = useState<any[]>([]);
   const [newCode, setNewCode] = useState({
     code: "",
     discount_type: "percentage",
@@ -52,6 +57,7 @@ const AdminDashboard = () => {
   const [showNewCode, setShowNewCode] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("");
+  const [editingPlan, setEditingPlan] = useState<any>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -69,8 +75,6 @@ const AdminDashboard = () => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (!session) { navigate("/admin"); return; }
       setUser(session.user);
-
-      // Verify admin role
       const { data: roles } = await supabase
         .from("user_roles")
         .select("role")
@@ -87,15 +91,17 @@ const AdminDashboard = () => {
   }, [user]);
 
   const loadData = async () => {
-    const [bizRes, subRes, refRes] = await Promise.all([
+    const [bizRes, subRes, refRes, planRes] = await Promise.all([
       supabase.from("businesses").select("*"),
       supabase.from("user_subscriptions").select("*, subscription_plans(name, price, currency)"),
       supabase.from("referral_codes").select("*"),
+      supabase.from("subscription_plans").select("*").order("price", { ascending: true }),
     ]);
 
     setBusinesses(bizRes.data || []);
     setSubscriptions(subRes.data || []);
     setReferralCodes(refRes.data || []);
+    setPlans(planRes.data || []);
     setStats({
       totalUsers: (bizRes.data || []).length,
       activeSubscriptions: (subRes.data || []).filter((s: any) => s.status === "active" || s.status === "trial").length,
@@ -111,9 +117,7 @@ const AdminDashboard = () => {
 
   const createReferralCode = async () => {
     if (!newCode.code.trim()) return;
-
     const regionValue = selectedCountry || selectedRegion || newCode.valid_region || null;
-
     const insertData: any = {
       code: newCode.code.toUpperCase(),
       discount_type: newCode.discount_type,
@@ -121,7 +125,6 @@ const AdminDashboard = () => {
       max_uses: newCode.max_uses,
       created_by: user.id,
     };
-
     if (newCode.valid_from) insertData.valid_from = newCode.valid_from;
     if (newCode.valid_until) insertData.valid_until = newCode.valid_until;
     if (regionValue) insertData.valid_region = regionValue;
@@ -144,10 +147,38 @@ const AdminDashboard = () => {
     loadData();
   };
 
+  const togglePlanActive = async (planId: string, currentActive: boolean) => {
+    const { error } = await supabase.from("subscription_plans").update({ is_active: !currentActive }).eq("id", planId);
+    if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
+    else loadData();
+  };
+
+  const savePlanEdit = async () => {
+    if (!editingPlan) return;
+    const { error } = await supabase
+      .from("subscription_plans")
+      .update({
+        name: editingPlan.name,
+        price: editingPlan.price,
+        trial_days: editingPlan.trial_days,
+        billing_period: editingPlan.billing_period,
+      })
+      .eq("id", editingPlan.id);
+
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Updated!", description: `Plan "${editingPlan.name}" updated.` });
+      setEditingPlan(null);
+      loadData();
+    }
+  };
+
   const sidebarItems = [
     { icon: BarChart3, label: "Overview", id: "overview" as Tab },
     { icon: Users, label: "Clients", id: "clients" as Tab },
     { icon: CreditCard, label: "Subscriptions", id: "subscriptions" as Tab },
+    { icon: DollarSign, label: "Pricing", id: "pricing" as Tab },
     { icon: Tag, label: "Referral Codes", id: "referrals" as Tab },
     { icon: Share2, label: "META Business", id: "meta" as Tab },
     { icon: Settings, label: "Settings", id: "settings" as Tab },
@@ -331,6 +362,176 @@ const AdminDashboard = () => {
             </div>
           )}
 
+          {/* Pricing Management */}
+          {tab === "pricing" && (
+            <div className="space-y-6">
+              <p className="font-body text-sm text-muted-foreground">Manage subscription plans, pricing, and independent services.</p>
+
+              {/* Edit modal */}
+              {editingPlan && (
+                <div className="bg-card border border-primary/20 rounded-lg p-6 space-y-4">
+                  <h3 className="font-heading text-lg font-bold text-foreground">Edit Plan: {editingPlan.name}</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block font-body text-xs text-foreground mb-1">Plan Name</label>
+                      <input
+                        value={editingPlan.name}
+                        onChange={(e) => setEditingPlan({ ...editingPlan, name: e.target.value })}
+                        className="w-full bg-muted border border-border rounded-lg px-3 py-2 font-body text-sm text-foreground"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-body text-xs text-foreground mb-1">Price (ZAR)</label>
+                      <input
+                        type="number"
+                        value={editingPlan.price}
+                        onChange={(e) => setEditingPlan({ ...editingPlan, price: Number(e.target.value) })}
+                        className="w-full bg-muted border border-border rounded-lg px-3 py-2 font-body text-sm text-foreground"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-body text-xs text-foreground mb-1">Trial Days</label>
+                      <input
+                        type="number"
+                        value={editingPlan.trial_days}
+                        onChange={(e) => setEditingPlan({ ...editingPlan, trial_days: Number(e.target.value) })}
+                        className="w-full bg-muted border border-border rounded-lg px-3 py-2 font-body text-sm text-foreground"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-body text-xs text-foreground mb-1">Billing Period</label>
+                      <select
+                        value={editingPlan.billing_period}
+                        onChange={(e) => setEditingPlan({ ...editingPlan, billing_period: e.target.value })}
+                        className="w-full bg-muted border border-border rounded-lg px-3 py-2 font-body text-sm text-foreground"
+                      >
+                        <option value="once-off">Once-off</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="yearly">Yearly</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <button onClick={savePlanEdit} className="btn-cherry rounded-lg px-6 py-2 font-subheading text-xs font-semibold">
+                      Save Changes
+                    </button>
+                    <button onClick={() => setEditingPlan(null)} className="border border-border rounded-lg px-6 py-2 font-subheading text-xs font-semibold text-foreground hover:bg-muted">
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Bundled Plans */}
+              <div>
+                <h3 className="font-heading text-base font-bold text-foreground mb-3">Bundled Packages</h3>
+                <div className="bg-card border border-border rounded-lg overflow-hidden">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-border bg-muted/50">
+                        <th className="text-left px-4 py-3 font-subheading text-xs font-semibold text-muted-foreground uppercase">Plan</th>
+                        <th className="text-left px-4 py-3 font-subheading text-xs font-semibold text-muted-foreground uppercase">Price</th>
+                        <th className="text-left px-4 py-3 font-subheading text-xs font-semibold text-muted-foreground uppercase">Period</th>
+                        <th className="text-left px-4 py-3 font-subheading text-xs font-semibold text-muted-foreground uppercase">Trial</th>
+                        <th className="text-left px-4 py-3 font-subheading text-xs font-semibold text-muted-foreground uppercase">Status</th>
+                        <th className="text-right px-4 py-3 font-subheading text-xs font-semibold text-muted-foreground uppercase">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {plans.filter(p => p.plan_type === "bundled").map((plan) => (
+                        <tr key={plan.id} className="border-b border-border last:border-0">
+                          <td className="px-4 py-3 font-body text-sm font-medium text-foreground">{plan.name}</td>
+                          <td className="px-4 py-3 font-body text-sm text-foreground">R{plan.price.toLocaleString()}</td>
+                          <td className="px-4 py-3 font-body text-sm text-muted-foreground capitalize">{plan.billing_period}</td>
+                          <td className="px-4 py-3 font-body text-sm text-muted-foreground">{plan.trial_days > 0 ? `${plan.trial_days} days` : "—"}</td>
+                          <td className="px-4 py-3">
+                            <span className={`inline-flex items-center px-2 py-0.5 rounded-full font-subheading text-xs font-semibold ${
+                              plan.is_active ? "bg-green-500/10 text-green-500" : "bg-muted text-muted-foreground"
+                            }`}>
+                              {plan.is_active ? "Active" : "Disabled"}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 text-right">
+                            <div className="flex items-center justify-end gap-2">
+                              <button
+                                onClick={() => setEditingPlan(plan)}
+                                className="p-1.5 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                                title="Edit"
+                              >
+                                <Edit className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                onClick={() => togglePlanActive(plan.id, plan.is_active)}
+                                className="p-1.5 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                                title={plan.is_active ? "Disable" : "Enable"}
+                              >
+                                {plan.is_active ? <ToggleRight className="w-4 h-4 text-green-500" /> : <ToggleLeft className="w-4 h-4" />}
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* Independent Services */}
+              <div>
+                <h3 className="font-heading text-base font-bold text-foreground mb-3">Independent Services</h3>
+                <div className="bg-card border border-border rounded-lg overflow-hidden">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-border bg-muted/50">
+                        <th className="text-left px-4 py-3 font-subheading text-xs font-semibold text-muted-foreground uppercase">Service</th>
+                        <th className="text-left px-4 py-3 font-subheading text-xs font-semibold text-muted-foreground uppercase">Price</th>
+                        <th className="text-left px-4 py-3 font-subheading text-xs font-semibold text-muted-foreground uppercase">Period</th>
+                        <th className="text-left px-4 py-3 font-subheading text-xs font-semibold text-muted-foreground uppercase">Trial</th>
+                        <th className="text-left px-4 py-3 font-subheading text-xs font-semibold text-muted-foreground uppercase">Status</th>
+                        <th className="text-right px-4 py-3 font-subheading text-xs font-semibold text-muted-foreground uppercase">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {plans.filter(p => p.plan_type === "independent").map((plan) => (
+                        <tr key={plan.id} className="border-b border-border last:border-0">
+                          <td className="px-4 py-3 font-body text-sm font-medium text-foreground">{plan.name}</td>
+                          <td className="px-4 py-3 font-body text-sm text-foreground">R{plan.price.toLocaleString()}</td>
+                          <td className="px-4 py-3 font-body text-sm text-muted-foreground capitalize">{plan.billing_period}</td>
+                          <td className="px-4 py-3 font-body text-sm text-muted-foreground">{plan.trial_days > 0 ? `${plan.trial_days} days` : "—"}</td>
+                          <td className="px-4 py-3">
+                            <span className={`inline-flex items-center px-2 py-0.5 rounded-full font-subheading text-xs font-semibold ${
+                              plan.is_active ? "bg-green-500/10 text-green-500" : "bg-muted text-muted-foreground"
+                            }`}>
+                              {plan.is_active ? "Active" : "Disabled"}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 text-right">
+                            <div className="flex items-center justify-end gap-2">
+                              <button
+                                onClick={() => setEditingPlan(plan)}
+                                className="p-1.5 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                                title="Edit"
+                              >
+                                <Edit className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                onClick={() => togglePlanActive(plan.id, plan.is_active)}
+                                className="p-1.5 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                                title={plan.is_active ? "Disable" : "Enable"}
+                              >
+                                {plan.is_active ? <ToggleRight className="w-4 h-4 text-green-500" /> : <ToggleLeft className="w-4 h-4" />}
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Referral Codes */}
           {tab === "referrals" && (
             <div className="space-y-4">
@@ -388,7 +589,6 @@ const AdminDashboard = () => {
                     </div>
                   </div>
 
-                  {/* Date Range */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="flex items-center gap-1.5 font-body text-xs text-foreground mb-1">
@@ -414,7 +614,6 @@ const AdminDashboard = () => {
                     </div>
                   </div>
 
-                  {/* Region */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="flex items-center gap-1.5 font-body text-xs text-foreground mb-1">

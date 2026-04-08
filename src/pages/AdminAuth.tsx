@@ -6,6 +6,7 @@ import { Eye, EyeOff, ArrowLeft, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import logo from "@/assets/HW_Logo.png";
+import authBg from "@/assets/auth-bg.png";
 
 const AdminAuth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -36,7 +37,8 @@ const AdminAuth = () => {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === "SIGNED_IN" && session) {
-        checkAdminAndRedirect(session.user.id);
+        // Small delay to ensure role check works after signup+role insert
+        setTimeout(() => checkAdminAndRedirect(session.user.id), 300);
       }
     });
 
@@ -48,7 +50,6 @@ const AdminAuth = () => {
     setLoading(true);
 
     try {
-      // Check if email is in admin allowed list
       const { data: isAllowed } = await supabase.rpc("is_admin_email", { _email: email });
 
       if (!isAllowed) {
@@ -80,8 +81,7 @@ const AdminAuth = () => {
         }
 
         toast({ title: "Welcome, Admin!", description: "You've been signed in to the admin panel." });
-        // Force navigation after a brief delay to ensure auth state is settled
-        setTimeout(() => navigate("/admin/dashboard", { replace: true }), 100);
+        navigate("/admin/dashboard", { replace: true });
       } else {
         const { error } = await supabase.auth.signUp({
           email,
@@ -109,9 +109,13 @@ const AdminAuth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4 relative">
+      {/* Background image */}
+      <img src={authBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
+      <div className="absolute inset-0 bg-background/70 backdrop-blur-sm" />
+
       <motion.div
-        className="w-full max-w-md"
+        className="w-full max-w-md relative z-10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -134,7 +138,7 @@ const AdminAuth = () => {
           </p>
         </div>
 
-        <div className="bg-card border border-border rounded-lg p-6">
+        <div className="bg-card/60 backdrop-blur-xl border border-border/50 rounded-lg p-6 shadow-2xl">
           <form onSubmit={handleSubmit} className="space-y-4" autoComplete="on">
             {!isLogin && (
               <div>
@@ -144,7 +148,7 @@ const AdminAuth = () => {
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   required={!isLogin}
-                  className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  className="w-full bg-muted/50 backdrop-blur border border-border rounded-lg px-4 py-3 text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                   placeholder="Your full name"
                   autoComplete="name"
                 />
@@ -158,7 +162,7 @@ const AdminAuth = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="w-full bg-muted/50 backdrop-blur border border-border rounded-lg px-4 py-3 text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                 placeholder="admin@holaweb.co.za"
                 autoComplete="email"
               />
@@ -173,7 +177,7 @@ const AdminAuth = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   minLength={6}
-                  className="w-full bg-muted border border-border rounded-lg px-4 py-3 pr-12 text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  className="w-full bg-muted/50 backdrop-blur border border-border rounded-lg px-4 py-3 pr-12 text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                   placeholder="••••••••"
                   autoComplete={isLogin ? "current-password" : "new-password"}
                 />
