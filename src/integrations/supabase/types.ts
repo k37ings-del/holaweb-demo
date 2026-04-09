@@ -499,9 +499,12 @@ export type Database = {
         Row: {
           business_id: string
           created_at: string
+          discount_amount: number | null
           ends_at: string | null
           id: string
+          original_price: number | null
           plan_id: string
+          referral_code_id: string | null
           region: string | null
           started_at: string
           status: string
@@ -513,9 +516,12 @@ export type Database = {
         Insert: {
           business_id: string
           created_at?: string
+          discount_amount?: number | null
           ends_at?: string | null
           id?: string
+          original_price?: number | null
           plan_id: string
+          referral_code_id?: string | null
           region?: string | null
           started_at?: string
           status?: string
@@ -527,9 +533,12 @@ export type Database = {
         Update: {
           business_id?: string
           created_at?: string
+          discount_amount?: number | null
           ends_at?: string | null
           id?: string
+          original_price?: number | null
           plan_id?: string
+          referral_code_id?: string | null
           region?: string | null
           started_at?: string
           status?: string
@@ -551,6 +560,13 @@ export type Database = {
             columns: ["plan_id"]
             isOneToOne: false
             referencedRelation: "subscription_plans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_subscriptions_referral_code_id_fkey"
+            columns: ["referral_code_id"]
+            isOneToOne: false
+            referencedRelation: "referral_codes"
             referencedColumns: ["id"]
           },
         ]
