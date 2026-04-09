@@ -10,6 +10,34 @@ const corsHeaders = {
 const SPREADSHEET_ID = "1HpeHhsMDkJxKcALH4RnXxhb1RRxYlyMiHu5EOYmRTsk";
 const SHEET_NAME = "Form Responses 1";
 
+// Simple in-memory rate limiter
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT = 5; // max requests
+const RATE_WINDOW = 60_000; // per minute
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_WINDOW });
+    return false;
+  }
+  entry.count++;
+  return entry.count > RATE_LIMIT;
+}
+
+function sanitize(val: unknown, maxLen = 500): string {
+  if (val === null || val === undefined) return "";
+  const str = String(val).trim().slice(0, maxLen);
+  // Strip potential injection characters
+  return str.replace(/[<>]/g, "");
+}
+
+function sanitizeArray(val: unknown, maxItems = 10, maxLen = 200): string[] {
+  if (!Array.isArray(val)) return [];
+  return val.slice(0, maxItems).map((v) => sanitize(v, maxLen));
+}
+
 async function getAccessToken(serviceAccountKey: any): Promise<string> {
   const toBase64Url = (str: string) =>
     btoa(str).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
@@ -28,7 +56,6 @@ async function getAccessToken(serviceAccountKey: any): Promise<string> {
 
   const unsignedToken = `${header}.${claimSet}`;
 
-  // Import the private key
   const pemContents = serviceAccountKey.private_key
     .replace(/-----BEGIN PRIVATE KEY-----/g, "")
     .replace(/-----END PRIVATE KEY-----/g, "")
@@ -65,7 +92,7 @@ async function getAccessToken(serviceAccountKey: any): Promise<string> {
 
   const tokenData = await tokenRes.json();
   if (!tokenData.access_token) {
-    throw new Error(`Failed to get access token: ${JSON.stringify(tokenData)}`);
+    throw new Error("Failed to obtain access token");
   }
   return tokenData.access_token;
 }
@@ -76,18 +103,49 @@ serve(async (req) => {
   }
 
   try {
+    // Rate limiting
+    const ip = req.headers.get("x-forwarded-for") || req.headers.get("cf-connecting-ip") || "unknown";
+    if (isRateLimited(ip)) {
+      return new Response(
+        JSON.stringify({ error: "Too many requests. Please try again later." }),
+        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const body = await req.json();
+
+    // Validate required fields
+    const companyName = sanitize(body.companyName, 200);
+    const contactPerson = sanitize(body.contactPerson, 100);
+    const email = sanitize(body.email, 255);
+
+    if (!companyName || !contactPerson || !email) {
+      return new Response(
+        JSON.stringify({ error: "Missing required fields." }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Basic email format check
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return new Response(
+        JSON.stringify({ error: "Invalid email format." }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const rawKey = Deno.env.get("GOOGLE_SERVICE_ACCOUNT_KEY") || "{}";
-    console.log("Key starts with:", rawKey.substring(0, 20));
     let serviceAccountKey;
     try {
       serviceAccountKey = JSON.parse(rawKey);
-    } catch (e) {
-      throw new Error(`Failed to parse GOOGLE_SERVICE_ACCOUNT_KEY as JSON. Make sure you paste the ENTIRE JSON file content (starts with {"type": "service_account"...}). Got: ${rawKey.substring(0, 30)}...`);
+    } catch (_e) {
+      console.error("Failed to parse service account key");
+      throw new Error("Service configuration error");
     }
 
     if (!serviceAccountKey.client_email) {
-      throw new Error("Google service account key not configured");
+      console.error("Service account key missing client_email");
+      throw new Error("Service configuration error");
     }
 
     const accessToken = await getAccessToken(serviceAccountKey);
@@ -95,25 +153,25 @@ serve(async (req) => {
     const timestamp = new Date().toISOString();
     const row = [
       timestamp,
-      body.companyName || "",
-      body.contactPerson || "",
-      body.email || "",
-      body.industryType || "",
-      body.currentWebsite || "",
-      (body.primaryGoals || []).join(", ") + (body.primaryGoalOther ? `, ${body.primaryGoalOther}` : ""),
-      body.mainAction || "",
-      body.targetAudience || "",
-      body.b2bOrB2c || "",
-      body.geographicMarket || "",
-      (body.pagesNeeded || []).join(", ") + (body.pagesNeededOther ? `, ${body.pagesNeededOther}` : ""),
-      body.logoFinal || "",
-      (body.imageryPreferences || []).join(", "),
-      body.websitesYouLike || "",
-      body.competitorWebsites || "",
-      body.launchDate || "",
-      body.budgetRange || "",
-      body.decisionMaker || "",
-      body.anythingElse || "",
+      companyName,
+      contactPerson,
+      email,
+      sanitize(body.industryType, 100),
+      sanitize(body.currentWebsite, 500),
+      sanitizeArray(body.primaryGoals).join(", ") + (body.primaryGoalOther ? `, ${sanitize(body.primaryGoalOther, 200)}` : ""),
+      sanitize(body.mainAction, 200),
+      sanitize(body.targetAudience, 200),
+      sanitize(body.b2bOrB2c, 50),
+      sanitize(body.geographicMarket, 100),
+      sanitizeArray(body.pagesNeeded).join(", ") + (body.pagesNeededOther ? `, ${sanitize(body.pagesNeededOther, 200)}` : ""),
+      sanitize(body.logoFinal, 50),
+      sanitizeArray(body.imageryPreferences).join(", "),
+      sanitize(body.websitesYouLike, 500),
+      sanitize(body.competitorWebsites, 500),
+      sanitize(body.launchDate, 50),
+      sanitize(body.budgetRange, 50),
+      sanitize(body.decisionMaker, 50),
+      sanitize(body.anythingElse, 1000),
     ];
 
     const range = encodeURIComponent(`${SHEET_NAME}!A1`);
@@ -130,21 +188,20 @@ serve(async (req) => {
       }),
     });
 
-    const sheetsData = await sheetsRes.json();
-
     if (!sheetsRes.ok) {
+      const sheetsData = await sheetsRes.json();
       console.error("Sheets API error:", JSON.stringify(sheetsData));
-      throw new Error(`Sheets API error: ${sheetsData.error?.message || "Unknown error"}`);
+      throw new Error("Failed to save submission");
     }
 
     return new Response(JSON.stringify({ success: true }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error("Error:", error.message);
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    console.error("Error:", error instanceof Error ? error.message : error);
+    return new Response(
+      JSON.stringify({ error: "Something went wrong. Please try again later." }),
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
   }
 });

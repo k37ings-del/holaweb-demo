@@ -6,6 +6,22 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+// Simple in-memory rate limiter
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT = 15; // max requests per window
+const RATE_WINDOW = 60_000; // 1 minute
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_WINDOW });
+    return false;
+  }
+  entry.count++;
+  return entry.count > RATE_LIMIT;
+}
+
 const HOLAWEB_CONTEXT = `You are Ola, the friendly AI assistant for Holaweb Media Group. You have a warm, conversational personality — think helpful colleague, not robotic chatbot. Use natural language, contractions, and a touch of enthusiasm. Keep responses concise (2-4 sentences max unless asked for detail).
 
 ABOUT HOLAWEB:
@@ -72,9 +88,43 @@ serve(async (req) => {
   }
 
   try {
+    // Rate limiting
+    const ip = req.headers.get("x-forwarded-for") || req.headers.get("cf-connecting-ip") || "unknown";
+    if (isRateLimited(ip)) {
+      return new Response(
+        JSON.stringify({ error: "Too many requests. Please try again in a moment." }),
+        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const { messages, language } = await req.json();
+
+    // Validate messages input
+    if (!Array.isArray(messages) || messages.length === 0 || messages.length > 50) {
+      return new Response(
+        JSON.stringify({ error: "Invalid request." }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Validate each message
+    for (const msg of messages) {
+      if (!msg.role || !msg.content || typeof msg.content !== "string" || msg.content.length > 5000) {
+        return new Response(
+          JSON.stringify({ error: "Invalid request." }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+    }
+
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
+    if (!LOVABLE_API_KEY) {
+      console.error("LOVABLE_API_KEY is not configured");
+      return new Response(
+        JSON.stringify({ error: "Service unavailable." }),
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
 
     const LANGUAGE_MAP: Record<string, string> = {
       en: "",
@@ -83,7 +133,7 @@ serve(async (req) => {
       af: "\n\nIMPORTANT: You MUST respond entirely in Afrikaans. Translate your entire response into Afrikaans. Keep action tags [ACTION:...] in English.",
       nl: "\n\nIMPORTANT: You MUST respond entirely in Dutch (Nederlands). Translate your entire response into Dutch. Keep action tags [ACTION:...] in English.",
     };
-    const langSuffix = LANGUAGE_MAP[language] || "";
+    const langSuffix = LANGUAGE_MAP[typeof language === "string" ? language : "en"] || "";
 
     const response = await fetch(
       "https://ai.gateway.lovable.dev/v1/chat/completions",
@@ -117,8 +167,7 @@ serve(async (req) => {
           { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
       }
-      const t = await response.text();
-      console.error("AI gateway error:", response.status, t);
+      console.error("AI gateway error:", response.status);
       return new Response(
         JSON.stringify({ error: "Something went wrong. Please try again." }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -129,9 +178,9 @@ serve(async (req) => {
       headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
     });
   } catch (e) {
-    console.error("chat error:", e);
+    console.error("chat error:", e instanceof Error ? e.message : e);
     return new Response(
-      JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }),
+      JSON.stringify({ error: "Something went wrong. Please try again." }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }

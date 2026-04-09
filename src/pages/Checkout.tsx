@@ -14,6 +14,7 @@ const Checkout = () => {
   const [customerPhone, setCustomerPhone] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const load = async () => {
@@ -34,21 +35,21 @@ const Checkout = () => {
     e.preventDefault();
     if (!paymentLink) return;
     setSubmitting(true);
+    setError("");
 
-    // Create order record
-    const { error } = await supabase.from("orders").insert({
-      business_id: paymentLink.business_id,
-      user_id: paymentLink.user_id,
-      payment_link_id: paymentLink.id,
-      amount: paymentLink.amount,
-      currency: paymentLink.currency,
-      status: "pending",
-      customer_name: customerName,
-      customer_email: customerEmail,
-      customer_phone: customerPhone || null,
+    // Use server-side edge function to create order
+    const { data, error: fnError } = await supabase.functions.invoke("create-order", {
+      body: {
+        payment_link_id: paymentLink.id,
+        customer_name: customerName,
+        customer_email: customerEmail,
+        customer_phone: customerPhone || null,
+      },
     });
 
-    if (!error) {
+    if (fnError || (data && data.error)) {
+      setError(data?.error || "Something went wrong. Please try again.");
+    } else {
       setSubmitted(true);
     }
     setSubmitting(false);
@@ -125,6 +126,9 @@ const Checkout = () => {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="p-6 space-y-4">
+            {error && (
+              <p className="text-sm text-red-500 font-body">{error}</p>
+            )}
             <div>
               <label className="block font-body text-sm text-foreground mb-1">Your Name</label>
               <input
@@ -132,6 +136,7 @@ const Checkout = () => {
                 value={customerName}
                 onChange={(e) => setCustomerName(e.target.value)}
                 required
+                maxLength={200}
                 className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                 placeholder="Full name"
               />
@@ -143,6 +148,7 @@ const Checkout = () => {
                 value={customerEmail}
                 onChange={(e) => setCustomerEmail(e.target.value)}
                 required
+                maxLength={255}
                 className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                 placeholder="you@example.com"
               />
@@ -153,6 +159,7 @@ const Checkout = () => {
                 type="tel"
                 value={customerPhone}
                 onChange={(e) => setCustomerPhone(e.target.value)}
+                maxLength={30}
                 className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                 placeholder="+27..."
               />
