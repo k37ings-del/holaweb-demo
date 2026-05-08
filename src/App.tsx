@@ -10,7 +10,6 @@ import ServiceDetail from "./pages/ServiceDetail";
 import Demo from "./pages/Demo";
 import Contact from "./pages/Contact";
 import Platform from "./pages/Platform";
-import Pricing from "./pages/Pricing";
 import Auth from "./pages/Auth";
 import AdminAuth from "./pages/AdminAuth";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -54,7 +53,6 @@ const App = () => (
           <Route path="/demo" element={<Demo />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/platform" element={<Platform />} />
-          <Route path="/pricing" element={<Pricing />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/admin" element={<AdminAuth />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
