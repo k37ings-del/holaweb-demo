@@ -172,7 +172,7 @@ const Dashboard = () => {
           </div>
           <div className="flex items-center gap-2">
             <Link
-              to="/pricing"
+              to="/contact"
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-primary/30 font-subheading text-xs font-semibold text-primary hover:bg-primary/10 transition-colors"
             >
               <RefreshCw className="w-3 h-3" />

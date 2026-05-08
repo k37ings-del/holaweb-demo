@@ -10,7 +10,6 @@ import ServiceDetail from "./pages/ServiceDetail";
 import Demo from "./pages/Demo";
 import Contact from "./pages/Contact";
 import Platform from "./pages/Platform";
-import Pricing from "./pages/Pricing";
 import Auth from "./pages/Auth";
 import AdminAuth from "./pages/AdminAuth";
 import AdminDashboard from "./pages/AdminDashboard";

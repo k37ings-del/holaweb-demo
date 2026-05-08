@@ -6,7 +6,6 @@ const footerPages = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Platform", href: "/platform" },
-  { label: "Pricing", href: "/pricing" },
   { label: "Demo", href: "/demo" },
   { label: "Contact", href: "/contact" },
 ];

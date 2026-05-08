@@ -12,9 +12,7 @@ const navItems = [
   },
   { label: "About", href: "/about" },
   { label: "Platform", href: "/platform" },
-  { label: "Pricing", href: "/pricing" },
   { label: "Contact", href: "/contact" },
-];
 
 const WhatsAppIcon = ({ className = "h-5 w-5" }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
