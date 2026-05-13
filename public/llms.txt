@@ -1,0 +1,20 @@
+# Holaweb
+
+> Africa's all-in-one Business Operating System — websites, payments, CRM, WhatsApp & Meta Business Suite for SMEs.
+
+Holaweb Media Group is a South African digital solutions company building cloud-powered products that help African entrepreneurs sell, get paid, and grow.
+
+## Pages
+
+- [Home](/): Overview of the Holaweb Business OS for African SMEs.
+- [About](/about): Company mission, leadership, and story.
+- [Platform](/platform): Product pillars — websites, payments, CRM, messaging, analytics.
+- [Demo](/demo): Video walkthrough of the platform.
+- [Contact](/contact): Get in touch and request a personalised quote.
+
+## Services
+
+- [Cloud Services](/services/cloud-services): AWS-backed cloud hosting and infrastructure.
+- [Web & App Development](/services/web-app-development): Custom websites and applications.
+- [Market Access](/services/market-access): Go-to-market and growth services.
+- [META Solutions](/services/meta-solutions): WhatsApp Business and Meta Business Suite setup.
