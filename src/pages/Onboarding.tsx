@@ -125,6 +125,7 @@ const Onboarding = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <h1 className="sr-only">Set up your Holaweb business workspace</h1>
       {/* Header */}
       <div className="border-b border-border px-6 py-4 flex items-center justify-between">
         <img src={logo} alt="Holaweb" className="h-8" />
