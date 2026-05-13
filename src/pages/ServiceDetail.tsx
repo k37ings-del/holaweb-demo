@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, Cloud, Code, TrendingUp, MessageSquare } from "l
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Header from "@/components/Header";
+import SEO from "@/components/SEO";
 import Footer from "@/components/Footer";
 import FloatingBubbles from "@/components/FloatingBubbles";
 import cloudSolutionsImg from "@/assets/cloud-solutions.png";
@@ -118,6 +119,19 @@ const ServiceDetail = () => {
 
   return (
     <div className="min-h-screen bg-background relative">
+      <SEO
+        title={`${service.title} — Holaweb`}
+        description={service.intro[0]?.slice(0, 155) ?? `${service.title} from Holaweb.`}
+        path={`/services/${slug}`}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Service",
+          name: service.title,
+          serviceType: service.category,
+          provider: { "@type": "Organization", name: "Holaweb Media Group" },
+          url: `https://holaweb-demo.lovable.app/services/${slug}`,
+        }}
+      />
       <FloatingBubbles />
 
       <div className="relative" style={{ zIndex: 2 }}>

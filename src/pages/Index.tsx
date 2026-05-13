@@ -8,6 +8,7 @@ import {
   Monitor,
 } from "lucide-react";
 import Header from "@/components/Header";
+import SEO from "@/components/SEO";
 import Footer from "@/components/Footer";
 import FloatingBubbles from "@/components/FloatingBubbles";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
@@ -50,6 +51,11 @@ const ScrollSection = ({
 const Index = () => {
   return (
     <div className="min-h-screen bg-background relative">
+      <SEO
+        title="Holaweb — Business OS for African Entrepreneurs"
+        description="All-in-one platform for African SMEs: build websites, accept payments, manage customers, and grow with WhatsApp & Meta."
+        path="/"
+      />
       <FloatingBubbles />
 
       <div className="relative" style={{ zIndex: 2 }}>

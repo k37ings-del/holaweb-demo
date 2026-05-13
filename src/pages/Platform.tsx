@@ -17,6 +17,7 @@ import {
   Share2,
 } from "lucide-react";
 import Header from "@/components/Header";
+import SEO from "@/components/SEO";
 import Footer from "@/components/Footer";
 import FloatingBubbles from "@/components/FloatingBubbles";
 import platformHeroBg from "@/assets/platform-hero-bg.jpg";
@@ -75,6 +76,19 @@ const features = [
 const Platform = () => {
   return (
     <div className="min-h-screen bg-background relative">
+      <SEO
+        title="Holaweb Platform — Websites, Payments, CRM & Messaging"
+        description="The Holaweb platform unifies website building, Peach Payments, CRM, WhatsApp & Meta Business Suite for African SMEs."
+        path="/platform"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Service",
+          name: "Holaweb Business OS",
+          provider: { "@type": "Organization", name: "Holaweb Media Group" },
+          areaServed: "Africa",
+          url: "https://holaweb-demo.lovable.app/platform",
+        }}
+      />
       <FloatingBubbles />
       <div className="relative" style={{ zIndex: 2 }}>
         <Header />

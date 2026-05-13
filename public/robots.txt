@@ -20,4 +20,4 @@ Disallow: /dashboard
 Disallow: /checkout
 Disallow: /onboarding
 
-Sitemap: https://holaweb.co.za/sitemap.xml
+Sitemap: https://holaweb-demo.lovable.app/sitemap.xml
