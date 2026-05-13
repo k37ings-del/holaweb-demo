@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Play, ArrowRight, Monitor, CreditCard, Users, Globe, MessageSquare, BarChart3 } from "lucide-react";
 import Header from "@/components/Header";
+import SEO from "@/components/SEO";
 import Footer from "@/components/Footer";
 import FloatingBubbles from "@/components/FloatingBubbles";
 
@@ -47,6 +48,11 @@ const demoSections = [
 const Demo = () => {
   return (
     <div className="min-h-screen bg-background relative">
+      <SEO
+        title="Holaweb Demo — Walkthrough of the Business OS"
+        description="Watch a guided walkthrough of the Holaweb platform — dashboard, website builder, payments, CRM, and messaging."
+        path="/demo"
+      />
       <FloatingBubbles />
       <div className="relative" style={{ zIndex: 2 }}>
         <Header />

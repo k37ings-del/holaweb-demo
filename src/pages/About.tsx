@@ -14,6 +14,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import Header from "@/components/Header";
+import SEO from "@/components/SEO";
 import Footer from "@/components/Footer";
 import FloatingBubbles from "@/components/FloatingBubbles";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
@@ -123,6 +124,17 @@ const About = () => {
 
   return (
     <div className="min-h-screen bg-background relative">
+      <SEO
+        title="About Holaweb — Our Mission, Team & AWS Partnership"
+        description="Meet the team behind Holaweb Media Group — an AWS Partner building inclusive cloud-powered tools for African entrepreneurs."
+        path="/about"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "AboutPage",
+          name: "About Holaweb",
+          url: "https://holaweb-demo.lovable.app/about",
+        }}
+      />
       <FloatingBubbles />
 
       <div className="relative" style={{ zIndex: 2 }}>

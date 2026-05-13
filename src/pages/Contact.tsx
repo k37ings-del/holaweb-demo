@@ -9,6 +9,7 @@ import {
   Shield,
 } from "lucide-react";
 import Header from "@/components/Header";
+import SEO from "@/components/SEO";
 import Footer from "@/components/Footer";
 import FloatingBubbles from "@/components/FloatingBubbles";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
@@ -166,6 +167,11 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-background relative">
+      <SEO
+        title="Contact Holaweb — Get a Personalised Quote"
+        description="Reach the Holaweb team for a personalised quote on websites, payments, CRM, and Meta Business Suite setup."
+        path="/contact"
+      />
       <FloatingBubbles />
 
       <div className="relative" style={{ zIndex: 2 }}>
