@@ -72,47 +72,6 @@ const features = [
   },
 ];
 
-const pricingPlans = [
-  {
-    name: "Starter",
-    price: "Free",
-    description: "Get started with the basics",
-    features: ["1 Payment link", "Basic website", "Up to 50 customers", "WhatsApp sharing"],
-    cta: "Start Free",
-    highlighted: false,
-  },
-  {
-    name: "Growth",
-    price: "R499",
-    period: "/mo",
-    description: "Everything you need to grow",
-    features: [
-      "Unlimited payment links",
-      "Full website builder",
-      "Unlimited customers",
-      "WhatsApp + Email",
-      "Analytics dashboard",
-      "Priority support",
-    ],
-    cta: "Start Free Trial",
-    highlighted: true,
-  },
-  {
-    name: "Enterprise",
-    price: "Custom",
-    description: "For scaling businesses",
-    features: [
-      "Everything in Growth",
-      "Custom integrations",
-      "Dedicated account manager",
-      "SLA guarantee",
-      "API access",
-    ],
-    cta: "Contact Sales",
-    highlighted: false,
-  },
-];
-
 const Platform = () => {
   return (
     <div className="min-h-screen bg-background relative">
@@ -253,71 +212,6 @@ const Platform = () => {
             </div>
           </section>
         ))}
-
-        {/* Pricing Preview */}
-        <section className="py-24">
-          <div className="container mx-auto px-6">
-            <motion.div
-              className="text-center mb-16"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">
-                Simple, transparent <span className="text-primary">pricing</span>
-              </h2>
-              <p className="font-body font-light text-muted-foreground text-lg max-w-xl mx-auto">
-                Start free. Scale as you grow. No hidden fees.
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              {pricingPlans.map((plan) => (
-                <motion.div
-                  key={plan.name}
-                  className={`relative bg-card border rounded-lg p-8 flex flex-col ${
-                    plan.highlighted
-                      ? "border-primary shadow-lg shadow-primary/10 scale-105"
-                      : "border-border"
-                  }`}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                >
-                  {plan.highlighted && (
-                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground font-subheading text-xs font-semibold px-3 py-1 rounded-full">
-                      Most Popular
-                    </span>
-                  )}
-                  <h3 className="font-heading text-xl font-bold text-foreground mb-1">{plan.name}</h3>
-                  <p className="font-body text-sm text-muted-foreground mb-4">{plan.description}</p>
-                  <div className="mb-6">
-                    <span className="font-heading text-4xl font-bold text-foreground">{plan.price}</span>
-                    {plan.period && <span className="font-body text-muted-foreground">{plan.period}</span>}
-                  </div>
-                  <ul className="space-y-3 mb-8 flex-1">
-                    {plan.features.map((f) => (
-                      <li key={f} className="flex items-center gap-2 font-body text-sm text-foreground/80">
-                        <Check className="w-4 h-4 text-primary flex-shrink-0" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <Link
-                    to={plan.name === "Enterprise" ? "/contact" : "/auth"}
-                    className={`text-center rounded-lg px-6 py-3 font-subheading text-sm font-semibold transition-all ${
-                      plan.highlighted
-                        ? "btn-cherry"
-                        : "border border-border text-foreground hover:bg-muted"
-                    }`}
-                  >
-                    {plan.cta}
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* Final CTA */}
         <section className="py-24 bg-secondary/20">
