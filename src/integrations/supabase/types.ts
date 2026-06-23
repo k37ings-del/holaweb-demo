@@ -576,6 +576,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_admin_email: { Args: { _email: string }; Returns: boolean }
       get_active_payment_link_by_slug: {
         Args: { _slug: string }
         Returns: {
