@@ -576,14 +576,38 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      has_role: {
-        Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
-        Returns: boolean
+      check_admin_email: { Args: { _email: string }; Returns: boolean }
+      get_active_payment_link_by_slug: {
+        Args: { _slug: string }
+        Returns: {
+          amount: number
+          business_id: string
+          created_at: string
+          currency: string
+          description: string
+          id: string
+          is_active: boolean
+          product_id: string
+          slug: string
+          title: string
+          user_id: string
+        }[]
       }
-      is_admin_email: { Args: { _email: string }; Returns: boolean }
+      get_active_referral_code: {
+        Args: { _code: string }
+        Returns: {
+          code: string
+          current_uses: number
+          discount_type: string
+          discount_value: number
+          id: string
+          is_active: boolean
+          max_uses: number
+          valid_from: string
+          valid_region: string
+          valid_until: string
+        }[]
+      }
     }
     Enums: {
       app_role: "admin" | "user"

@@ -50,7 +50,7 @@ const AdminAuth = () => {
     setLoading(true);
 
     try {
-      const { data: isAllowed } = await supabase.rpc("is_admin_email", { _email: email });
+      const { data: isAllowed } = await supabase.rpc("check_admin_email", { _email: email });
 
       if (!isAllowed) {
         toast({

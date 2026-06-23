@@ -20,11 +20,8 @@ const Checkout = () => {
     const load = async () => {
       if (!slug) return;
       const { data } = await supabase
-        .from("payment_links")
-        .select("*")
-        .eq("slug", slug)
-        .eq("is_active", true)
-        .single();
+        .rpc("get_active_payment_link_by_slug", { _slug: slug })
+        .maybeSingle();
       setPaymentLink(data);
       setLoading(false);
     };
