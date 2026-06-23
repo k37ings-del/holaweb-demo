@@ -269,10 +269,7 @@ const Pricing = () => {
     setPromoApplied(null);
     if (!promoCode.trim()) return;
     const { data, error } = await supabase
-      .from("referral_codes")
-      .select("*")
-      .eq("code", promoCode.toUpperCase())
-      .eq("is_active", true)
+      .rpc("get_active_referral_code", { _code: promoCode })
       .maybeSingle();
 
     if (error || !data) {
