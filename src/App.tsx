@@ -8,27 +8,45 @@ import { useEffect } from "react";
 import ChatAssistant from "@/components/ChatAssistant";
 import BackToTopButton from "@/components/BackToTopButton";
 
-const Index = lazy(() => import("@/pages/Index"));
-const About = lazy(() => import("@/pages/About"));
-const ServiceDetail = lazy(() => import("@/pages/ServiceDetail"));
-const Demo = lazy(() => import("@/pages/Demo"));
-const Contact = lazy(() => import("@/pages/Contact"));
-const Platform = lazy(() => import("@/pages/Platform"));
-const Auth = lazy(() => import("@/pages/Auth"));
-const AdminAuth = lazy(() => import("@/pages/AdminAuth"));
-const AdminDashboard = lazy(() => import("@/pages/AdminDashboard"));
-const Onboarding = lazy(() => import("@/pages/Onboarding"));
-const Dashboard = lazy(() => import("@/pages/Dashboard"));
-const Checkout = lazy(() => import("@/pages/Checkout"));
-const NotFound = lazy(() => import("@/pages/NotFound"));
+// Wrap dynamic imports to recover from stale chunk hashes after a redeploy.
+const lazyWithReload = <T,>(factory: () => Promise<T>) =>
+  lazy(() =>
+    (factory() as Promise<any>).catch((err) => {
+      const msg = String(err?.message || err);
+      if (/Failed to fetch dynamically imported module|Importing a module script failed/i.test(msg)) {
+        const key = "__chunk_reload_at";
+        const last = Number(sessionStorage.getItem(key) || 0);
+        if (Date.now() - last > 10000) {
+          sessionStorage.setItem(key, String(Date.now()));
+          window.location.reload();
+          return new Promise(() => {});
+        }
+      }
+      throw err;
+    }),
+  );
 
-const Products = lazy(() => import("@/pages/dashboard/Products"));
-const Payments = lazy(() => import("@/pages/dashboard/Payments"));
-const Customers = lazy(() => import("@/pages/dashboard/Customers"));
-const Messaging = lazy(() => import("@/pages/dashboard/Messaging"));
-const Website = lazy(() => import("@/pages/dashboard/Website"));
-const Analytics = lazy(() => import("@/pages/dashboard/Analytics"));
-const DashboardSettings = lazy(() => import("@/pages/dashboard/DashboardSettings"));
+const Index = lazyWithReload(() => import("@/pages/Index"));
+const About = lazyWithReload(() => import("@/pages/About"));
+const ServiceDetail = lazyWithReload(() => import("@/pages/ServiceDetail"));
+const Demo = lazyWithReload(() => import("@/pages/Demo"));
+const Contact = lazyWithReload(() => import("@/pages/Contact"));
+const Platform = lazyWithReload(() => import("@/pages/Platform"));
+const Auth = lazyWithReload(() => import("@/pages/Auth"));
+const AdminAuth = lazyWithReload(() => import("@/pages/AdminAuth"));
+const AdminDashboard = lazyWithReload(() => import("@/pages/AdminDashboard"));
+const Onboarding = lazyWithReload(() => import("@/pages/Onboarding"));
+const Dashboard = lazyWithReload(() => import("@/pages/Dashboard"));
+const Checkout = lazyWithReload(() => import("@/pages/Checkout"));
+const NotFound = lazyWithReload(() => import("@/pages/NotFound"));
+
+const Products = lazyWithReload(() => import("@/pages/dashboard/Products"));
+const Payments = lazyWithReload(() => import("@/pages/dashboard/Payments"));
+const Customers = lazyWithReload(() => import("@/pages/dashboard/Customers"));
+const Messaging = lazyWithReload(() => import("@/pages/dashboard/Messaging"));
+const Website = lazyWithReload(() => import("@/pages/dashboard/Website"));
+const Analytics = lazyWithReload(() => import("@/pages/dashboard/Analytics"));
+const DashboardSettings = lazyWithReload(() => import("@/pages/dashboard/DashboardSettings"));
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
