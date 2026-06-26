@@ -17,7 +17,7 @@ export const productService = {
         business_id: businessId,
         user_id: userId,
         ...data,
-      })
+      } as any)
       .select()
       .single();
     if (error) throw error;
@@ -34,10 +34,10 @@ export const productService = {
 
   importProducts: async (businessId: string, userId: string, products: Record<string, unknown>[]) => {
     const inserts = products.map((p) => ({
-      name: p.name,
-      price: parseFloat(String(p.price).replace(/[^0-9.]/g, "")) || 0,
-      description: p.description,
-      image_url: p.imageUrl || null,
+      name: String(p.name ?? ""),
+      price: parseFloat(String(p.price ?? "").replace(/[^0-9.]/g, "")) || 0,
+      description: String(p.description ?? ""),
+      image_url: (p.imageUrl as string) || null,
       business_id: businessId,
       user_id: userId,
       is_active: true,
