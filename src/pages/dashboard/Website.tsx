@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Globe, Layout, ShoppingCart, Calendar, Palette, Smartphone, ChevronRight, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Globe, Layout, ShoppingCart, Calendar, Palette, Smartphone, ChevronRight, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { authService } from "@/services";
 import { useToast } from "@/hooks/use-toast";
 
 const features = [

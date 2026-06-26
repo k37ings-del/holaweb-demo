@@ -1,33 +1,34 @@
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import Index from "./pages/Index";
-import About from "./pages/About";
-import ServiceDetail from "./pages/ServiceDetail";
-import Demo from "./pages/Demo";
-import Contact from "./pages/Contact";
-import Platform from "./pages/Platform";
-import Auth from "./pages/Auth";
-import AdminAuth from "./pages/AdminAuth";
-import AdminDashboard from "./pages/AdminDashboard";
-import Onboarding from "./pages/Onboarding";
-import Dashboard from "./pages/Dashboard";
-import Checkout from "./pages/Checkout";
-import NotFound from "./pages/NotFound";
-import ChatAssistant from "./components/ChatAssistant";
-import BackToTopButton from "./components/BackToTopButton";
+import ChatAssistant from "@/components/ChatAssistant";
+import BackToTopButton from "@/components/BackToTopButton";
 
-// Dashboard sub-pages
-import Products from "./pages/dashboard/Products";
-import Payments from "./pages/dashboard/Payments";
-import Customers from "./pages/dashboard/Customers";
-import Messaging from "./pages/dashboard/Messaging";
-import Website from "./pages/dashboard/Website";
-import Analytics from "./pages/dashboard/Analytics";
-import DashboardSettings from "./pages/dashboard/DashboardSettings";
+const Index = lazy(() => import("@/pages/Index"));
+const About = lazy(() => import("@/pages/About"));
+const ServiceDetail = lazy(() => import("@/pages/ServiceDetail"));
+const Demo = lazy(() => import("@/pages/Demo"));
+const Contact = lazy(() => import("@/pages/Contact"));
+const Platform = lazy(() => import("@/pages/Platform"));
+const Auth = lazy(() => import("@/pages/Auth"));
+const AdminAuth = lazy(() => import("@/pages/AdminAuth"));
+const AdminDashboard = lazy(() => import("@/pages/AdminDashboard"));
+const Onboarding = lazy(() => import("@/pages/Onboarding"));
+const Dashboard = lazy(() => import("@/pages/Dashboard"));
+const Checkout = lazy(() => import("@/pages/Checkout"));
+const NotFound = lazy(() => import("@/pages/NotFound"));
+
+const Products = lazy(() => import("@/pages/dashboard/Products"));
+const Payments = lazy(() => import("@/pages/dashboard/Payments"));
+const Customers = lazy(() => import("@/pages/dashboard/Customers"));
+const Messaging = lazy(() => import("@/pages/dashboard/Messaging"));
+const Website = lazy(() => import("@/pages/dashboard/Website"));
+const Analytics = lazy(() => import("@/pages/dashboard/Analytics"));
+const DashboardSettings = lazy(() => import("@/pages/dashboard/DashboardSettings"));
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -39,6 +40,12 @@ const ScrollToTop = () => {
 
 const queryClient = new QueryClient();
 
+const PageLoader = () => (
+  <div className="min-h-screen flex items-center justify-center">
+    <p className="font-body text-muted-foreground">Loading...</p>
+  </div>
+);
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -46,29 +53,31 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/services/:slug" element={<ServiceDetail />} />
-          <Route path="/demo" element={<Demo />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/platform" element={<Platform />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/admin" element={<AdminAuth />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/onboarding" element={<Onboarding />} />
-          <Route path="/checkout/:slug" element={<Checkout />} />
-          <Route path="/dashboard" element={<Dashboard />}>
-            <Route path="products" element={<Products />} />
-            <Route path="payments" element={<Payments />} />
-            <Route path="customers" element={<Customers />} />
-            <Route path="messaging" element={<Messaging />} />
-            <Route path="website" element={<Website />} />
-            <Route path="analytics" element={<Analytics />} />
-            <Route path="settings" element={<DashboardSettings />} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/services/:slug" element={<ServiceDetail />} />
+            <Route path="/demo" element={<Demo />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/platform" element={<Platform />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/admin" element={<AdminAuth />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/onboarding" element={<Onboarding />} />
+            <Route path="/checkout/:slug" element={<Checkout />} />
+            <Route path="/dashboard" element={<Dashboard />}>
+              <Route path="products" element={<Products />} />
+              <Route path="payments" element={<Payments />} />
+              <Route path="customers" element={<Customers />} />
+              <Route path="messaging" element={<Messaging />} />
+              <Route path="website" element={<Website />} />
+              <Route path="analytics" element={<Analytics />} />
+              <Route path="settings" element={<DashboardSettings />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
         <ChatAssistant />
         <BackToTopButton />
       </BrowserRouter>

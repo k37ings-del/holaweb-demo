@@ -5,7 +5,7 @@ import { Check, ArrowRight, Star, Zap, Building2, Crown, Globe, CreditCard, User
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FloatingBubbles from "@/components/FloatingBubbles";
-import { supabase } from "@/integrations/supabase/client";
+import { adminService } from "@/services";
 
 const bundledPlans = [
   {
@@ -268,11 +268,9 @@ const Pricing = () => {
     setPromoError("");
     setPromoApplied(null);
     if (!promoCode.trim()) return;
-    const { data, error } = await supabase
-      .rpc("get_active_referral_code", { _code: promoCode })
-      .maybeSingle();
+    const data = await adminService.getActiveReferralCode(promoCode);
 
-    if (error || !data) {
+    if (!data) {
       setPromoError("Invalid or expired promo code.");
       return;
     }

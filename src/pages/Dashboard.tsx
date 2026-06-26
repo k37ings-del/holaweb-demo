@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link, Outlet, useLocation } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { useQuery } from "@tanstack/react-query";
+import { authService, businessService } from "@/services";
 import {
   LayoutDashboard,
   Globe,
@@ -20,6 +21,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import logo from "@/assets/HW_Logo.png";
+import { useCurrentBusiness, useBusinessStats } from "@/hooks/use-business";
 import SubscriptionBubble from "@/components/SubscriptionBubble";
 import NotificationsPanel from "@/components/NotificationsPanel";
 
@@ -35,63 +37,41 @@ const sidebarItems = [
 ];
 
 const Dashboard = () => {
-  const [user, setUser] = useState<any>(null);
-  const [business, setBusiness] = useState<any>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [stats, setStats] = useState({ products: 0, customers: 0, orders: 0, paymentLinks: 0 });
   const navigate = useNavigate();
   const location = useLocation();
 
+  const { data: session, isLoading: sessionLoading } = useQuery({
+    queryKey: ["session"],
+    queryFn: () => authService.getSessionData(),
+  });
+
+  const { data: business, isLoading: businessLoading } = useCurrentBusiness(session?.user?.id ?? null);
+  const { data: stats } = useBusinessStats(business?.id ?? null);
+
+  const isLoading = sessionLoading || businessLoading;
+
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    if (!session) {
+      navigate("/auth");
+    }
+  }, [session, navigate]);
+
+  useEffect(() => {
+    if (business?.onboarding_completed === false) {
+      navigate("/onboarding");
+    }
+  }, [business, navigate]);
+
+  useEffect(() => {
+    const { data: { subscription } } = authService.onAuthStateChange((event, session) => {
       if (!session) navigate("/auth");
-      else setUser(session.user);
-    });
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) navigate("/auth");
-      else setUser(session.user);
     });
     return () => subscription.unsubscribe();
   }, [navigate]);
 
-  useEffect(() => {
-    if (!user) return;
-    const fetchData = async () => {
-      const { data: businesses } = await supabase
-        .from("businesses")
-        .select("*")
-        .eq("user_id", user.id)
-        .limit(1);
-
-      if (businesses && businesses.length > 0) {
-        setBusiness(businesses[0]);
-        // Check if onboarding complete
-        if (!businesses[0].onboarding_completed) {
-          navigate("/onboarding");
-          return;
-        }
-        // Fetch stats
-        const [products, customers, orders, paymentLinks] = await Promise.all([
-          supabase.from("products").select("id", { count: "exact", head: true }).eq("business_id", businesses[0].id),
-          supabase.from("customers").select("id", { count: "exact", head: true }).eq("business_id", businesses[0].id),
-          supabase.from("orders").select("id", { count: "exact", head: true }).eq("business_id", businesses[0].id),
-          supabase.from("payment_links").select("id", { count: "exact", head: true }).eq("business_id", businesses[0].id),
-        ]);
-        setStats({
-          products: products.count || 0,
-          customers: customers.count || 0,
-          orders: orders.count || 0,
-          paymentLinks: paymentLinks.count || 0,
-        });
-      } else {
-        navigate("/onboarding");
-      }
-    };
-    fetchData();
-  }, [user, navigate]);
-
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
+    await authService.signOut();
     navigate("/");
   };
 
@@ -204,10 +184,10 @@ const Dashboard = () => {
               {/* Stats */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
-                  { label: "Products", value: stats.products, icon: ShoppingBag, href: "/dashboard/products" },
-                  { label: "Customers", value: stats.customers, icon: Users, href: "/dashboard/customers" },
-                  { label: "Orders", value: stats.orders, icon: CreditCard, href: "/dashboard/payments" },
-                  { label: "Payment Links", value: stats.paymentLinks, icon: CreditCard, href: "/dashboard/payments" },
+                  { label: "Products", value: stats?.products ?? 0, icon: ShoppingBag, href: "/dashboard/products" },
+                  { label: "Customers", value: stats?.customers ?? 0, icon: Users, href: "/dashboard/customers" },
+                  { label: "Orders", value: stats?.orders ?? 0, icon: CreditCard, href: "/dashboard/payments" },
+                  { label: "Payment Links", value: stats?.paymentLinks ?? 0, icon: CreditCard, href: "/dashboard/payments" },
                 ].map((stat) => (
                   <Link
                     key={stat.label}

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Globe, Loader2, AlertCircle, CheckCircle, ExternalLink } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { firecrawlApi } from "@/lib/api/firecrawl";
-import { supabase } from "@/integrations/supabase/client";
+import { authService, productService, businessService } from "@/services";
 
 interface ScrapedProduct {
   name: string;
@@ -102,32 +102,13 @@ const WebsiteScraper = ({ businessId, onProductsScraped }: { businessId?: string
 
       // Save products to database if businessId provided
       if (businessId) {
-        const { data: { session } } = await supabase.auth.getSession();
+        const { data: { session } } = await authService.getSession();
         if (session) {
-          const inserts = products.map((p) => ({
-            name: p.name,
-            price: parseFloat(p.price.replace(/[^0-9.]/g, "")) || 0,
-            description: p.description,
-            image_url: p.imageUrl || null,
-            business_id: businessId,
-            user_id: session.user.id,
-            is_active: true,
-          }));
-
-          const { error } = await supabase.from("products").insert(inserts);
-          if (error) {
-            console.error("Error saving products:", error);
-            toast({
-              title: "Import Partial",
-              description: `Found ${products.length} products but some couldn't be saved.`,
-              variant: "destructive",
-            });
-          } else {
-            toast({
-              title: "Products Imported!",
-              description: `Successfully imported ${products.length} products from your website.`,
-            });
-          }
+          await productService.importProducts(businessId, session.user.id, products);
+          toast({
+            title: "Products Imported!",
+            description: `Successfully imported ${products.length} products from your website.`,
+          });
         }
       }
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { authService } from "@/services";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -19,12 +19,12 @@ const Auth = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = authService.onAuthStateChange((event, session) => {
       if (session) {
         navigate("/dashboard");
       }
     });
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    authService.getSession().then(({ data: { session } }) => {
       if (session) navigate("/dashboard");
     });
     return () => subscription.unsubscribe();
@@ -36,29 +36,20 @@ const Auth = () => {
 
     try {
       if (mode === "reset") {
-        const { error } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: `${window.location.origin}/auth`,
-        });
-        if (error) throw error;
+        await authService.resetPasswordForEmail(email);
         toast({
           title: "Check your email",
           description: "We've sent you a password reset link.",
         });
         setMode("login");
       } else if (mode === "login") {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
+        await authService.signInWithPassword(email, password);
         toast({ title: "Welcome back!", description: "You've been signed in." });
       } else {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: { full_name: fullName },
-            emailRedirectTo: window.location.origin,
-          },
+        await authService.signUp(email, password, {
+          data: { full_name: fullName },
+          emailRedirectTo: window.location.origin,
         });
-        if (error) throw error;
         toast({
           title: "Check your email",
           description: "We've sent you a verification link to confirm your account.",

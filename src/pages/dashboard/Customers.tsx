@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { Users, Plus, X, Trash2, Search, Tag, Edit2, Check, Database } from "lucide-react";
+import { authService, businessService, customerService } from "@/services";
 import { useToast } from "@/hooks/use-toast";
+import { useCustomers, useCreateCustomer, useUpdateCustomer, useDeleteCustomer } from "@/hooks/use-customers";
+import { useQuery } from "@tanstack/react-query";
+import { Users, Plus, X, Trash2, Search, Tag, Edit2, Check, Database } from "lucide-react";
 
 const Customers = () => {
-  const [customers, setCustomers] = useState<any[]>([]);
   const [showForm, setShowForm] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading] = useState(true);
   const [search, setSearch] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [name, setName] = useState("");
@@ -17,46 +18,63 @@ const Customers = () => {
   const [businessId, setBusinessId] = useState<string | null>(null);
   const { toast } = useToast();
 
+  const { data: session } = useQuery({
+    queryKey: ["session"],
+    queryFn: () => authService.getSessionData(),
+  });
+
+  const { data: customers = [], isLoading } = useCustomers(businessId);
+  const createCustomer = useCreateCustomer();
+  const updateCustomer = useUpdateCustomer();
+  const deleteCustomer = useDeleteCustomer();
+
   useEffect(() => {
     const load = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
-      const { data: businesses } = await supabase.from("businesses").select("id").eq("user_id", session.user.id).limit(1);
-      if (businesses && businesses.length > 0) {
-        setBusinessId(businesses[0].id);
-        const { data } = await supabase.from("customers").select("*").eq("business_id", businesses[0].id).order("created_at", { ascending: false });
-        setCustomers(data || []);
+      const { data: { session: s } } = await authService.getSession();
+      if (!s) return;
+      const businesses = await businessService.getCurrentBusiness(s.user.id);
+      if (businesses) {
+        setBusinessId(businesses.id);
       }
-      setLoading(false);
     };
     load();
   }, []);
 
   const resetForm = () => {
-    setName(""); setEmail(""); setPhone(""); setNotes(""); setTags("");
-    setEditingId(null); setShowForm(false);
+    setName("");
+    setEmail("");
+    setPhone("");
+    setNotes("");
+    setTags("");
+    setEditingId(null);
+    setShowForm(false);
   };
 
   const handleAdd = async () => {
-    if (!businessId || !name) return;
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) return;
-
-    const tagArray = tags ? tags.split(",").map(t => t.trim()).filter(Boolean) : [];
-
-    const { data, error } = await supabase.from("customers").insert({
-      business_id: businessId, user_id: session.user.id, name,
-      email: email || null, phone: phone || null, notes: notes || null,
-      tags: tagArray.length > 0 ? tagArray : null,
-    }).select().single();
-
-    if (error) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
-    } else {
-      setCustomers([data, ...customers]);
-      resetForm();
-      toast({ title: "Customer added!" });
-    }
+    if (!businessId || !name || !session?.user?.id) return;
+    const tagArray = tags ? tags.split(",").map((t: string) => t.trim()).filter(Boolean) : [];
+    createCustomer.mutate(
+      {
+        businessId,
+        userId: session.user.id,
+        data: {
+          name,
+          ...(email && { email }),
+          ...(phone && { phone }),
+          ...(notes && { notes }),
+          ...(tagArray.length > 0 && { tags: tagArray }),
+        },
+      },
+      {
+        onError: (error: any) => {
+          toast({ title: "Error", description: error.message, variant: "destructive" });
+        },
+        onSuccess: () => {
+          resetForm();
+          toast({ title: "Customer added!" });
+        },
+      }
+    );
   };
 
   const handleEdit = (customer: any) => {
@@ -71,34 +89,39 @@ const Customers = () => {
 
   const handleUpdate = async () => {
     if (!editingId || !name) return;
-    const tagArray = tags ? tags.split(",").map(t => t.trim()).filter(Boolean) : [];
-
-    const { error } = await supabase.from("customers").update({
-      name, email: email || null, phone: phone || null,
-      notes: notes || null, tags: tagArray.length > 0 ? tagArray : null,
-    }).eq("id", editingId);
-
-    if (error) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
-    } else {
-      setCustomers(customers.map(c => c.id === editingId ? {
-        ...c, name, email: email || null, phone: phone || null,
-        notes: notes || null, tags: tagArray.length > 0 ? tagArray : null,
-      } : c));
-      resetForm();
-      toast({ title: "Customer updated!" });
-    }
+    const tagArray = tags ? tags.split(",").map((t: string) => t.trim()).filter(Boolean) : [];
+    updateCustomer.mutate(
+      {
+        customerId: editingId,
+        data: {
+          name,
+          ...(email && { email }),
+          ...(phone && { phone }),
+          ...(notes && { notes }),
+          ...(tagArray.length > 0 && { tags: tagArray }),
+        },
+      },
+      {
+        onError: (error: any) => {
+          toast({ title: "Error", description: error.message, variant: "destructive" });
+        },
+        onSuccess: () => {
+          resetForm();
+          toast({ title: "Customer updated!" });
+        },
+      }
+    );
   };
 
   const handleDelete = async (id: string) => {
-    // Note: delete RLS policy needed — for now this may fail silently
-    const { error } = await supabase.from("customers").delete().eq("id", id);
-    if (!error) {
-      setCustomers(customers.filter(c => c.id !== id));
-      toast({ title: "Customer removed" });
-    } else {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
-    }
+    deleteCustomer.mutate(id, {
+      onError: (error: any) => {
+        toast({ title: "Error", description: error.message, variant: "destructive" });
+      },
+      onSuccess: () => {
+        toast({ title: "Customer removed" });
+      },
+    });
   };
 
   const filtered = customers.filter(c =>

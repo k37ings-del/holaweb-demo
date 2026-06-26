@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { authService, adminService } from "@/services";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, ArrowLeft, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -20,24 +21,19 @@ const AdminAuth = () => {
 
   useEffect(() => {
     const checkAdminAndRedirect = async (userId: string) => {
-      const { data: roles } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", userId)
-        .eq("role", "admin");
+      const isAdmin = await adminService.checkIsAdmin(userId);
 
-      if (roles && roles.length > 0) {
+      if (isAdmin) {
         navigate("/admin/dashboard", { replace: true });
       }
     };
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    authService.getSession().then(({ data: { session } }) => {
       if (session) checkAdminAndRedirect(session.user.id);
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    const { data: { subscription } } = authService.onAuthStateChange(async (event, session) => {
       if (event === "SIGNED_IN" && session) {
-        // Small delay to ensure role check works after signup+role insert
         setTimeout(() => checkAdminAndRedirect(session.user.id), 300);
       }
     });
@@ -63,17 +59,12 @@ const AdminAuth = () => {
       }
 
       if (isLogin) {
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        const { data, error } = await authService.signInWithPassword(email, password);
         if (error) throw error;
 
-        // Check/assign admin role
-        const { data: existingRole } = await supabase
-          .from("user_roles")
-          .select("id")
-          .eq("user_id", data.user.id)
-          .eq("role", "admin");
+        const isAdmin = await adminService.checkIsAdmin(data.user.id);
 
-        if (!existingRole || existingRole.length === 0) {
+        if (!isAdmin) {
           await supabase.from("user_roles").insert({
             user_id: data.user.id,
             role: "admin",
@@ -83,15 +74,10 @@ const AdminAuth = () => {
         toast({ title: "Welcome, Admin!", description: "You've been signed in to the admin panel." });
         navigate("/admin/dashboard", { replace: true });
       } else {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: { full_name: fullName },
-            emailRedirectTo: window.location.origin + "/admin",
-          },
+        await authService.signUp(email, password, {
+          data: { full_name: fullName },
+          emailRedirectTo: window.location.origin + "/admin",
         });
-        if (error) throw error;
         toast({
           title: "Check your email",
           description: "We've sent you a verification link. After verifying, sign in to access the admin panel.",

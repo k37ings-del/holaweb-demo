@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useNotifications } from "@/hooks/use-notifications";
 import { Bell, X, AlertTriangle, Info, CheckCircle } from "lucide-react";
 
 interface Notification {
@@ -12,46 +12,42 @@ interface Notification {
 
 const NotificationsPanel = () => {
   const [open, setOpen] = useState(false);
+  const { data: subscription } = useNotifications();
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
   useEffect(() => {
-    const load = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
-
-      const { data } = await supabase
-        .from("user_subscriptions")
-        .select("*, subscription_plans(name)")
-        .eq("user_id", session.user.id)
-        .order("created_at", { ascending: false })
-        .limit(1);
-
+    try {
       const notifs: Notification[] = [];
 
-      if (data && data.length > 0) {
-        const sub = data[0];
+      if (subscription && !Array.isArray(subscription)) {
+        const sub = subscription as any;
         const endDate = sub.ends_at || sub.trial_ends_at;
-        if (endDate) {
+
+        if (endDate && typeof endDate === "string") {
           const now = new Date();
           const end = new Date(endDate);
-          const diff = Math.ceil((end.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+          const endTime = end.getTime();
 
-          if (diff <= 0) {
-            notifs.push({
-              id: "sub-expired",
-              type: "warning",
-              title: "Subscription Expired",
-              message: `Your ${(sub as any).subscription_plans?.name || "subscription"} has expired. Renew to continue using all features.`,
-              timestamp: new Date(),
-            });
-          } else if (diff <= 7) {
-            notifs.push({
-              id: "sub-expiring",
-              type: "warning",
-              title: "Subscription Expiring Soon",
-              message: `Your ${(sub as any).subscription_plans?.name || "subscription"} expires in ${diff} day${diff === 1 ? "" : "s"}. Renew now to avoid interruption.`,
-              timestamp: new Date(),
-            });
+          if (!isNaN(endTime) && endTime > 0) {
+            const diff = Math.ceil((endTime - now.getTime()) / (1000 * 60 * 60 * 24));
+
+            if (diff <= 0) {
+              notifs.push({
+                id: "sub-expired",
+                type: "warning",
+                title: "Subscription Expired",
+                message: `Your ${sub.subscription_plans?.name || "subscription"} has expired. Renew to continue using all features.`,
+                timestamp: new Date(),
+              });
+            } else if (diff <= 7) {
+              notifs.push({
+                id: "sub-expiring",
+                type: "warning",
+                title: "Subscription Expiring Soon",
+                message: `Your ${sub.subscription_plans?.name || "subscription"} expires in ${diff} day${diff === 1 ? "" : "s"}. Renew now to avoid interruption.`,
+                timestamp: new Date(),
+              });
+            }
           }
         }
 
@@ -60,7 +56,7 @@ const NotificationsPanel = () => {
             id: "trial-active",
             type: "info",
             title: "Free Trial Active",
-            message: `You're on a free trial of ${(sub as any).subscription_plans?.name || "your plan"}.`,
+            message: `You're on a free trial of ${sub.subscription_plans?.name || "your plan"}.`,
             timestamp: new Date(),
           });
         }
@@ -77,9 +73,19 @@ const NotificationsPanel = () => {
       }
 
       setNotifications(notifs);
-    };
-    load();
-  }, []);
+    } catch (err) {
+      console.error("NotificationsPanel: failed to process notifications", err);
+      setNotifications([
+        {
+          id: "error",
+          type: "warning",
+          title: "Notification error",
+          message: "Unable to load notifications right now.",
+          timestamp: new Date(),
+        },
+      ]);
+    }
+  }, [subscription]);
 
   const hasWarning = notifications.some((n) => n.type === "warning");
 
@@ -118,7 +124,7 @@ const NotificationsPanel = () => {
               </button>
             </div>
             <div className="max-h-80 overflow-y-auto">
-              {notifications.map((n) => {
+              {notifications.map((n: any) => {
                 const Icon = iconMap[n.type];
                 return (
                   <div key={n.id} className="px-4 py-3 border-b border-border/50 last:border-0">

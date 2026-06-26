@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useQuery } from "@tanstack/react-query";
+import { authService, productService, businessService } from "@/services";
 import { Plus, ShoppingBag, Edit2, Trash2, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useProducts, useCreateProduct, useDeleteProduct } from "@/hooks/use-products";
 import WebsiteScraper from "@/components/WebsiteScraper";
 
 const Products = () => {
-  const [products, setProducts] = useState<any[]>([]);
   const [showForm, setShowForm] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
@@ -15,67 +15,59 @@ const Products = () => {
   const [businessId, setBusinessId] = useState<string | null>(null);
   const { toast } = useToast();
 
+  const { data: session } = useQuery({
+    queryKey: ["session"],
+    queryFn: () => authService.getSessionData(),
+  });
+
+  const { data: products = [], isLoading } = useProducts(businessId);
+  const createProduct = useCreateProduct();
+  const deleteProduct = useDeleteProduct();
+
   useEffect(() => {
-    const load = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
-
-      const { data: businesses } = await supabase
-        .from("businesses")
-        .select("id")
-        .eq("user_id", session.user.id)
-        .limit(1);
-
-      if (businesses && businesses.length > 0) {
-        setBusinessId(businesses[0].id);
-        const { data } = await supabase
-          .from("products")
-          .select("*")
-          .eq("business_id", businesses[0].id)
-          .order("created_at", { ascending: false });
-        setProducts(data || []);
+    const loadBusiness = async () => {
+      const { data: { session: s } } = await authService.getSession();
+      if (!s) return;
+      const business = await businessService.getCurrentBusiness(s.user.id);
+      if (business) {
+        setBusinessId(business.id);
       }
-      setLoading(false);
     };
-    load();
+    loadBusiness();
   }, []);
 
   const handleAdd = async () => {
-    if (!businessId || !name) return;
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) return;
-
-    const { data, error } = await supabase
-      .from("products")
-      .insert({
-        business_id: businessId,
-        user_id: session.user.id,
-        name,
-        price: parseFloat(price) || 0,
-        description,
-        type,
-      })
-      .select()
-      .single();
-
-    if (error) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
-    } else {
-      setProducts([data, ...products]);
-      setShowForm(false);
-      setName("");
-      setPrice("");
-      setDescription("");
-      toast({ title: "Product added!" });
-    }
+    if (!businessId || !name || !session?.user?.id) return;
+    createProduct.mutate(
+      {
+        businessId,
+        userId: session.user.id,
+        data: { name, price: parseFloat(price) || 0, description, type },
+      },
+      {
+        onError: (error: any) => {
+          toast({ title: "Error", description: error.message, variant: "destructive" });
+        },
+        onSuccess: () => {
+          setShowForm(false);
+          setName("");
+          setPrice("");
+          setDescription("");
+          toast({ title: "Product added!" });
+        },
+      }
+    );
   };
 
   const handleDelete = async (id: string) => {
-    const { error } = await supabase.from("products").delete().eq("id", id);
-    if (!error) {
-      setProducts(products.filter((p) => p.id !== id));
-      toast({ title: "Product deleted" });
-    }
+    deleteProduct.mutate(id, {
+      onError: (error: any) => {
+        toast({ title: "Error", description: error.message, variant: "destructive" });
+      },
+      onSuccess: () => {
+        toast({ title: "Product deleted" });
+      },
+    });
   };
 
   return (
@@ -154,7 +146,7 @@ const Products = () => {
       )}
 
       {/* List */}
-      {loading ? (
+      {isLoading ? (
         <div className="text-center py-12 text-muted-foreground font-body">Loading...</div>
       ) : products.length === 0 ? (
         <div className="text-center py-16 bg-card border border-border rounded-lg">

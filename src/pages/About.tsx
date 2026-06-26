@@ -17,6 +17,7 @@ import Header from "@/components/Header";
 import SEO from "@/components/SEO";
 import Footer from "@/components/Footer";
 import FloatingBubbles from "@/components/FloatingBubbles";
+import ScrollSection from "@/components/shared/ScrollSection";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useToast } from "@/hooks/use-toast";
 import siyabongaImg from "@/assets/siyabonga-tiwana.png";
@@ -85,21 +86,6 @@ const aboutHighlights = [
   { icon: Rocket, label: "Startup Go-to-Market Support" },
   { icon: MessageSquare, label: "META Solutions Integration" },
 ];
-
-const ScrollSection = ({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
-  const ref = useScrollReveal<HTMLDivElement>();
-  return (
-    <div ref={ref} className={className}>
-      {children}
-    </div>
-  );
-};
 
 const About = () => {
   const [email, setEmail] = useState("");

@@ -4,6 +4,7 @@ import { ChevronRight, ChevronLeft, Check, Loader2 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
+import { authService } from "@/services";
 import { useToast } from "@/hooks/use-toast";
 
 const TOTAL_STEPS = 5;

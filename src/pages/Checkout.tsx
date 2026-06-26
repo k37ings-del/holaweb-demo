@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { checkoutService } from "@/services";
+import { usePaymentLinkBySlug } from "@/hooks/use-checkout";
 import { motion } from "framer-motion";
 import { Check, ShieldCheck, Lock } from "lucide-react";
 import logo from "@/assets/HW_Logo.png";
 
 const Checkout = () => {
   const { slug } = useParams();
-  const [paymentLink, setPaymentLink] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
@@ -16,17 +15,7 @@ const Checkout = () => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const load = async () => {
-      if (!slug) return;
-      const { data } = await supabase
-        .rpc("get_active_payment_link_by_slug", { _slug: slug })
-        .maybeSingle();
-      setPaymentLink(data);
-      setLoading(false);
-    };
-    load();
-  }, [slug]);
+  const { data: paymentLink, isLoading } = usePaymentLinkBySlug(slug);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,25 +23,22 @@ const Checkout = () => {
     setSubmitting(true);
     setError("");
 
-    // Use server-side edge function to create order
-    const { data, error: fnError } = await supabase.functions.invoke("create-order", {
-      body: {
+    try {
+      await checkoutService.createOrder({
         payment_link_id: paymentLink.id,
         customer_name: customerName,
         customer_email: customerEmail,
         customer_phone: customerPhone || null,
-      },
-    });
-
-    if (fnError || (data && data.error)) {
-      setError(data?.error || "Something went wrong. Please try again.");
-    } else {
+      });
       setSubmitted(true);
+    } catch (err: any) {
+      setError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
-    setSubmitting(false);
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <p className="font-body text-muted-foreground">Loading...</p>

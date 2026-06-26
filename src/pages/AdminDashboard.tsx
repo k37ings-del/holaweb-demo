@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { adminService, authService } from "@/services";
 import {
   Shield,
   Users,
@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import logo from "@/assets/HW_Logo.png";
 import { useToast } from "@/hooks/use-toast";
+import { useAdminData } from "@/hooks/use-admin";
 
 type Tab = "overview" | "clients" | "subscriptions" | "referrals" | "meta" | "pricing" | "settings";
 
@@ -40,20 +41,6 @@ const AdminDashboard = () => {
   const [user, setUser] = useState<any>(null);
   const [tab, setTab] = useState<Tab>("overview");
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [stats, setStats] = useState({ totalUsers: 0, activeSubscriptions: 0, totalRevenue: 0, referralCodes: 0 });
-  const [businesses, setBusinesses] = useState<any[]>([]);
-  const [subscriptions, setSubscriptions] = useState<any[]>([]);
-  const [referralCodes, setReferralCodes] = useState<any[]>([]);
-  const [plans, setPlans] = useState<any[]>([]);
-  const [newCode, setNewCode] = useState({
-    code: "",
-    discount_type: "percentage",
-    discount_value: 10,
-    max_uses: 100,
-    valid_from: "",
-    valid_until: "",
-    valid_region: "",
-  });
   const [showNewCode, setShowNewCode] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("");
@@ -61,116 +48,104 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  const { data: adminData, isLoading, refetch } = useAdminData();
+
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_, session) => {
+    const { data: { subscription } } = authService.onAuthStateChange(async (_, session) => {
       if (!session) { navigate("/admin"); return; }
       setUser(session.user);
-      const { data: roles } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", session.user.id)
-        .eq("role", "admin");
-      if (!roles || roles.length === 0) navigate("/admin");
+      const isAdmin = await adminService.checkIsAdmin(session.user.id);
+      if (!isAdmin) navigate("/admin");
     });
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
+    authService.getSession().then(async ({ data: { session } }) => {
       if (!session) { navigate("/admin"); return; }
       setUser(session.user);
-      const { data: roles } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", session.user.id)
-        .eq("role", "admin");
-      if (!roles || roles.length === 0) navigate("/admin");
+      const isAdmin = await adminService.checkIsAdmin(session.user.id);
+      if (!isAdmin) navigate("/admin");
     });
     return () => subscription.unsubscribe();
   }, [navigate]);
 
-  useEffect(() => {
-    if (!user) return;
-    loadData();
-  }, [user]);
-
-  const loadData = async () => {
-    const [bizRes, subRes, refRes, planRes] = await Promise.all([
-      supabase.from("businesses").select("*"),
-      supabase.from("user_subscriptions").select("*, subscription_plans(name, price, currency)"),
-      supabase.from("referral_codes").select("*"),
-      supabase.from("subscription_plans").select("*").order("price", { ascending: true }),
-    ]);
-
-    setBusinesses(bizRes.data || []);
-    setSubscriptions(subRes.data || []);
-    setReferralCodes(refRes.data || []);
-    setPlans(planRes.data || []);
-    setStats({
-      totalUsers: (bizRes.data || []).length,
-      activeSubscriptions: (subRes.data || []).filter((s: any) => s.status === "active" || s.status === "trial").length,
-      totalRevenue: 0,
-      referralCodes: (refRes.data || []).length,
-    });
+  const newCode = {
+    code: "",
+    discount_type: "percentage",
+    discount_value: 10,
+    max_uses: 100,
+    valid_from: "",
+    valid_until: "",
+    valid_region: "",
   };
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
+    await authService.signOut();
     navigate("/");
   };
 
   const createReferralCode = async () => {
-    if (!newCode.code.trim()) return;
+    if (!newCode.code.trim() || !user) return;
     const regionValue = selectedCountry || selectedRegion || newCode.valid_region || null;
-    const insertData: any = {
-      code: newCode.code.toUpperCase(),
-      discount_type: newCode.discount_type,
-      discount_value: newCode.discount_value,
-      max_uses: newCode.max_uses,
-      created_by: user.id,
-    };
-    if (newCode.valid_from) insertData.valid_from = newCode.valid_from;
-    if (newCode.valid_until) insertData.valid_until = newCode.valid_until;
-    if (regionValue) insertData.valid_region = regionValue;
-
-    const { error } = await supabase.from("referral_codes").insert(insertData);
-    if (error) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
-    } else {
+    try {
+      await adminService.createReferralCode({
+        code: newCode.code.toUpperCase(),
+        discount_type: newCode.discount_type,
+        discount_value: newCode.discount_value,
+        max_uses: newCode.max_uses,
+        created_by: user.id,
+        ...(newCode.valid_from && { valid_from: newCode.valid_from }),
+        ...(newCode.valid_until && { valid_until: newCode.valid_until }),
+        ...(regionValue && { valid_region: regionValue }),
+      });
       toast({ title: "Created!", description: `Promo code ${newCode.code.toUpperCase()} created and saved.` });
-      setNewCode({ code: "", discount_type: "percentage", discount_value: 10, max_uses: 100, valid_from: "", valid_until: "", valid_region: "" });
+      setNewCode({
+        code: "",
+        discount_type: "percentage",
+        discount_value: 10,
+        max_uses: 100,
+        valid_from: "",
+        valid_until: "",
+        valid_region: "",
+      });
       setSelectedRegion("");
       setSelectedCountry("");
       setShowNewCode(false);
-      loadData();
+      refetch();
+    } catch (error: any) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
     }
   };
 
   const deleteReferralCode = async (id: string) => {
-    await supabase.from("referral_codes").delete().eq("id", id);
-    loadData();
+    try {
+      await adminService.deleteReferralCode(id);
+      refetch();
+    } catch (error: any) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    }
   };
 
   const togglePlanActive = async (planId: string, currentActive: boolean) => {
-    const { error } = await supabase.from("subscription_plans").update({ is_active: !currentActive }).eq("id", planId);
-    if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
-    else loadData();
+    try {
+      await adminService.togglePlanActive(planId, currentActive);
+      refetch();
+    } catch (error: any) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    }
   };
 
   const savePlanEdit = async () => {
     if (!editingPlan) return;
-    const { error } = await supabase
-      .from("subscription_plans")
-      .update({
+    try {
+      await adminService.updatePlan(editingPlan.id, {
         name: editingPlan.name,
         price: editingPlan.price,
         trial_days: editingPlan.trial_days,
         billing_period: editingPlan.billing_period,
-      })
-      .eq("id", editingPlan.id);
-
-    if (error) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
-    } else {
+      });
       toast({ title: "Updated!", description: `Plan "${editingPlan.name}" updated.` });
       setEditingPlan(null);
-      loadData();
+      refetch();
+    } catch (error: any) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
     }
   };
 
@@ -258,11 +233,11 @@ const AdminDashboard = () => {
           {tab === "overview" && (
             <div className="space-y-8">
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                {[
-                  { label: "Total Clients", value: stats.totalUsers, icon: Users },
-                  { label: "Active Subscriptions", value: stats.activeSubscriptions, icon: CreditCard },
-                  { label: "Referral Codes", value: stats.referralCodes, icon: Tag },
-                  { label: "Revenue (ZAR)", value: `R${stats.totalRevenue.toLocaleString()}`, icon: BarChart3 },
+                 {[
+                  { label: "Total Clients", value: adminData?.stats.totalUsers ?? 0, icon: Users },
+                  { label: "Active Subscriptions", value: adminData?.stats.activeSubscriptions ?? 0, icon: CreditCard },
+                  { label: "Referral Codes", value: adminData?.stats.referralCodes ?? 0, icon: Tag },
+                  { label: "Revenue (ZAR)", value: `R${(adminData?.stats.totalRevenue ?? 0).toLocaleString()}`, icon: BarChart3 },
                 ].map((stat) => (
                   <div key={stat.label} className="bg-card border border-border rounded-lg p-5">
                     <stat.icon className="w-5 h-5 text-muted-foreground mb-3" />
@@ -299,10 +274,10 @@ const AdminDashboard = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {businesses.length === 0 ? (
+                    {adminData?.businesses.length === 0 ? (
                       <tr><td colSpan={4} className="px-4 py-8 text-center font-body text-sm text-muted-foreground">No clients yet</td></tr>
                     ) : (
-                      businesses.map((biz) => (
+                      adminData?.businesses.map((biz) => (
                         <tr key={biz.id} className="border-b border-border last:border-0">
                           <td className="px-4 py-3 font-body text-sm text-foreground">{biz.name}</td>
                           <td className="px-4 py-3 font-body text-sm text-muted-foreground capitalize">{biz.type}</td>
@@ -338,10 +313,10 @@ const AdminDashboard = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {subscriptions.length === 0 ? (
+                    {adminData?.subscriptions.length === 0 ? (
                       <tr><td colSpan={4} className="px-4 py-8 text-center font-body text-sm text-muted-foreground">No subscriptions yet</td></tr>
                     ) : (
-                      subscriptions.map((sub: any) => (
+                      adminData?.subscriptions.map((sub: any) => (
                         <tr key={sub.id} className="border-b border-border last:border-0">
                           <td className="px-4 py-3 font-body text-sm text-foreground">{sub.subscription_plans?.name || "—"}</td>
                           <td className="px-4 py-3">
@@ -438,7 +413,7 @@ const AdminDashboard = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {plans.filter(p => p.plan_type === "bundled").map((plan) => (
+                       {adminData?.plans.filter(p => p.plan_type === "bundled").map((plan) => (
                         <tr key={plan.id} className="border-b border-border last:border-0">
                           <td className="px-4 py-3 font-body text-sm font-medium text-foreground">{plan.name}</td>
                           <td className="px-4 py-3 font-body text-sm text-foreground">R{plan.price.toLocaleString()}</td>
@@ -492,7 +467,7 @@ const AdminDashboard = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {plans.filter(p => p.plan_type === "independent").map((plan) => (
+                       {adminData?.plans.filter(p => p.plan_type === "independent").map((plan) => (
                         <tr key={plan.id} className="border-b border-border last:border-0">
                           <td className="px-4 py-3 font-body text-sm font-medium text-foreground">{plan.name}</td>
                           <td className="px-4 py-3 font-body text-sm text-foreground">R{plan.price.toLocaleString()}</td>
@@ -668,10 +643,10 @@ const AdminDashboard = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {referralCodes.length === 0 ? (
+                       {adminData?.referralCodes.length === 0 ? (
                       <tr><td colSpan={6} className="px-4 py-8 text-center font-body text-sm text-muted-foreground">No promo codes yet</td></tr>
                     ) : (
-                      referralCodes.map((rc: any) => (
+                       adminData?.referralCodes.map((rc: any) => (
                         <tr key={rc.id} className="border-b border-border last:border-0">
                           <td className="px-4 py-3 font-mono text-sm text-foreground font-semibold">{rc.code}</td>
                           <td className="px-4 py-3 font-body text-sm text-muted-foreground">

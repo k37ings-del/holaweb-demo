@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { authService, contactService } from "@/services";
 import {
   ChevronRight,
   Send,
@@ -12,9 +12,11 @@ import Header from "@/components/Header";
 import SEO from "@/components/SEO";
 import Footer from "@/components/Footer";
 import FloatingBubbles from "@/components/FloatingBubbles";
+import ScrollSection from "@/components/shared/ScrollSection";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
+import WhatsAppIcon from "@/components/shared/icons/WhatsAppIcon";
 
 const contactSchema = z.object({
   name: z
@@ -58,21 +60,6 @@ const expectations = [
   },
 ];
 
-const ScrollSection = ({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
-  const ref = useScrollReveal<HTMLDivElement>();
-  return (
-    <div ref={ref} className={className}>
-      {children}
-    </div>
-  );
-};
-
 const Contact = () => {
   const [form, setForm] = useState<ContactForm>({
     name: "",
@@ -112,35 +99,13 @@ const Contact = () => {
     }
 
     try {
-      // 1. Save to database
-      const { error: dbError } = await supabase
-        .from("contact_submissions")
-        .insert({
-          name: result.data.name,
-          email: result.data.email,
-          subject: result.data.subject || null,
-          phone: result.data.phone || null,
-          message: result.data.message,
-        });
-
-      if (dbError) {
-        console.error("DB insert error:", dbError);
-      }
-
-      // 2. Send email via Resend edge function
-      const { error: emailError } = await supabase.functions.invoke("send-contact-email", {
-        body: {
-          name: result.data.name,
-          email: result.data.email,
-          subject: result.data.subject || "No subject",
-          phone: result.data.phone || "Not provided",
-          message: result.data.message,
-        },
+      await contactService.submitContact({
+        name: result.data.name,
+        email: result.data.email,
+        subject: result.data.subject || null,
+        phone: result.data.phone || null,
+        message: result.data.message,
       });
-
-      if (emailError) {
-        console.error("Email send error:", emailError);
-      }
 
       toast({
         title: "Message sent!",

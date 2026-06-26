@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { authService, businessService, productService } from "@/services";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Building2,
@@ -44,13 +44,15 @@ const Onboarding = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    const load = async () => {
+      const { data: { session } } = await authService.getSession();
       if (!session) {
         navigate("/auth");
       } else {
         setUserId(session.user.id);
       }
-    });
+    };
+    load();
   }, [navigate]);
 
   const togglePriority = (p: SetupPriority) => {
@@ -64,31 +66,20 @@ const Onboarding = () => {
     setLoading(true);
 
     try {
-      // Create business
-      const { data: business, error: bizError } = await supabase
-        .from("businesses")
-        .insert({
-          user_id: userId,
-          name: businessName,
-          type: businessType,
-          setup_priorities: priorities,
-          onboarding_completed: true,
-        })
-        .select()
-        .single();
+      const business = await businessService.createBusiness({
+        user_id: userId,
+        name: businessName,
+        type: businessType,
+        setup_priorities: priorities,
+        onboarding_completed: true,
+      });
 
-      if (bizError) throw bizError;
-
-      // If they added a product
       if (firstProductName && business) {
-        const { error: prodError } = await supabase.from("products").insert({
-          business_id: business.id,
-          user_id: userId,
+        await productService.createProduct(business.id, userId, {
           name: firstProductName,
           price: parseFloat(firstProductPrice) || 0,
           type: businessType === "services" ? "service" : "product",
         });
-        if (prodError) throw prodError;
       }
 
       setCurrentStep(4);

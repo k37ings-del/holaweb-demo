@@ -1,29 +1,21 @@
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { Crown, AlertTriangle } from "lucide-react";
+import { authService, subscriptionService } from "@/services";
 
 const SubscriptionBubble = () => {
   const [subscription, setSubscription] = useState<any>(null);
-  const [planName, setPlanName] = useState("");
   const [isExpired, setIsExpired] = useState(false);
   const [daysLeft, setDaysLeft] = useState<number | null>(null);
 
   useEffect(() => {
     const load = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      const { data: { session } } = await authService.getSession();
       if (!session) return;
 
-      const { data } = await supabase
-        .from("user_subscriptions")
-        .select("*, subscription_plans(name)")
-        .eq("user_id", session.user.id)
-        .order("created_at", { ascending: false })
-        .limit(1);
-
-      if (data && data.length > 0) {
-        const sub = data[0];
+      const sub = await subscriptionService.getCurrentSubscription(session.user.id);
+      if (sub) {
         setSubscription(sub);
-        setPlanName((sub as any).subscription_plans?.name || "Plan");
+        const planName = (sub as any).subscription_plans?.name || "Plan";
 
         const endDate = sub.ends_at || sub.trial_ends_at;
         if (endDate) {
@@ -42,6 +34,8 @@ const SubscriptionBubble = () => {
   }, []);
 
   if (!subscription) return null;
+
+  const planName = (subscription as any).subscription_plans?.name || "Plan";
 
   return (
     <div

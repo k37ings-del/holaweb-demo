@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { Settings, User, Building2, Shield, Bell } from "lucide-react";
+import { authService, businessService, profileService } from "@/services";
 import { useToast } from "@/hooks/use-toast";
+import { useQuery } from "@tanstack/react-query";
+import { Settings, User, Building2, Shield, Bell } from "lucide-react";
 
 const DashboardSettings = () => {
   const [businessName, setBusinessName] = useState("");
@@ -14,50 +15,70 @@ const DashboardSettings = () => {
   const [userEmail, setUserEmail] = useState("");
   const { toast } = useToast();
 
+  const { data: session } = useQuery({
+    queryKey: ["session"],
+    queryFn: () => authService.getSessionData(),
+  });
+
+  const { data: businessData } = useQuery({
+    queryKey: ["business", session?.user?.id],
+    queryFn: () => (session ? businessService.getCurrentBusiness(session.user.id) : null),
+    enabled: !!session,
+  });
+
+  const { data: profileData } = useQuery({
+    queryKey: ["profile", session?.user?.id],
+    queryFn: () => (session ? profileService.getProfile(session.user.id) : null),
+    enabled: !!session,
+  });
+
   useEffect(() => {
-    const load = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
+    if (businessData) {
+      setBusinessId(businessData.id);
+      setBusinessName(businessData.name);
+      setBusinessType(businessData.type || "both");
+      setBusinessDescription(businessData.description || "");
+    }
+  }, [businessData]);
+
+  useEffect(() => {
+    if (session) {
       setUserEmail(session.user.email || "");
+    }
+  }, [session]);
 
-      const [bizRes, profileRes] = await Promise.all([
-        supabase.from("businesses").select("*").eq("user_id", session.user.id).limit(1),
-        supabase.from("profiles").select("*").eq("id", session.user.id).single(),
-      ]);
-
-      if (bizRes.data && bizRes.data.length > 0) {
-        const biz = bizRes.data[0];
-        setBusinessId(biz.id);
-        setBusinessName(biz.name);
-        setBusinessType(biz.type || "both");
-        setBusinessDescription(biz.description || "");
-      }
-
-      if (profileRes.data) {
-        setProfileId(profileRes.data.id);
-        setFullName(profileRes.data.full_name || "");
-      }
-    };
-    load();
-  }, []);
+  useEffect(() => {
+    if (profileData) {
+      setProfileId(profileData.id);
+      setFullName(profileData.full_name || "");
+    }
+  }, [profileData]);
 
   const handleSaveBusiness = async () => {
     if (!businessId) return;
     setLoading(true);
-    const { error } = await supabase.from("businesses").update({
-      name: businessName, type: businessType, description: businessDescription,
-    }).eq("id", businessId);
-    if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
-    else toast({ title: "Business settings saved!" });
+    try {
+      await businessService.updateBusiness(businessId, {
+        name: businessName,
+        type: businessType,
+        description: businessDescription,
+      });
+      toast({ title: "Business settings saved!" });
+    } catch (error: any) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    }
     setLoading(false);
   };
 
   const handleSaveProfile = async () => {
-    if (!profileId) return;
+    if (!profileId || !session?.user?.id) return;
     setLoading(true);
-    const { error } = await supabase.from("profiles").update({ full_name: fullName }).eq("id", profileId);
-    if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
-    else toast({ title: "Profile saved!" });
+    try {
+      await profileService.updateProfile(session.user.id, { full_name: fullName });
+      toast({ title: "Profile saved!" });
+    } catch (error: any) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    }
     setLoading(false);
   };
 
