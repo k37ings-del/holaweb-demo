@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Send, ExternalLink, Globe } from "lucide-react";
 import ReactMarkdown from "react-markdown";
@@ -38,11 +38,13 @@ const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/holaweb-chat
 async function streamChat({
   messages,
   language,
+  mode,
   onDelta,
   onDone,
 }: {
   messages: Message[];
   language: string;
+  mode: "site" | "dashboard";
   onDelta: (t: string) => void;
   onDone: () => void;
 }) {
@@ -52,7 +54,7 @@ async function streamChat({
       "Content-Type": "application/json",
       Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
     },
-    body: JSON.stringify({ messages, language }),
+    body: JSON.stringify({ messages, language, mode }),
   });
 
   if (!resp.ok) {
@@ -99,9 +101,23 @@ const ChatAssistant = () => {
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const isDashboard = location.pathname.startsWith("/dashboard") || location.pathname.startsWith("/admin");
+  const mode: "site" | "dashboard" = isDashboard ? "dashboard" : "site";
+
+  // On the public site, "show me your services" style prompts go straight to /platform.
+  const SERVICE_INTENT = /\b(show me your services|your services|see services|what services|what do you offer|your offerings|your products|show me your products|view services|view platform|see platform|explore services|explore platform)\b/i;
 
   const send = useCallback(async (text: string) => {
     if (!text.trim() || isLoading) return;
+
+    if (!isDashboard && SERVICE_INTENT.test(text)) {
+      navigate("/platform");
+      setIsOpen(false);
+      setInput("");
+      return;
+    }
+
     const userMsg: Message = { role: "user", content: text };
     setMessages(prev => [...prev, userMsg]);
     setInput("");
@@ -122,6 +138,7 @@ const ChatAssistant = () => {
       await streamChat({
         messages: [...messages, userMsg],
         language,
+        mode,
         onDelta: upsert,
         onDone: () => setIsLoading(false),
       });
@@ -129,7 +146,7 @@ const ChatAssistant = () => {
       upsert(e.message || "Sorry, something went wrong. Please try again!");
       setIsLoading(false);
     }
-  }, [messages, isLoading, language]);
+  }, [messages, isLoading, language, mode, isDashboard, navigate]);
 
   const handleAction = (action: ActionButton) => {
     if (action.type === "navigate") {
@@ -164,6 +181,7 @@ const ChatAssistant = () => {
       streamChat({
         messages: [...currentMessages, userMsg],
         language,
+        mode,
         onDelta: (chunk) => {
           soFar += chunk;
           setMessages(prev => {
@@ -274,7 +292,10 @@ const ChatAssistant = () => {
                     Hey there! 👋 I'm <span className="text-primary font-semibold">Ola</span>, your guide to everything Holaweb. Ask me anything!
                   </p>
                   <div className="flex flex-wrap gap-2 justify-center">
-                    {["What does Holaweb do?", "Show me your services", "How can I get started?"].map(q => (
+                    {(isDashboard
+                      ? ["Summarise my products", "How are my payments doing?", "Explain my analytics"]
+                      : ["What does Holaweb do?", "Show me your services", "How can I get started?"]
+                    ).map(q => (
                       <button
                         key={q}
                         onClick={() => send(q)}
