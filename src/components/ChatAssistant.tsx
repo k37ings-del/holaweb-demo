@@ -101,9 +101,23 @@ const ChatAssistant = () => {
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const isDashboard = location.pathname.startsWith("/dashboard") || location.pathname.startsWith("/admin");
+  const mode: "site" | "dashboard" = isDashboard ? "dashboard" : "site";
+
+  // On the public site, "show me your services" style prompts go straight to /platform.
+  const SERVICE_INTENT = /\b(show me your services|your services|see services|what services|what do you offer|your offerings|your products|show me your products|view services|view platform|see platform|explore services|explore platform)\b/i;
 
   const send = useCallback(async (text: string) => {
     if (!text.trim() || isLoading) return;
+
+    if (!isDashboard && SERVICE_INTENT.test(text)) {
+      navigate("/platform");
+      setIsOpen(false);
+      setInput("");
+      return;
+    }
+
     const userMsg: Message = { role: "user", content: text };
     setMessages(prev => [...prev, userMsg]);
     setInput("");
@@ -124,6 +138,7 @@ const ChatAssistant = () => {
       await streamChat({
         messages: [...messages, userMsg],
         language,
+        mode,
         onDelta: upsert,
         onDone: () => setIsLoading(false),
       });
@@ -131,7 +146,7 @@ const ChatAssistant = () => {
       upsert(e.message || "Sorry, something went wrong. Please try again!");
       setIsLoading(false);
     }
-  }, [messages, isLoading, language]);
+  }, [messages, isLoading, language, mode, isDashboard, navigate]);
 
   const handleAction = (action: ActionButton) => {
     if (action.type === "navigate") {
