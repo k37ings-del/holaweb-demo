@@ -38,11 +38,13 @@ const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/holaweb-chat
 async function streamChat({
   messages,
   language,
+  mode,
   onDelta,
   onDone,
 }: {
   messages: Message[];
   language: string;
+  mode: "site" | "dashboard";
   onDelta: (t: string) => void;
   onDone: () => void;
 }) {
@@ -52,7 +54,7 @@ async function streamChat({
       "Content-Type": "application/json",
       Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
     },
-    body: JSON.stringify({ messages, language }),
+    body: JSON.stringify({ messages, language, mode }),
   });
 
   if (!resp.ok) {
