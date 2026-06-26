@@ -36,7 +36,7 @@ export const adminService = {
   createReferralCode: async (data: Record<string, unknown>) => {
     const { error } = await supabase
       .from("referral_codes")
-      .insert(data);
+      .insert(data as any);
     if (error) throw error;
   },
 
