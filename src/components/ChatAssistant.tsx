@@ -181,6 +181,7 @@ const ChatAssistant = () => {
       streamChat({
         messages: [...currentMessages, userMsg],
         language,
+        mode,
         onDelta: (chunk) => {
           soFar += chunk;
           setMessages(prev => {
