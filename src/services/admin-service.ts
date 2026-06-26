@@ -36,7 +36,7 @@ export const adminService = {
   createReferralCode: async (data: Record<string, unknown>) => {
     const { error } = await supabase
       .from("referral_codes")
-      .insert(data);
+      .insert(data as any);
     if (error) throw error;
   },
 
@@ -71,6 +71,6 @@ export const adminService = {
 
   getActiveReferralCode: async (code: string) => {
     const { data } = await supabase.rpc("get_active_referral_code", { _code: code });
-    return data;
+    return Array.isArray(data) ? data[0] ?? null : data;
   },
 };

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { adminService, authService } from "@/services";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Shield,
   Users,
@@ -66,7 +67,7 @@ const AdminDashboard = () => {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
-  const newCode = {
+  const [newCode, setNewCode] = useState({
     code: "",
     discount_type: "percentage",
     discount_value: 10,
@@ -74,7 +75,7 @@ const AdminDashboard = () => {
     valid_from: "",
     valid_until: "",
     valid_region: "",
-  };
+  });
 
   const handleSignOut = async () => {
     await authService.signOut();

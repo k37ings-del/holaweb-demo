@@ -12,7 +12,7 @@ export function usePaymentLinks(businessId: string | null) {
 export function useCreatePaymentLink() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ businessId, userId, data }: { businessId: string; userId: string; data: Record<string, unknown> }) =>
+    mutationFn: ({ businessId, userId, data }: { businessId: string; userId: string; data: Parameters<typeof paymentService.createPaymentLink>[2] }) =>
       paymentService.createPaymentLink(businessId, userId, data),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["paymentLinks", variables.businessId] });

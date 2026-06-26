@@ -104,7 +104,7 @@ const WebsiteScraper = ({ businessId, onProductsScraped }: { businessId?: string
       if (businessId) {
         const { data: { session } } = await authService.getSession();
         if (session) {
-          await productService.importProducts(businessId, session.user.id, products);
+          await productService.importProducts(businessId, session.user.id, products as unknown as Record<string, unknown>[]);
           toast({
             title: "Products Imported!",
             description: `Successfully imported ${products.length} products from your website.`,

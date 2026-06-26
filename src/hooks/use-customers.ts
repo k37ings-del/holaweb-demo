@@ -12,7 +12,7 @@ export function useCustomers(businessId: string | null) {
 export function useCreateCustomer() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ businessId, userId, data }: { businessId: string; userId: string; data: Record<string, unknown> }) =>
+    mutationFn: ({ businessId, userId, data }: { businessId: string; userId: string; data: Parameters<typeof customerService.createCustomer>[2] }) =>
       customerService.createCustomer(businessId, userId, data),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["customers", variables.businessId] });
