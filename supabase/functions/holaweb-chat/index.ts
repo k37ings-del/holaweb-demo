@@ -106,7 +106,8 @@ serve(async (req) => {
       );
     }
 
-    const { messages, language } = await req.json();
+    const { messages, language, mode } = await req.json();
+    const systemContext = mode === "dashboard" ? DASHBOARD_CONTEXT : HOLAWEB_CONTEXT;
 
     // Validate messages input
     if (!Array.isArray(messages) || messages.length === 0 || messages.length > 50) {
