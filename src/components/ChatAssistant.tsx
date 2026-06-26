@@ -292,7 +292,10 @@ const ChatAssistant = () => {
                     Hey there! 👋 I'm <span className="text-primary font-semibold">Ola</span>, your guide to everything Holaweb. Ask me anything!
                   </p>
                   <div className="flex flex-wrap gap-2 justify-center">
-                    {["What does Holaweb do?", "Show me your services", "How can I get started?"].map(q => (
+                    {(isDashboard
+                      ? ["Summarise my products", "How are my payments doing?", "Explain my analytics"]
+                      : ["What does Holaweb do?", "Show me your services", "How can I get started?"]
+                    ).map(q => (
                       <button
                         key={q}
                         onClick={() => send(q)}
