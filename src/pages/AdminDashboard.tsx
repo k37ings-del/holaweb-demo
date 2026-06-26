@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { adminService, authService } from "@/services";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Shield,
   Users,
