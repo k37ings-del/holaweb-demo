@@ -222,6 +222,10 @@ const Payments = () => {
       {/* List */}
       {loading ? (
         <div className="text-center py-12 text-muted-foreground font-body">Loading...</div>
+      ) : loadError ? (
+        <ErrorState message={loadError} onRetry={() => { if (businessId) { setLoading(true); setLoadError(null); Promise.all([paymentService.getPaymentLinks(businessId), productService.getProducts(businessId)]).then(([l, p]) => { setPaymentLinks(l); setProducts(p); }).catch((e:any) => setLoadError(e?.message || "Failed to load")).finally(() => setLoading(false)); } }} />
+      ) : null}
+      {!loading && !loadError && (
       ) : paymentLinks.length === 0 ? (
         <div className="text-center py-16 bg-card border border-border rounded-lg">
           <Link2 className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
