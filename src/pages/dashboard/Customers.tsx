@@ -175,8 +175,10 @@ const Customers = () => {
       )}
 
       {/* List */}
-      {loading ? (
+      {isLoading ? (
         <div className="text-center py-12 text-muted-foreground font-body">Loading...</div>
+      ) : error ? (
+        <ErrorState message={(error as any)?.message || "Failed to load customers"} onRetry={() => refetch()} />
       ) : customers.length === 0 ? (
         <div className="text-center py-16 bg-card border border-border rounded-lg">
           <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
