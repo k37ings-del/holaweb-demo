@@ -1,21 +1,20 @@
 import { useState, useEffect } from "react";
 import { Crown, AlertTriangle } from "lucide-react";
-import { authService, subscriptionService } from "@/services";
+import { subscriptionService } from "@/services";
+import { useAuth } from "@/contexts/AuthContext";
 
 const SubscriptionBubble = () => {
   const [subscription, setSubscription] = useState<any>(null);
   const [isExpired, setIsExpired] = useState(false);
   const [daysLeft, setDaysLeft] = useState<number | null>(null);
+  const { user } = useAuth();
 
   useEffect(() => {
     const load = async () => {
-      const { data: { session } } = await authService.getSession();
-      if (!session) return;
-
-      const sub = await subscriptionService.getCurrentSubscription(session.user.id);
+      if (!user) return;
+      const sub = await subscriptionService.getCurrentSubscription(user.id);
       if (sub) {
         setSubscription(sub);
-        const planName = (sub as any).subscription_plans?.name || "Plan";
 
         const endDate = sub.ends_at || sub.trial_ends_at;
         if (endDate) {
@@ -31,7 +30,7 @@ const SubscriptionBubble = () => {
       }
     };
     load();
-  }, []);
+  }, [user]);
 
   if (!subscription) return null;
 

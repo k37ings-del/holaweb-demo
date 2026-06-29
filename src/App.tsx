@@ -7,6 +7,9 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import ChatAssistant from "@/components/ChatAssistant";
 import BackToTopButton from "@/components/BackToTopButton";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { BusinessProvider } from "@/contexts/BusinessContext";
+import { ErrorBoundary } from "@/components/feedback";
 
 // Wrap dynamic imports to recover from stale chunk hashes after a redeploy.
 const lazyWithReload = <T,>(factory: () => Promise<T>) =>
@@ -70,34 +73,40 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <ScrollToTop />
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/services/:slug" element={<ServiceDetail />} />
-            <Route path="/demo" element={<Demo />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/platform" element={<Platform />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/admin" element={<AdminAuth />} />
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
-            <Route path="/onboarding" element={<Onboarding />} />
-            <Route path="/checkout/:slug" element={<Checkout />} />
-            <Route path="/dashboard" element={<Dashboard />}>
-              <Route path="products" element={<Products />} />
-              <Route path="payments" element={<Payments />} />
-              <Route path="customers" element={<Customers />} />
-              <Route path="messaging" element={<Messaging />} />
-              <Route path="website" element={<Website />} />
-              <Route path="analytics" element={<Analytics />} />
-              <Route path="settings" element={<DashboardSettings />} />
-            </Route>
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
-        <ChatAssistant />
-        <BackToTopButton />
+        <AuthProvider>
+          <BusinessProvider>
+            <ErrorBoundary>
+              <ScrollToTop />
+              <Suspense fallback={<PageLoader />}>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/services/:slug" element={<ServiceDetail />} />
+                  <Route path="/demo" element={<Demo />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/platform" element={<Platform />} />
+                  <Route path="/auth" element={<Auth />} />
+                  <Route path="/admin" element={<AdminAuth />} />
+                  <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                  <Route path="/onboarding" element={<Onboarding />} />
+                  <Route path="/checkout/:slug" element={<Checkout />} />
+                  <Route path="/dashboard" element={<Dashboard />}>
+                    <Route path="products" element={<Products />} />
+                    <Route path="payments" element={<Payments />} />
+                    <Route path="customers" element={<Customers />} />
+                    <Route path="messaging" element={<Messaging />} />
+                    <Route path="website" element={<Website />} />
+                    <Route path="analytics" element={<Analytics />} />
+                    <Route path="settings" element={<DashboardSettings />} />
+                  </Route>
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Suspense>
+              <ChatAssistant />
+              <BackToTopButton />
+            </ErrorBoundary>
+          </BusinessProvider>
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

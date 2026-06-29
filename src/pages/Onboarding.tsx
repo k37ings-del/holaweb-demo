@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { authService, businessService, productService } from "@/services";
+import { businessService, productService } from "@/services";
+import { useAuth } from "@/contexts/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Building2,
@@ -39,21 +40,16 @@ const Onboarding = () => {
   const [firstProductName, setFirstProductName] = useState("");
   const [firstProductPrice, setFirstProductPrice] = useState("");
   const [loading, setLoading] = useState(false);
-  const [userId, setUserId] = useState<string | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user, isLoading: authLoading } = useAuth();
+  const userId = user?.id ?? null;
 
   useEffect(() => {
-    const load = async () => {
-      const { data: { session } } = await authService.getSession();
-      if (!session) {
-        navigate("/auth");
-      } else {
-        setUserId(session.user.id);
-      }
-    };
-    load();
-  }, [navigate]);
+    if (!authLoading && !user) {
+      navigate("/auth");
+    }
+  }, [user, authLoading, navigate]);
 
   const togglePriority = (p: SetupPriority) => {
     setPriorities((prev) =>

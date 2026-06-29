@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link, Outlet, useLocation } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { authService, businessService } from "@/services";
+import { useAuth } from "@/contexts/AuthContext";
+import { useBusiness } from "@/contexts/BusinessContext";
 import {
   LayoutDashboard,
   Globe,
@@ -21,7 +21,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import logo from "@/assets/HW_Logo.png";
-import { useCurrentBusiness, useBusinessStats } from "@/hooks/use-business";
+import { useBusinessStats } from "@/hooks/use-business";
 import SubscriptionBubble from "@/components/SubscriptionBubble";
 import NotificationsPanel from "@/components/NotificationsPanel";
 
@@ -41,21 +41,17 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { data: session, isLoading: sessionLoading } = useQuery({
-    queryKey: ["session"],
-    queryFn: () => authService.getSessionData(),
-  });
-
-  const { data: business, isLoading: businessLoading } = useCurrentBusiness(session?.user?.id ?? null);
+  const { session, isLoading: sessionLoading, signOut } = useAuth();
+  const { business, isLoading: businessLoading } = useBusiness();
   const { data: stats } = useBusinessStats(business?.id ?? null);
 
   const isLoading = sessionLoading || businessLoading;
 
   useEffect(() => {
-    if (!session) {
+    if (!sessionLoading && !session) {
       navigate("/auth");
     }
-  }, [session, navigate]);
+  }, [session, sessionLoading, navigate]);
 
   useEffect(() => {
     if (business?.onboarding_completed === false) {
@@ -63,15 +59,8 @@ const Dashboard = () => {
     }
   }, [business, navigate]);
 
-  useEffect(() => {
-    const { data: { subscription } } = authService.onAuthStateChange((event, session) => {
-      if (!session) navigate("/auth");
-    });
-    return () => subscription.unsubscribe();
-  }, [navigate]);
-
   const handleSignOut = async () => {
-    await authService.signOut();
+    await signOut();
     navigate("/");
   };
 

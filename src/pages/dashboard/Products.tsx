@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { authService, productService, businessService } from "@/services";
+import { useState } from "react";
 import { Plus, ShoppingBag, Edit2, Trash2, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useProducts, useCreateProduct, useDeleteProduct } from "@/hooks/use-products";
+import { useAuth } from "@/contexts/AuthContext";
+import { useBusiness } from "@/contexts/BusinessContext";
+import { ErrorState } from "@/components/feedback";
 import WebsiteScraper from "@/components/WebsiteScraper";
 
 const Products = () => {
@@ -12,36 +13,21 @@ const Products = () => {
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [type, setType] = useState("product");
-  const [businessId, setBusinessId] = useState<string | null>(null);
   const { toast } = useToast();
 
-  const { data: session } = useQuery({
-    queryKey: ["session"],
-    queryFn: () => authService.getSessionData(),
-  });
+  const { user } = useAuth();
+  const { businessId } = useBusiness();
 
-  const { data: products = [], isLoading } = useProducts(businessId);
+  const { data: products = [], isLoading, error, refetch } = useProducts(businessId);
   const createProduct = useCreateProduct();
   const deleteProduct = useDeleteProduct();
 
-  useEffect(() => {
-    const loadBusiness = async () => {
-      const { data: { session: s } } = await authService.getSession();
-      if (!s) return;
-      const business = await businessService.getCurrentBusiness(s.user.id);
-      if (business) {
-        setBusinessId(business.id);
-      }
-    };
-    loadBusiness();
-  }, []);
-
   const handleAdd = async () => {
-    if (!businessId || !name || !session?.user?.id) return;
+    if (!businessId || !name || !user?.id) return;
     createProduct.mutate(
       {
         businessId,
-        userId: session.user.id,
+        userId: user.id,
         data: { name, price: parseFloat(price) || 0, description, type },
       },
       {
@@ -148,6 +134,8 @@ const Products = () => {
       {/* List */}
       {isLoading ? (
         <div className="text-center py-12 text-muted-foreground font-body">Loading...</div>
+      ) : error ? (
+        <ErrorState message={(error as any)?.message || "Failed to load products"} onRetry={() => refetch()} />
       ) : products.length === 0 ? (
         <div className="text-center py-16 bg-card border border-border rounded-lg">
           <ShoppingBag className="w-12 h-12 text-muted-foreground mx-auto mb-4" />

@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
-import { authService, businessService, paymentService, productService } from "@/services";
+import { paymentService, productService } from "@/services";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+import { useBusiness } from "@/contexts/BusinessContext";
+import { ErrorState } from "@/components/feedback";
 import {
   CreditCard,
   Plus,
@@ -21,44 +24,49 @@ const Payments = () => {
   const [products, setProducts] = useState<any[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [selectedProduct, setSelectedProduct] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
-  const [businessId, setBusinessId] = useState<string | null>(null);
+  const { user } = useAuth();
+  const { businessId } = useBusiness();
   const { toast } = useToast();
 
   useEffect(() => {
-    const load = async () => {
-      const { data: { session } } = await authService.getSession();
-      if (!session) return;
-
-      const business = await businessService.getCurrentBusiness(session.user.id);
-      if (business) {
-        setBusinessId(business.id);
-        const [links, prods] = await Promise.all([
-          paymentService.getPaymentLinks(business.id),
-          productService.getProducts(business.id),
-        ]);
+    if (!businessId) return;
+    let cancelled = false;
+    setLoading(true);
+    setLoadError(null);
+    Promise.all([
+      paymentService.getPaymentLinks(businessId),
+      productService.getProducts(businessId),
+    ])
+      .then(([links, prods]) => {
+        if (cancelled) return;
         setPaymentLinks(links);
         setProducts(prods);
-      }
-      setLoading(false);
+      })
+      .catch((err: any) => {
+        if (!cancelled) setLoadError(err?.message || "Failed to load payment links");
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
     };
-    load();
-  }, []);
+  }, [businessId]);
 
   const generateSlug = () => paymentService.generateSlug();
 
   const handleCreate = async () => {
-    if (!businessId || !title || !amount) return;
-    const { data: { session } } = await authService.getSession();
-    if (!session) return;
+    if (!businessId || !title || !amount || !user) return;
 
     const slug = generateSlug();
     try {
-      const data = await paymentService.createPaymentLink(businessId, session.user.id, {
+      const data = await paymentService.createPaymentLink(businessId, user.id, {
         title,
         amount: parseFloat(amount),
         description,
@@ -214,6 +222,25 @@ const Payments = () => {
       {/* List */}
       {loading ? (
         <div className="text-center py-12 text-muted-foreground font-body">Loading...</div>
+      ) : loadError ? (
+        <ErrorState
+          message={loadError}
+          onRetry={() => {
+            if (!businessId) return;
+            setLoading(true);
+            setLoadError(null);
+            Promise.all([
+              paymentService.getPaymentLinks(businessId),
+              productService.getProducts(businessId),
+            ])
+              .then(([l, p]) => {
+                setPaymentLinks(l);
+                setProducts(p);
+              })
+              .catch((e: any) => setLoadError(e?.message || "Failed to load"))
+              .finally(() => setLoading(false));
+          }}
+        />
       ) : paymentLinks.length === 0 ? (
         <div className="text-center py-16 bg-card border border-border rounded-lg">
           <Link2 className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
