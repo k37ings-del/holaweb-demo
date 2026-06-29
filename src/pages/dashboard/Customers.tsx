@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
-import { authService, businessService, customerService } from "@/services";
+import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useCustomers, useCreateCustomer, useUpdateCustomer, useDeleteCustomer } from "@/hooks/use-customers";
-import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "@/contexts/AuthContext";
+import { useBusiness } from "@/contexts/BusinessContext";
+import { ErrorState } from "@/components/feedback";
 import { Users, Plus, X, Trash2, Search, Tag, Edit2, Check, Database } from "lucide-react";
 
 const Customers = () => {
   const [showForm, setShowForm] = useState(false);
-  const [loading] = useState(true);
   const [search, setSearch] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [name, setName] = useState("");
@@ -15,30 +15,15 @@ const Customers = () => {
   const [phone, setPhone] = useState("");
   const [notes, setNotes] = useState("");
   const [tags, setTags] = useState("");
-  const [businessId, setBusinessId] = useState<string | null>(null);
   const { toast } = useToast();
 
-  const { data: session } = useQuery({
-    queryKey: ["session"],
-    queryFn: () => authService.getSessionData(),
-  });
+  const { user } = useAuth();
+  const { businessId } = useBusiness();
 
-  const { data: customers = [], isLoading } = useCustomers(businessId);
+  const { data: customers = [], isLoading, error, refetch } = useCustomers(businessId);
   const createCustomer = useCreateCustomer();
   const updateCustomer = useUpdateCustomer();
   const deleteCustomer = useDeleteCustomer();
-
-  useEffect(() => {
-    const load = async () => {
-      const { data: { session: s } } = await authService.getSession();
-      if (!s) return;
-      const businesses = await businessService.getCurrentBusiness(s.user.id);
-      if (businesses) {
-        setBusinessId(businesses.id);
-      }
-    };
-    load();
-  }, []);
 
   const resetForm = () => {
     setName("");
@@ -51,12 +36,12 @@ const Customers = () => {
   };
 
   const handleAdd = async () => {
-    if (!businessId || !name || !session?.user?.id) return;
+    if (!businessId || !name || !user?.id) return;
     const tagArray = tags ? tags.split(",").map((t: string) => t.trim()).filter(Boolean) : [];
     createCustomer.mutate(
       {
         businessId,
-        userId: session.user.id,
+        userId: user.id,
         data: {
           name,
           ...(email && { email }),
