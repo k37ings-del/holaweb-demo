@@ -21,7 +21,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import logo from "@/assets/HW_Logo.png";
-import { useCurrentBusiness, useBusinessStats } from "@/hooks/use-business";
+import { useBusinessStats } from "@/hooks/use-business";
 import SubscriptionBubble from "@/components/SubscriptionBubble";
 import NotificationsPanel from "@/components/NotificationsPanel";
 
