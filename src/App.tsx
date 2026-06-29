@@ -7,6 +7,9 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import ChatAssistant from "@/components/ChatAssistant";
 import BackToTopButton from "@/components/BackToTopButton";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { BusinessProvider } from "@/contexts/BusinessContext";
+import { ErrorBoundary } from "@/components/feedback";
 
 // Wrap dynamic imports to recover from stale chunk hashes after a redeploy.
 const lazyWithReload = <T,>(factory: () => Promise<T>) =>
