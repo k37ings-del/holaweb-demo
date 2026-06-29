@@ -1,40 +1,32 @@
 import { useState, useEffect } from "react";
-import { authService, businessService, profileService } from "@/services";
+import { businessService, profileService } from "@/services";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "@/contexts/AuthContext";
+import { useBusiness } from "@/contexts/BusinessContext";
 import { Settings, User, Building2, Shield, Bell } from "lucide-react";
 
 const DashboardSettings = () => {
   const [businessName, setBusinessName] = useState("");
   const [businessType, setBusinessType] = useState("");
   const [businessDescription, setBusinessDescription] = useState("");
-  const [businessId, setBusinessId] = useState<string | null>(null);
   const [fullName, setFullName] = useState("");
   const [profileId, setProfileId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const { toast } = useToast();
 
-  const { data: session } = useQuery({
-    queryKey: ["session"],
-    queryFn: () => authService.getSessionData(),
-  });
-
-  const { data: businessData } = useQuery({
-    queryKey: ["business", session?.user?.id],
-    queryFn: () => (session ? businessService.getCurrentBusiness(session.user.id) : null),
-    enabled: !!session,
-  });
+  const { user } = useAuth();
+  const { business: businessData, businessId, refetch: refetchBusiness } = useBusiness();
 
   const { data: profileData } = useQuery({
-    queryKey: ["profile", session?.user?.id],
-    queryFn: () => (session ? profileService.getProfile(session.user.id) : null),
-    enabled: !!session,
+    queryKey: ["profile", user?.id],
+    queryFn: () => (user ? profileService.getProfile(user.id) : null),
+    enabled: !!user,
   });
 
   useEffect(() => {
     if (businessData) {
-      setBusinessId(businessData.id);
       setBusinessName(businessData.name);
       setBusinessType(businessData.type || "both");
       setBusinessDescription(businessData.description || "");
@@ -42,10 +34,10 @@ const DashboardSettings = () => {
   }, [businessData]);
 
   useEffect(() => {
-    if (session) {
-      setUserEmail(session.user.email || "");
+    if (user) {
+      setUserEmail(user.email || "");
     }
-  }, [session]);
+  }, [user]);
 
   useEffect(() => {
     if (profileData) {
@@ -63,6 +55,7 @@ const DashboardSettings = () => {
         type: businessType,
         description: businessDescription,
       });
+      refetchBusiness();
       toast({ title: "Business settings saved!" });
     } catch (error: any) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
@@ -71,10 +64,10 @@ const DashboardSettings = () => {
   };
 
   const handleSaveProfile = async () => {
-    if (!profileId || !session?.user?.id) return;
+    if (!profileId || !user?.id) return;
     setLoading(true);
     try {
-      await profileService.updateProfile(session.user.id, { full_name: fullName });
+      await profileService.updateProfile(user.id, { full_name: fullName });
       toast({ title: "Profile saved!" });
     } catch (error: any) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
