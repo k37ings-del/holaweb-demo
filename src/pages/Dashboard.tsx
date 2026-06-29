@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link, Outlet, useLocation } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { authService, businessService } from "@/services";
+import { useAuth } from "@/contexts/AuthContext";
+import { useBusiness } from "@/contexts/BusinessContext";
 import {
   LayoutDashboard,
   Globe,
