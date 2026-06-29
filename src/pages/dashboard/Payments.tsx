@@ -62,13 +62,11 @@ const Payments = () => {
   const generateSlug = () => paymentService.generateSlug();
 
   const handleCreate = async () => {
-    if (!businessId || !title || !amount) return;
-    const { data: { session } } = await authService.getSession();
-    if (!session) return;
+    if (!businessId || !title || !amount || !user) return;
 
     const slug = generateSlug();
     try {
-      const data = await paymentService.createPaymentLink(businessId, session.user.id, {
+      const data = await paymentService.createPaymentLink(businessId, user.id, {
         title,
         amount: parseFloat(amount),
         description,
