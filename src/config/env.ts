@@ -32,5 +32,5 @@ export const ENV = {
   SUPABASE_PUBLISHABLE_KEY: env.VITE_SUPABASE_PUBLISHABLE_KEY ?? "",
   SUPABASE_PROJECT_ID: env.VITE_SUPABASE_PROJECT_ID ?? "",
   MODE: env.MODE ?? "production",
-  IS_DEV: env.DEV === true || env.MODE === "development",
+  IS_DEV: import.meta.env.DEV === true || env.MODE === "development",
 };
