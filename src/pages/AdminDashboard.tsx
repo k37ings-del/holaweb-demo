@@ -747,15 +747,11 @@ const AdminDashboard = () => {
 
               <div className="bg-card border border-border rounded-lg p-6">
                 <h3 className="font-heading text-lg font-bold text-foreground mb-2">Authorized Admin Emails</h3>
-                <p className="font-body text-sm text-muted-foreground mb-4">
-                  The following emails are authorized for admin access:
+                <p className="font-body text-sm text-muted-foreground">
+                  Admin access is provisioned server-side from the
+                  <span className="font-mono text-xs mx-1 px-1.5 py-0.5 rounded bg-muted text-foreground">admin_allowed_emails</span>
+                  table. Contact a system administrator to add or remove an authorized address.
                 </p>
-                <ul className="space-y-2 font-body text-sm text-foreground/80">
-                  <li>• k37.ings@gmail.com</li>
-                  <li>• holaweb.africa@gmail.com</li>
-                  <li>• siya@holaweb.co.za</li>
-                  <li>• Any @holaweb.co.za email</li>
-                </ul>
                 <p className="font-body text-xs text-muted-foreground mt-3">Maximum 10 admin accounts allowed.</p>
               </div>
             </div>

@@ -149,7 +149,7 @@ const AdminAuth = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="w-full bg-muted/50 backdrop-blur border border-border rounded-lg px-4 py-3 text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-                placeholder="admin@holaweb.co.za"
+                placeholder="you@yourdomain.com"
                 autoComplete="email"
               />
             </div>

@@ -87,7 +87,7 @@ const Header = () => {
             </a>
             <Link to="/contact" className="hidden sm:flex items-center gap-1.5 hover:text-primary transition-colors">
               <Mail className="h-3 w-3" />
-              <span className="font-body">Email: siya@holaweb.co.za</span>
+              <span className="font-body">Contact us</span>
             </Link>
           </div>
           <div className="flex items-center gap-3">

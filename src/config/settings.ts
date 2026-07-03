@@ -10,9 +10,11 @@ export const COMPANY = {
   baseUrl: "https://holaweb-demo.lovable.app",
 } as const;
 
+// Contact channels. Admin recipients are resolved server-side via the
+// `admin_allowed_emails` table — never hardcode admin addresses here.
 export const CONTACT = {
   supportEmail: "hello@holaweb.co.za",
-  adminEmail: "admin@holaweb.co.za",
+  adminEmail: "", // Managed via backend `admin_allowed_emails` table.
   whatsappNumber: "+27660666348",
   whatsappUrl: "https://wa.me/27660666348",
 } as const;
