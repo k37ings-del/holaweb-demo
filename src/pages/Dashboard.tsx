@@ -93,6 +93,7 @@ const Dashboard = () => {
         onSignOut={handleSignOut}
         isActive={isActive}
         businessName={business?.name ?? null}
+        canAccessHref={canAccessHref}
       />
 
       {sidebarOpen && (
