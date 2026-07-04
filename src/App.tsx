@@ -112,7 +112,9 @@ const App = () => (
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Suspense>
-              <ChatAssistant />
+              <Suspense fallback={null}>
+                <ChatAssistant />
+              </Suspense>
               <BackToTopButton />
             </ErrorBoundary>
           </BusinessProvider>
