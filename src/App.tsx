@@ -5,7 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import ChatAssistant from "@/components/ChatAssistant";
+const ChatAssistant = lazy(() => import("@/components/ChatAssistant"));
 import BackToTopButton from "@/components/BackToTopButton";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { BusinessProvider } from "@/contexts/BusinessContext";
