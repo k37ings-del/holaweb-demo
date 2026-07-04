@@ -8,3 +8,5 @@ export { checkoutService } from "./checkout-service";
 export { adminService } from "./admin-service";
 export { profileService } from "./profile-service";
 export { subscriptionService } from "./subscription-service";
+export { accessService, MANAGED_MODULES } from "./access-service";
+export type { DashboardModule, ModuleAccessRow } from "./access-service";
