@@ -40,6 +40,8 @@ interface Props {
   onSignOut: () => void;
   isActive: (href: string) => boolean;
   businessName?: string | null;
+  /** Optional filter: if provided, items whose href is rejected are hidden. */
+  canAccessHref?: (href: string) => boolean;
 }
 
 export const DashboardSidebar = memo(function DashboardSidebar({
@@ -50,7 +52,9 @@ export const DashboardSidebar = memo(function DashboardSidebar({
   onSignOut,
   isActive,
   businessName,
+  canAccessHref,
 }: Props) {
+  const visibleItems = canAccessHref ? items.filter((i) => canAccessHref(i.href)) : items;
   return (
     <aside
       className={`fixed inset-y-0 left-0 z-50 w-64 bg-sidebar border-r border-sidebar-border transform transition-transform lg:translate-x-0 ${
@@ -73,7 +77,7 @@ export const DashboardSidebar = memo(function DashboardSidebar({
         )}
 
         <nav className="flex-1 px-3 py-4 space-y-1">
-          {items.map((item) => (
+          {visibleItems.map((item) => (
             <Link
               key={item.href}
               to={item.href}

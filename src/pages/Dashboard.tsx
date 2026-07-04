@@ -10,6 +10,7 @@ import {
   Plus,
 } from "lucide-react";
 import { useBusinessStats } from "@/hooks/use-business";
+import { useModuleAccess, HREF_TO_MODULE } from "@/hooks/use-module-access";
 import {
   DashboardSidebar,
   DashboardHeader,
@@ -25,6 +26,19 @@ const Dashboard = () => {
   const { session, isLoading: sessionLoading, signOut } = useAuth();
   const { business, isLoading: businessLoading } = useBusiness();
   const { data: stats } = useBusinessStats(business?.id ?? null);
+  const { canAccessHref, isLoading: accessLoading } = useModuleAccess();
+
+  // Route-guard: if user lands on a page they don't have access to, bounce to Overview.
+  useEffect(() => {
+    if (accessLoading) return;
+    const path = location.pathname;
+    // Only guard the managed sub-routes (not /dashboard itself).
+    if (path === "/dashboard") return;
+    const knownHref = Object.keys(HREF_TO_MODULE).find((h) => h !== "/dashboard" && path.startsWith(h));
+    if (knownHref && !canAccessHref(knownHref)) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [location.pathname, canAccessHref, accessLoading, navigate]);
 
   useEffect(() => {
     if (!sessionLoading && !session) navigate("/auth");
@@ -79,6 +93,7 @@ const Dashboard = () => {
         onSignOut={handleSignOut}
         isActive={isActive}
         businessName={business?.name ?? null}
+        canAccessHref={canAccessHref}
       />
 
       {sidebarOpen && (

@@ -27,8 +27,9 @@ import {
 import logo from "@/assets/HW_Logo.png";
 import { useToast } from "@/hooks/use-toast";
 import { useAdminData } from "@/hooks/use-admin";
+import { AccessControlPanel } from "@/components/admin/AccessControlPanel";
 
-type Tab = "overview" | "clients" | "subscriptions" | "referrals" | "meta" | "pricing" | "settings";
+type Tab = "overview" | "clients" | "access" | "subscriptions" | "referrals" | "meta" | "pricing" | "settings";
 
 const AFRICAN_REGIONS: Record<string, string[]> = {
   "Eastern Africa": ["Kenya", "Tanzania", "Uganda", "Rwanda", "Ethiopia", "Somalia", "Burundi", "South Sudan", "Eritrea", "Djibouti", "Comoros", "Mauritius", "Seychelles", "Madagascar", "Mozambique"],
@@ -153,6 +154,7 @@ const AdminDashboard = () => {
   const sidebarItems = [
     { icon: BarChart3, label: "Overview", id: "overview" as Tab },
     { icon: Users, label: "Clients", id: "clients" as Tab },
+    { icon: Shield, label: "Access Control", id: "access" as Tab },
     { icon: CreditCard, label: "Subscriptions", id: "subscriptions" as Tab },
     { icon: DollarSign, label: "Pricing", id: "pricing" as Tab },
     { icon: Tag, label: "Referral Codes", id: "referrals" as Tab },
@@ -298,6 +300,12 @@ const AdminDashboard = () => {
               </div>
             </div>
           )}
+
+          {/* Access Control */}
+          {tab === "access" && (
+            <AccessControlPanel adminUserId={user?.id ?? null} />
+          )}
+
 
           {/* Subscriptions */}
           {tab === "subscriptions" && (
