@@ -154,6 +154,7 @@ const AdminDashboard = () => {
   const sidebarItems = [
     { icon: BarChart3, label: "Overview", id: "overview" as Tab },
     { icon: Users, label: "Clients", id: "clients" as Tab },
+    { icon: Shield, label: "Access Control", id: "access" as Tab },
     { icon: CreditCard, label: "Subscriptions", id: "subscriptions" as Tab },
     { icon: DollarSign, label: "Pricing", id: "pricing" as Tab },
     { icon: Tag, label: "Referral Codes", id: "referrals" as Tab },
