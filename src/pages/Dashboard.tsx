@@ -10,6 +10,7 @@ import {
   Plus,
 } from "lucide-react";
 import { useBusinessStats } from "@/hooks/use-business";
+import { useModuleAccess, HREF_TO_MODULE } from "@/hooks/use-module-access";
 import {
   DashboardSidebar,
   DashboardHeader,
