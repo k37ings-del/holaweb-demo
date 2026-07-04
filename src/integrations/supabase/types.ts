@@ -35,6 +35,47 @@ export type Database = {
         }
         Relationships: []
       }
+      business_module_access: {
+        Row: {
+          business_id: string
+          created_at: string
+          granted_at: string
+          granted_by: string | null
+          id: string
+          is_granted: boolean
+          module: string
+          updated_at: string
+        }
+        Insert: {
+          business_id: string
+          created_at?: string
+          granted_at?: string
+          granted_by?: string | null
+          id?: string
+          is_granted?: boolean
+          module: string
+          updated_at?: string
+        }
+        Update: {
+          business_id?: string
+          created_at?: string
+          granted_at?: string
+          granted_by?: string | null
+          id?: string
+          is_granted?: boolean
+          module?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_module_access_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       businesses: {
         Row: {
           created_at: string
