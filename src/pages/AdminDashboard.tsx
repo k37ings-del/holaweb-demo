@@ -301,6 +301,12 @@ const AdminDashboard = () => {
             </div>
           )}
 
+          {/* Access Control */}
+          {tab === "access" && (
+            <AccessControlPanel adminUserId={user?.id ?? null} />
+          )}
+
+
           {/* Subscriptions */}
           {tab === "subscriptions" && (
             <div className="space-y-4">
