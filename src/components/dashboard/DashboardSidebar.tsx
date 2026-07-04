@@ -77,7 +77,7 @@ export const DashboardSidebar = memo(function DashboardSidebar({
         )}
 
         <nav className="flex-1 px-3 py-4 space-y-1">
-          {items.map((item) => (
+          {visibleItems.map((item) => (
             <Link
               key={item.href}
               to={item.href}
