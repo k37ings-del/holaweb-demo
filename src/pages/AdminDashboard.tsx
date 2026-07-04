@@ -27,8 +27,9 @@ import {
 import logo from "@/assets/HW_Logo.png";
 import { useToast } from "@/hooks/use-toast";
 import { useAdminData } from "@/hooks/use-admin";
+import { AccessControlPanel } from "@/components/admin/AccessControlPanel";
 
-type Tab = "overview" | "clients" | "subscriptions" | "referrals" | "meta" | "pricing" | "settings";
+type Tab = "overview" | "clients" | "access" | "subscriptions" | "referrals" | "meta" | "pricing" | "settings";
 
 const AFRICAN_REGIONS: Record<string, string[]> = {
   "Eastern Africa": ["Kenya", "Tanzania", "Uganda", "Rwanda", "Ethiopia", "Somalia", "Burundi", "South Sudan", "Eritrea", "Djibouti", "Comoros", "Mauritius", "Seychelles", "Madagascar", "Mozambique"],
