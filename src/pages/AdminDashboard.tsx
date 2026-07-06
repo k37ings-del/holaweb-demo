@@ -171,6 +171,9 @@ const AdminDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background flex">
+      {needsPasswordChange && (
+        <PasswordChangePrompt onDone={() => setNeedsPasswordChange(false)} />
+      )}
       {/* Sidebar */}
       <aside
         className={`fixed inset-y-0 left-0 z-50 w-64 bg-sidebar border-r border-sidebar-border transform transition-transform lg:translate-x-0 ${
