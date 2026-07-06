@@ -19,19 +19,25 @@ export type Database = {
           created_at: string
           email_pattern: string
           id: string
+          invited_by: string | null
           is_domain_pattern: boolean
+          notes: string | null
         }
         Insert: {
           created_at?: string
           email_pattern: string
           id?: string
+          invited_by?: string | null
           is_domain_pattern?: boolean
+          notes?: string | null
         }
         Update: {
           created_at?: string
           email_pattern?: string
           id?: string
+          invited_by?: string | null
           is_domain_pattern?: boolean
+          notes?: string | null
         }
         Relationships: []
       }
@@ -84,6 +90,7 @@ export type Database = {
           logo_url: string | null
           name: string
           onboarding_completed: boolean
+          requested_modules: string[]
           setup_priorities: string[] | null
           type: string
           updated_at: string
@@ -96,6 +103,7 @@ export type Database = {
           logo_url?: string | null
           name: string
           onboarding_completed?: boolean
+          requested_modules?: string[]
           setup_priorities?: string[] | null
           type?: string
           updated_at?: string
@@ -108,6 +116,7 @@ export type Database = {
           logo_url?: string | null
           name?: string
           onboarding_completed?: boolean
+          requested_modules?: string[]
           setup_priorities?: string[] | null
           type?: string
           updated_at?: string
@@ -191,6 +200,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      module_access_audit: {
+        Row: {
+          business_id: string
+          changed_by: string | null
+          changed_by_email: string | null
+          created_at: string
+          id: string
+          is_granted: boolean
+          module: string
+          note: string | null
+          source: string
+        }
+        Insert: {
+          business_id: string
+          changed_by?: string | null
+          changed_by_email?: string | null
+          created_at?: string
+          id?: string
+          is_granted: boolean
+          module: string
+          note?: string | null
+          source?: string
+        }
+        Update: {
+          business_id?: string
+          changed_by?: string | null
+          changed_by_email?: string | null
+          created_at?: string
+          id?: string
+          is_granted?: boolean
+          module?: string
+          note?: string | null
+          source?: string
+        }
+        Relationships: []
       }
       orders: {
         Row: {
@@ -648,6 +693,10 @@ export type Database = {
           valid_region: string
           valid_until: string
         }[]
+      }
+      sync_business_modules_for_subscription: {
+        Args: { _business_id: string; _is_active: boolean }
+        Returns: undefined
       }
     }
     Enums: {

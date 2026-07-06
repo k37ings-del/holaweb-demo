@@ -16,6 +16,7 @@ import {
   DashboardHeader,
   StatCard,
   QuickActionCard,
+  PendingApprovalBanner,
 } from "@/components/dashboard";
 
 const Dashboard = () => {
@@ -114,6 +115,8 @@ const Dashboard = () => {
                   Here's what's happening with your business.
                 </p>
               </div>
+
+              <PendingApprovalBanner />
 
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 {statCards.map((s) => (

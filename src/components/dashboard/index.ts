@@ -3,3 +3,4 @@ export type { SidebarItem } from "./DashboardSidebar";
 export { DashboardHeader } from "./DashboardHeader";
 export { StatCard } from "./StatCard";
 export { QuickActionCard } from "./QuickActionCard";
+export { PendingApprovalBanner } from "./PendingApprovalBanner";
