@@ -23,13 +23,18 @@ import {
   Edit,
   ToggleLeft,
   ToggleRight,
+  UserPlus,
+  ClipboardList,
 } from "lucide-react";
 import logo from "@/assets/HW_Logo.png";
 import { useToast } from "@/hooks/use-toast";
 import { useAdminData } from "@/hooks/use-admin";
 import { AccessControlPanel } from "@/components/admin/AccessControlPanel";
+import { AdminInvitesPanel } from "@/components/admin/AdminInvitesPanel";
+import { AuditLogPanel } from "@/components/admin/AuditLogPanel";
+import { PasswordChangePrompt } from "@/components/admin/PasswordChangePrompt";
 
-type Tab = "overview" | "clients" | "access" | "subscriptions" | "referrals" | "meta" | "pricing" | "settings";
+type Tab = "overview" | "clients" | "access" | "invites" | "audit" | "subscriptions" | "referrals" | "meta" | "pricing" | "settings";
 
 const AFRICAN_REGIONS: Record<string, string[]> = {
   "Eastern Africa": ["Kenya", "Tanzania", "Uganda", "Rwanda", "Ethiopia", "Somalia", "Burundi", "South Sudan", "Eritrea", "Djibouti", "Comoros", "Mauritius", "Seychelles", "Madagascar", "Mozambique"],
@@ -47,24 +52,24 @@ const AdminDashboard = () => {
   const [selectedRegion, setSelectedRegion] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("");
   const [editingPlan, setEditingPlan] = useState<any>(null);
+  const [needsPasswordChange, setNeedsPasswordChange] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
   const { data: adminData, isLoading, refetch } = useAdminData();
 
   useEffect(() => {
-    const { data: { subscription } } = authService.onAuthStateChange(async (_, session) => {
+    const check = async (session: any) => {
       if (!session) { navigate("/admin"); return; }
       setUser(session.user);
       const isAdmin = await adminService.checkIsAdmin(session.user.id);
-      if (!isAdmin) navigate("/admin");
-    });
-    authService.getSession().then(async ({ data: { session } }) => {
-      if (!session) { navigate("/admin"); return; }
-      setUser(session.user);
-      const isAdmin = await adminService.checkIsAdmin(session.user.id);
-      if (!isAdmin) navigate("/admin");
-    });
+      if (!isAdmin) { navigate("/admin"); return; }
+      // Force password change if still on the default seed password.
+      const changed = Boolean(session.user?.user_metadata?.password_changed);
+      setNeedsPasswordChange(!changed);
+    };
+    const { data: { subscription } } = authService.onAuthStateChange((_, session) => check(session));
+    authService.getSession().then(({ data: { session } }) => check(session));
     return () => subscription.unsubscribe();
   }, [navigate]);
 
@@ -155,6 +160,8 @@ const AdminDashboard = () => {
     { icon: BarChart3, label: "Overview", id: "overview" as Tab },
     { icon: Users, label: "Clients", id: "clients" as Tab },
     { icon: Shield, label: "Access Control", id: "access" as Tab },
+    { icon: UserPlus, label: "Admin Invites", id: "invites" as Tab },
+    { icon: ClipboardList, label: "Audit Log", id: "audit" as Tab },
     { icon: CreditCard, label: "Subscriptions", id: "subscriptions" as Tab },
     { icon: DollarSign, label: "Pricing", id: "pricing" as Tab },
     { icon: Tag, label: "Referral Codes", id: "referrals" as Tab },
@@ -305,6 +312,15 @@ const AdminDashboard = () => {
           {tab === "access" && (
             <AccessControlPanel adminUserId={user?.id ?? null} />
           )}
+
+          {tab === "invites" && (
+            <AdminInvitesPanel adminUserId={user?.id ?? null} />
+          )}
+
+          {tab === "audit" && (
+            <AuditLogPanel />
+          )}
+
 
 
           {/* Subscriptions */}
