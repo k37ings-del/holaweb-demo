@@ -110,6 +110,7 @@ const App = () => (
                     <Route path="analytics" element={<Analytics />} />
                     <Route path="settings" element={<DashboardSettings />} />
                   </Route>
+                  <Route path="/portal" element={<Portal />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Suspense>
