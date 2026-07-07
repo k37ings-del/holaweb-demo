@@ -42,6 +42,7 @@ const Onboarding = lazyWithReload(() => import("@/pages/Onboarding"));
 const Dashboard = lazyWithReload(() => import("@/pages/Dashboard"));
 const Checkout = lazyWithReload(() => import("@/pages/Checkout"));
 const NotFound = lazyWithReload(() => import("@/pages/NotFound"));
+const Portal = lazyWithReload(() => import("@/pages/Portal"));
 
 const Products = lazyWithReload(() => import("@/pages/dashboard/Products"));
 const Payments = lazyWithReload(() => import("@/pages/dashboard/Payments"));
