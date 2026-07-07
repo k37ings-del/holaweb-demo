@@ -143,6 +143,14 @@ const Header = () => {
               Sign Up / Login
             </Link>
 
+            {/* Subtle client portal link */}
+            <Link
+              to="/portal"
+              className="font-subheading text-xs font-medium tracking-wide uppercase text-foreground/60 hover:text-golden transition-colors"
+            >
+              Client Login
+            </Link>
+
             {/* WhatsApp Button */}
             <a
               href="https://wa.me/27715138219"
