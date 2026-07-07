@@ -143,6 +143,14 @@ const Header = () => {
               Sign Up / Login
             </Link>
 
+            {/* Subtle client portal link */}
+            <Link
+              to="/portal"
+              className="font-subheading text-xs font-medium tracking-wide uppercase text-foreground/60 hover:text-golden transition-colors"
+            >
+              Client Login
+            </Link>
+
             {/* WhatsApp Button */}
             <a
               href="https://wa.me/27715138219"
@@ -203,6 +211,13 @@ const Header = () => {
               >
                 <LogIn className="h-4 w-4" />
                 Sign Up / Login
+              </Link>
+
+              <Link
+                to="/portal"
+                className="py-2 text-center font-subheading text-xs font-medium uppercase tracking-wide text-foreground/60 hover:text-golden transition-colors"
+              >
+                Client Login
               </Link>
 
               {/* Mobile WhatsApp Button */}

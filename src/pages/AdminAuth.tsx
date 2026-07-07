@@ -59,11 +59,23 @@ const AdminAuth = () => {
       }
 
       if (isLogin) {
-        const { data, error } = await authService.signInWithPassword(email, password);
+        let { data, error } = await authService.signInWithPassword(email, password);
+
+        // First-time super-admin: user may not exist yet in auth.users.
+        // Bootstrap it via the edge function, then retry sign-in once.
+        if (error && /invalid|credentials|not.*confirmed/i.test(error.message)) {
+          const { error: bootErr } = await supabase.functions.invoke("bootstrap-admin-user", {
+            body: { email },
+          });
+          if (!bootErr) {
+            const retry = await authService.signInWithPassword(email, password);
+            data = retry.data;
+            error = retry.error;
+          }
+        }
         if (error) throw error;
 
         const isAdmin = await adminService.checkIsAdmin(data.user.id);
-
         if (!isAdmin) {
           await supabase.from("user_roles").insert({
             user_id: data.user.id,
