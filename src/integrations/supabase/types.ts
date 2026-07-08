@@ -657,6 +657,59 @@ export type Database = {
           },
         ]
       }
+      webhook_events: {
+        Row: {
+          business_id: string | null
+          created_at: string
+          event_type: string
+          id: string
+          is_read: boolean
+          link: string | null
+          message: string | null
+          payload: Json
+          source: string
+          target_email: string | null
+          title: string
+          user_id: string | null
+        }
+        Insert: {
+          business_id?: string | null
+          created_at?: string
+          event_type: string
+          id?: string
+          is_read?: boolean
+          link?: string | null
+          message?: string | null
+          payload?: Json
+          source?: string
+          target_email?: string | null
+          title: string
+          user_id?: string | null
+        }
+        Update: {
+          business_id?: string | null
+          created_at?: string
+          event_type?: string
+          id?: string
+          is_read?: boolean
+          link?: string | null
+          message?: string | null
+          payload?: Json
+          source?: string
+          target_email?: string | null
+          title?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "webhook_events_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

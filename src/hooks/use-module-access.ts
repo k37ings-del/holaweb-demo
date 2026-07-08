@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { accessService, MANAGED_MODULES, type DashboardModule } from "@/services";
+import { accessService, MANAGED_MODULES, adminService, type DashboardModule } from "@/services";
 import { useBusiness } from "@/contexts/BusinessContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 /** Modules every signed-in dashboard user always sees. */
 export const BASIC_MODULES = ["overview", "payments", "customers", "website", "settings"] as const;
@@ -33,16 +34,30 @@ function isSubscriptionActive(sub: any | null | undefined): boolean {
  */
 export function useModuleAccess() {
   const { businessId, subscription, isLoading: businessLoading } = useBusiness();
+  const { user } = useAuth();
+
+  const adminQuery = useQuery({
+    queryKey: ["isAdmin", user?.id ?? null],
+    queryFn: () => (user?.id ? adminService.checkIsAdmin(user.id) : false),
+    enabled: !!user?.id,
+    staleTime: 5 * 60_000,
+  });
+  const isAdmin = adminQuery.data === true;
 
   const rowsQuery = useQuery({
     queryKey: ["module-access", businessId],
     queryFn: () => (businessId ? accessService.getBusinessModuleAccess(businessId) : []),
-    enabled: !!businessId,
+    enabled: !!businessId && !isAdmin,
     staleTime: 60_000,
   });
 
   const availableModules = useMemo(() => {
     const set = new Set<DashboardModule>();
+    // Super admins always see every module.
+    if (isAdmin) {
+      MANAGED_MODULES.forEach((m) => set.add(m));
+      return set;
+    }
     if (!isSubscriptionActive(subscription)) return set;
     for (const row of rowsQuery.data ?? []) {
       if (row.is_granted && MANAGED_MODULES.includes(row.module)) {
@@ -50,9 +65,10 @@ export function useModuleAccess() {
       }
     }
     return set;
-  }, [rowsQuery.data, subscription]);
+  }, [isAdmin, rowsQuery.data, subscription]);
 
   const canAccessHref = (href: string): boolean => {
+    if (isAdmin) return true;
     const mod = HREF_TO_MODULE[href];
     if (!mod) return true;
     if (mod === "basic") return true;
@@ -62,7 +78,8 @@ export function useModuleAccess() {
   return {
     availableModules,
     canAccessHref,
-    isLoading: businessLoading || rowsQuery.isLoading,
-    subscriptionActive: isSubscriptionActive(subscription),
+    isAdmin,
+    isLoading: businessLoading || rowsQuery.isLoading || adminQuery.isLoading,
+    subscriptionActive: isAdmin || isSubscriptionActive(subscription),
   };
 }

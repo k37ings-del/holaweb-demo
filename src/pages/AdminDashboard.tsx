@@ -33,6 +33,7 @@ import { AccessControlPanel } from "@/components/admin/AccessControlPanel";
 import { AdminInvitesPanel } from "@/components/admin/AdminInvitesPanel";
 import { AuditLogPanel } from "@/components/admin/AuditLogPanel";
 import { PasswordChangePrompt } from "@/components/admin/PasswordChangePrompt";
+import NotificationsPanel from "@/components/NotificationsPanel";
 
 type Tab = "overview" | "clients" | "access" | "invites" | "audit" | "subscriptions" | "referrals" | "meta" | "pricing" | "settings";
 
@@ -232,13 +233,34 @@ const AdminDashboard = () => {
       )}
 
       <div className="flex-1 lg:ml-64">
-        <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-md border-b border-border px-6 py-3 flex items-center">
-          <button onClick={() => setSidebarOpen(true)} className="lg:hidden text-foreground mr-4">
-            <Menu className="w-5 h-5" />
-          </button>
-          <h1 className="font-heading text-lg font-bold text-foreground">
-            {sidebarItems.find((i) => i.id === tab)?.label}
-          </h1>
+        <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-md border-b border-border px-6 py-3 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <button onClick={() => setSidebarOpen(true)} className="lg:hidden text-foreground">
+              <Menu className="w-5 h-5" />
+            </button>
+            <h1 className="font-heading text-lg font-bold text-foreground truncate">
+              {sidebarItems.find((i) => i.id === tab)?.label}
+            </h1>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <a
+              href="https://www.mycoza.com/clients/dologin.php"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-primary/30 font-subheading text-xs font-semibold text-primary hover:bg-primary/10 transition-colors"
+            >
+              <ArrowUpRight className="w-3 h-3" /> MyCoza
+            </a>
+            <a
+              href="https://client.holaweb.co.za"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-accent/40 font-subheading text-xs font-semibold text-foreground hover:bg-accent/10 transition-colors"
+            >
+              <ArrowUpRight className="w-3 h-3" /> FOSSBilling
+            </a>
+            <NotificationsPanel />
+          </div>
         </header>
 
         <main className="p-6">
