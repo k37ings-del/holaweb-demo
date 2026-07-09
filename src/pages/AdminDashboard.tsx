@@ -53,6 +53,9 @@ const AFRICAN_REGIONS: Record<string, string[]> = {
 const AdminDashboard = () => {
   const [user, setUser] = useState<any>(null);
   const [tab, setTab] = useState<Tab>("overview");
+  const [settingsTab, setSettingsTab] = useState<SettingsTab>("account");
+  const [accessSubTab, setAccessSubTab] = useState<"clients" | "invites">("clients");
+  const [pricingSubTab, setPricingSubTab] = useState<"plans" | "referrals">("plans");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showNewCode, setShowNewCode] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState("");
