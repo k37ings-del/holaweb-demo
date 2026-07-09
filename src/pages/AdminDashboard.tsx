@@ -345,18 +345,32 @@ const AdminDashboard = () => {
             </div>
           )}
 
-          {/* Access Control */}
+          {/* Access Control (with Admin Invites sub-tab) */}
           {tab === "access" && (
-            <AccessControlPanel adminUserId={user?.id ?? null} />
+            <div className="space-y-4">
+              <div className="flex border-b border-border">
+                {([
+                  { id: "clients", label: "Client Access", icon: Shield },
+                  { id: "invites", label: "Admin Invites", icon: UserPlus },
+                ] as const).map((st) => (
+                  <button
+                    key={st.id}
+                    onClick={() => setAccessSubTab(st.id)}
+                    className={`inline-flex items-center gap-2 px-4 py-2.5 font-subheading text-xs font-semibold border-b-2 transition-colors ${
+                      accessSubTab === st.id ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    <st.icon className="w-3.5 h-3.5" />
+                    {st.label}
+                  </button>
+                ))}
+              </div>
+              {accessSubTab === "clients" && <AccessControlPanel adminUserId={user?.id ?? null} />}
+              {accessSubTab === "invites" && <AdminInvitesPanel adminUserId={user?.id ?? null} />}
+            </div>
           )}
 
-          {tab === "invites" && (
-            <AdminInvitesPanel adminUserId={user?.id ?? null} />
-          )}
 
-          {tab === "audit" && (
-            <AuditLogPanel />
-          )}
 
 
 
