@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { adminService, authService } from "@/services";
 import { supabase } from "@/integrations/supabase/client";
@@ -16,7 +16,6 @@ import {
   Trash2,
   ArrowUpRight,
   Settings,
-  Share2,
   Calendar,
   MapPin,
   DollarSign,
@@ -25,6 +24,10 @@ import {
   ToggleRight,
   UserPlus,
   ClipboardList,
+  FileText,
+  Building2,
+  Plug,
+  LineChart,
 } from "lucide-react";
 import logo from "@/assets/HW_Logo.png";
 import { useToast } from "@/hooks/use-toast";
@@ -34,6 +37,7 @@ import { AdminInvitesPanel } from "@/components/admin/AdminInvitesPanel";
 import { AuditLogPanel } from "@/components/admin/AuditLogPanel";
 import { PasswordChangePrompt } from "@/components/admin/PasswordChangePrompt";
 import NotificationsPanel from "@/components/NotificationsPanel";
+const AdminAnalytics = lazy(() => import("@/pages/dashboard/Analytics"));
 
 type Tab = "overview" | "clients" | "access" | "subscriptions" | "pricing" | "analytics" | "settings";
 type SettingsTab = "account" | "kyc" | "company" | "integrations";
