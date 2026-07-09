@@ -413,10 +413,29 @@ const AdminDashboard = () => {
             </div>
           )}
 
-          {/* Pricing Management */}
+          {/* Pricing Management (with Referral Codes sub-tab) */}
           {tab === "pricing" && (
             <div className="space-y-6">
-              <p className="font-body text-sm text-muted-foreground">Manage subscription plans, pricing, and independent services.</p>
+              <div className="flex border-b border-border">
+                {([
+                  { id: "plans", label: "Plans & Services", icon: DollarSign },
+                  { id: "referrals", label: "Referral Codes", icon: Tag },
+                ] as const).map((st) => (
+                  <button
+                    key={st.id}
+                    onClick={() => setPricingSubTab(st.id)}
+                    className={`inline-flex items-center gap-2 px-4 py-2.5 font-subheading text-xs font-semibold border-b-2 transition-colors ${
+                      pricingSubTab === st.id ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    <st.icon className="w-3.5 h-3.5" />
+                    {st.label}
+                  </button>
+                ))}
+              </div>
+              {pricingSubTab === "plans" && (
+                <div className="space-y-6">
+                  <p className="font-body text-sm text-muted-foreground">Manage subscription plans, pricing, and independent services. Edits save immediately.</p>
 
               {/* Edit modal */}
               {editingPlan && (
