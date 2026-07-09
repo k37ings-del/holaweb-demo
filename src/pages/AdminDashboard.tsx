@@ -286,6 +286,13 @@ const AdminDashboard = () => {
                   </div>
                 ))}
               </div>
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <ClipboardList className="w-4 h-4 text-primary" />
+                  <h2 className="font-heading text-base font-bold text-foreground">Recent Audit Activity</h2>
+                </div>
+                <AuditLogPanel />
+              </div>
             </div>
           )}
 
