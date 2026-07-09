@@ -1,6 +1,8 @@
 // FOSSBilling webhook receiver.
 // Accepts POST events from https://client.holaweb.co.za and stores them in
 // public.webhook_events so they surface in the Holaweb dashboard notifications panel.
+// SECURITY: FOSSBILLING_WEBHOOK_SECRET is REQUIRED. Set the same value in FOSSBilling
+// under Configuration → Notifications and send it via the `x-webhook-secret` header.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
@@ -16,8 +18,8 @@ const admin = createClient(
 );
 
 interface FossEvent {
-  event?: string;              // e.g. "invoice.paid", "invoice.created", "ticket.opened"
-  type?: string;               // alternate field name
+  event?: string;
+  type?: string;
   client_email?: string;
   email?: string;
   business_id?: string;
@@ -44,6 +46,25 @@ function buildMessage(evt: FossEvent): string {
   return "New event received from FOSSBilling.";
 }
 
+// Route each event type to the most relevant dashboard page.
+function routeLink(evt: FossEvent): string {
+  const raw = evt.link ? String(evt.link) : "";
+  // If FOSSBilling explicitly points to a dashboard route, honour it.
+  if (raw.startsWith("/dashboard") || raw.startsWith("/admin")) return raw;
+
+  const t = pickEventType(evt).toLowerCase();
+  if (t.startsWith("invoice") || t.includes("payment") || t.includes("transaction")) return "/dashboard/payments";
+  if (t.startsWith("product") || t.includes("order") || t.startsWith("cart")) return "/dashboard/products";
+  if (t.startsWith("customer") || t.startsWith("client") || t.includes("account")) return "/dashboard/customers";
+  if (t.startsWith("ticket") || t.startsWith("message") || t.includes("chat")) return "/dashboard/messaging";
+  if (t.startsWith("website") || t.includes("domain") || t.includes("hosting")) return "/dashboard/website";
+  if (t.includes("analytic") || t.includes("report")) return "/dashboard/analytics";
+  if (t.includes("setting") || t.includes("profile") || t.includes("kyc")) return "/dashboard/settings";
+  // Fall back to external FOSSBilling if the caller provided an http link, else Overview.
+  if (raw.startsWith("http")) return raw;
+  return "/dashboard";
+}
+
 async function resolveIds(evt: FossEvent) {
   let userId = (evt.user_id as string | undefined) ?? null;
   let businessId = (evt.business_id as string | undefined) ?? null;
@@ -66,16 +87,21 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
   try {
-    // Optional shared-secret check.
+    // Required shared-secret check.
     const expected = Deno.env.get("FOSSBILLING_WEBHOOK_SECRET");
-    if (expected) {
-      const provided = req.headers.get("x-webhook-secret") ?? "";
-      if (provided !== expected) {
-        return new Response(JSON.stringify({ ok: false, error: "unauthorized" }), {
-          status: 401,
-          headers: { ...corsHeaders, "content-type": "application/json" },
-        });
-      }
+    if (!expected) {
+      console.error("FOSSBILLING_WEBHOOK_SECRET is not configured");
+      return new Response(JSON.stringify({ ok: false, error: "webhook not configured" }), {
+        status: 503,
+        headers: { ...corsHeaders, "content-type": "application/json" },
+      });
+    }
+    const provided = req.headers.get("x-webhook-secret") ?? req.headers.get("x-fossbilling-signature") ?? "";
+    if (provided !== expected) {
+      return new Response(JSON.stringify({ ok: false, error: "unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "content-type": "application/json" },
+      });
     }
 
     const evt = (await req.json()) as FossEvent;
@@ -89,7 +115,7 @@ Deno.serve(async (req) => {
       target_email: email,
       title: buildTitle(evt),
       message: buildMessage(evt),
-      link: evt.link ? String(evt.link) : "https://client.holaweb.co.za",
+      link: routeLink(evt),
       payload: evt as any,
     });
     if (error) throw error;

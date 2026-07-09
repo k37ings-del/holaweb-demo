@@ -1,8 +1,9 @@
 import { useState, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import { useNotifications } from "@/hooks/use-notifications";
-import { webhookEventsService, type WebhookEvent } from "@/services";
-import { Bell, X, AlertTriangle, Info, CheckCircle, Zap, ExternalLink } from "lucide-react";
+import { webhookEventsService } from "@/services";
+import { Bell, X, AlertTriangle, Info, CheckCircle, Zap, ExternalLink, CheckCheck } from "lucide-react";
 
 type Kind = "warning" | "info" | "success" | "event";
 
@@ -30,6 +31,8 @@ const colorMap: Record<Kind, string> = {
   success: "text-green-500",
   event: "text-primary",
 };
+
+const PAGE_SIZE = 10;
 
 function subscriptionItems(subscription: any): FeedItem[] {
   const items: FeedItem[] = [];
@@ -67,12 +70,21 @@ function subscriptionItems(subscription: any): FeedItem[] {
 
 const NotificationsPanel = () => {
   const [open, setOpen] = useState(false);
+  const [page, setPage] = useState(1);
   const { data: subscription } = useNotifications();
   const qc = useQueryClient();
+  const navigate = useNavigate();
 
   const eventsQuery = useQuery({
-    queryKey: ["webhook-events"],
-    queryFn: () => webhookEventsService.list(25),
+    queryKey: ["webhook-events", page],
+    queryFn: () => webhookEventsService.list(PAGE_SIZE * page, 0),
+    staleTime: 30_000,
+    refetchOnWindowFocus: true,
+  });
+
+  const unreadQuery = useQuery({
+    queryKey: ["webhook-events-unread"],
+    queryFn: () => webhookEventsService.unreadCount(),
     staleTime: 30_000,
     refetchOnWindowFocus: true,
   });
@@ -93,6 +105,7 @@ const NotificationsPanel = () => {
           if (!e.is_read) {
             try { await webhookEventsService.markRead(e.id); } catch { /* ignore */ }
             qc.invalidateQueries({ queryKey: ["webhook-events"] });
+            qc.invalidateQueries({ queryKey: ["webhook-events-unread"] });
           }
         },
       });
@@ -107,8 +120,28 @@ const NotificationsPanel = () => {
     return list;
   }, [subscription, eventsQuery.data, qc]);
 
-  const unreadCount = (eventsQuery.data ?? []).filter((e) => !e.is_read).length;
+  const unreadCount = unreadQuery.data ?? 0;
   const hasWarning = items.some((n) => n.kind === "warning") || unreadCount > 0;
+  const hasMore = (eventsQuery.data?.length ?? 0) >= PAGE_SIZE * page;
+
+  const markAllRead = async () => {
+    try {
+      await webhookEventsService.markAllRead();
+      qc.invalidateQueries({ queryKey: ["webhook-events"] });
+      qc.invalidateQueries({ queryKey: ["webhook-events-unread"] });
+    } catch { /* ignore */ }
+  };
+
+  const handleItemClick = (item: FeedItem, e: React.MouseEvent) => {
+    item.onOpen?.();
+    if (!item.link) return;
+    // Internal dashboard/admin routes → SPA navigation.
+    if (item.link.startsWith("/")) {
+      e.preventDefault();
+      setOpen(false);
+      navigate(item.link);
+    }
+  };
 
   return (
     <div className="relative">
@@ -119,7 +152,9 @@ const NotificationsPanel = () => {
       >
         <Bell className="w-5 h-5" />
         {hasWarning && (
-          <span className="absolute top-1 right-1 w-2 h-2 bg-destructive rounded-full" />
+          <span className="absolute top-0.5 right-0.5 min-w-[16px] h-4 px-1 rounded-full bg-destructive text-destructive-foreground text-[10px] font-bold flex items-center justify-center">
+            {unreadCount > 0 ? (unreadCount > 99 ? "99+" : unreadCount) : "!"}
+          </span>
         )}
       </button>
 
@@ -131,11 +166,21 @@ const NotificationsPanel = () => {
               <h3 className="font-subheading text-sm font-semibold text-foreground">
                 Notifications {unreadCount > 0 && <span className="ml-1 text-primary">({unreadCount})</span>}
               </h3>
-              <button onClick={() => setOpen(false)} className="text-muted-foreground hover:text-foreground">
-                <X className="w-4 h-4" />
-              </button>
+              <div className="flex items-center gap-2">
+                {unreadCount > 0 && (
+                  <button
+                    onClick={markAllRead}
+                    className="inline-flex items-center gap-1 text-[11px] font-subheading font-semibold text-primary hover:underline"
+                  >
+                    <CheckCheck className="w-3 h-3" /> Mark all read
+                  </button>
+                )}
+                <button onClick={() => setOpen(false)} className="text-muted-foreground hover:text-foreground">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
             </div>
-            <div className="max-h-96 overflow-y-auto">
+            <div className="max-h-[26rem] overflow-y-auto">
               {items.map((n) => {
                 const Icon = iconMap[n.kind];
                 const body = (
@@ -162,8 +207,8 @@ const NotificationsPanel = () => {
                     href={n.link}
                     target={n.link.startsWith("http") ? "_blank" : undefined}
                     rel="noopener noreferrer"
-                    onClick={() => n.onOpen?.()}
-                    className="block px-4 py-3 border-b border-border/50 last:border-0 hover:bg-muted/50 transition-colors"
+                    onClick={(e) => handleItemClick(n, e)}
+                    className={`block px-4 py-3 border-b border-border/50 last:border-0 hover:bg-muted/50 transition-colors ${n.unread ? "bg-primary/5" : ""}`}
                   >
                     {body}
                   </a>
@@ -174,6 +219,14 @@ const NotificationsPanel = () => {
                 );
               })}
             </div>
+            {hasMore && (
+              <button
+                onClick={() => setPage((p) => p + 1)}
+                className="w-full text-center py-2.5 border-t border-border font-subheading text-xs font-semibold text-primary hover:bg-muted/50 transition-colors"
+              >
+                Load more
+              </button>
+            )}
           </div>
         </>
       )}
