@@ -780,74 +780,128 @@ const AdminDashboard = () => {
                   </tbody>
                 </table>
               </div>
+                </div>
+              )}
             </div>
           )}
 
-          {/* META Business */}
-          {tab === "meta" && (
-            <div className="space-y-6">
-              <p className="font-body text-sm text-muted-foreground">Meta Business Suite integrations and services management.</p>
-
-              <div className="bg-gradient-to-r from-blue-500/5 to-blue-500/10 border border-blue-500/20 rounded-lg p-4 flex items-center gap-4">
-                <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center shrink-0">
-                  <Share2 className="w-5 h-5 text-blue-500" />
-                </div>
-                <div className="flex-1">
-                  <p className="font-subheading text-sm font-semibold text-foreground">Meta Business Suite Integration</p>
-                  <p className="font-body text-xs text-muted-foreground">Connect Facebook, Instagram, and WhatsApp Business for all clients.</p>
-                </div>
-                <span className="bg-accent text-accent-foreground px-3 py-1 rounded-full font-body text-xs font-medium shrink-0">Coming Soon</span>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {[
-                  { title: "WhatsApp Business API", desc: "Manage WhatsApp catalogues, automated messaging, and broadcast lists for client businesses." },
-                  { title: "Facebook & Instagram Ads", desc: "Create and monitor ad campaigns, boost posts, and manage audiences across Meta platforms." },
-                  { title: "Product Catalogue Sync", desc: "Sync client products to Facebook Shops, Instagram Shopping, and WhatsApp catalogues automatically." },
-                  { title: "Messenger & Instagram DMs", desc: "Unified inbox for managing customer conversations from Facebook Messenger and Instagram DMs." },
-                  { title: "Audience Insights", desc: "Detailed analytics on ad reach, engagement, and conversion metrics across Meta platforms." },
-                  { title: "Automated Messaging", desc: "Set up welcome messages, order confirmations, and payment receipts via WhatsApp and Messenger." },
-                ].map((feature) => (
-                  <div key={feature.title} className="bg-card border border-border rounded-lg p-5 space-y-2">
-                    <p className="font-subheading text-sm font-semibold text-foreground">{feature.title}</p>
-                    <p className="font-body text-xs text-muted-foreground leading-relaxed">{feature.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
+          {/* Analytics */}
+          {tab === "analytics" && (
+            <Suspense fallback={<p className="font-body text-sm text-muted-foreground">Loading analytics...</p>}>
+              <AdminAnalytics />
+            </Suspense>
           )}
 
-          {/* Settings */}
+          {/* Settings (with sub-tabs) */}
           {tab === "settings" && (
             <div className="space-y-6">
-              <div className="bg-card border border-border rounded-lg p-6">
-                <h3 className="font-heading text-lg font-bold text-foreground mb-2">Admin Account</h3>
-                <p className="font-body text-sm text-muted-foreground mb-4">
-                  Signed in as {user?.email}
-                </p>
-                <button
-                  onClick={async () => {
-                    const newPass = prompt("Enter new password:");
-                    if (!newPass) return;
-                    const { error } = await supabase.auth.updateUser({ password: newPass });
-                    if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
-                    else toast({ title: "Updated!", description: "Password changed successfully." });
-                  }}
-                  className="border border-border rounded-lg px-4 py-2 font-subheading text-xs font-semibold text-foreground hover:bg-muted transition-colors"
-                >
-                  Change Password
-                </button>
+              <div className="flex flex-wrap border-b border-border">
+                {([
+                  { id: "account", label: "Account", icon: Shield },
+                  { id: "company", label: "Company Profile", icon: Building2 },
+                  { id: "kyc", label: "KYC & Documents", icon: FileText },
+                  { id: "integrations", label: "Integrations", icon: Plug },
+                ] as const).map((st) => (
+                  <button
+                    key={st.id}
+                    onClick={() => setSettingsTab(st.id)}
+                    className={`inline-flex items-center gap-2 px-4 py-2.5 font-subheading text-xs font-semibold border-b-2 transition-colors ${
+                      settingsTab === st.id ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    <st.icon className="w-3.5 h-3.5" />
+                    {st.label}
+                  </button>
+                ))}
               </div>
 
-              <div className="bg-card border border-border rounded-lg p-6">
-                <h3 className="font-heading text-lg font-bold text-foreground mb-2">Authorized Admin Emails</h3>
-                <p className="font-body text-sm text-muted-foreground">
-                  Admin access is provisioned server-side from the
-                  <span className="font-mono text-xs mx-1 px-1.5 py-0.5 rounded bg-muted text-foreground">admin_allowed_emails</span>
-                  table. Contact a system administrator to add or remove an authorized address.
-                </p>
-                <p className="font-body text-xs text-muted-foreground mt-3">Maximum 10 admin accounts allowed.</p>
-              </div>
+              {settingsTab === "account" && (
+                <div className="bg-card border border-border rounded-lg p-6">
+                  <h3 className="font-heading text-lg font-bold text-foreground mb-2">Admin Account</h3>
+                  <p className="font-body text-sm text-muted-foreground mb-4">Signed in as {user?.email}</p>
+                  <button
+                    onClick={async () => {
+                      const newPass = prompt("Enter new password:");
+                      if (!newPass) return;
+                      const { error } = await supabase.auth.updateUser({ password: newPass });
+                      if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
+                      else toast({ title: "Updated!", description: "Password changed successfully." });
+                    }}
+                    className="border border-border rounded-lg px-4 py-2 font-subheading text-xs font-semibold text-foreground hover:bg-muted transition-colors"
+                  >
+                    Change Password
+                  </button>
+                </div>
+              )}
+
+              {settingsTab === "company" && (
+                <div className="bg-card border border-border rounded-lg p-6 space-y-4">
+                  <h3 className="font-heading text-lg font-bold text-foreground">Holaweb Company Profile</h3>
+                  <p className="font-body text-sm text-muted-foreground">
+                    Manage the public-facing Holaweb company details shown across the platform.
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {[
+                      { label: "Legal Name", value: "Holaweb (Pty) Ltd" },
+                      { label: "Trading As", value: "Holaweb Africa" },
+                      { label: "Registered Country", value: "South Africa" },
+                      { label: "Support Email", value: "holaweb.africa@gmail.com" },
+                    ].map((f) => (
+                      <div key={f.label}>
+                        <label className="block font-body text-xs text-muted-foreground mb-1">{f.label}</label>
+                        <input defaultValue={f.value} className="w-full bg-muted border border-border rounded-lg px-3 py-2 font-body text-sm text-foreground" />
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    onClick={() => toast({ title: "Saved", description: "Company profile updated." })}
+                    className="btn-cherry rounded-lg px-6 py-2 font-subheading text-xs font-semibold"
+                  >
+                    Save Company Profile
+                  </button>
+                </div>
+              )}
+
+              {settingsTab === "kyc" && (
+                <div className="bg-card border border-border rounded-lg p-6 space-y-3">
+                  <h3 className="font-heading text-lg font-bold text-foreground">KYC & Business Documents</h3>
+                  <p className="font-body text-sm text-muted-foreground">
+                    Review verification documents, business licenses and compliance records for each client. Upload and secure storage will be wired to Lovable Cloud storage in a follow-up iteration.
+                  </p>
+                  <div className="rounded-lg border border-dashed border-border p-6 text-center">
+                    <FileText className="w-8 h-8 text-muted-foreground/40 mx-auto mb-2" />
+                    <p className="font-body text-xs text-muted-foreground">No documents uploaded yet.</p>
+                  </div>
+                </div>
+              )}
+
+              {settingsTab === "integrations" && (
+                <div className="space-y-3">
+                  <p className="font-body text-sm text-muted-foreground">Monitor third-party integrations connected to the Holaweb platform.</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {[
+                      { name: "Peach Payments", status: "Webhook ready", href: null },
+                      { name: "FOSSBilling", status: "Webhook receiving events", href: "https://client.holaweb.co.za" },
+                      { name: "MyCoza", status: "SSO available", href: "https://www.mycoza.com/clients/dologin.php" },
+                      { name: "Zoho CRM", status: "Coming soon", href: null },
+                      { name: "Meta Business Suite", status: "Coming soon", href: null },
+                      { name: "Resend Email", status: "Active", href: null },
+                    ].map((intg) => (
+                      <div key={intg.name} className="bg-card border border-border rounded-lg p-4 flex items-center justify-between">
+                        <div>
+                          <p className="font-subheading text-sm font-semibold text-foreground">{intg.name}</p>
+                          <p className="font-body text-xs text-muted-foreground">{intg.status}</p>
+                        </div>
+                        {intg.href && (
+                          <a href={intg.href} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xs font-subheading font-semibold inline-flex items-center gap-1">
+                            Open <ArrowUpRight className="w-3 h-3" />
+                          </a>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </main>
