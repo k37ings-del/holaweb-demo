@@ -35,7 +35,8 @@ import { AuditLogPanel } from "@/components/admin/AuditLogPanel";
 import { PasswordChangePrompt } from "@/components/admin/PasswordChangePrompt";
 import NotificationsPanel from "@/components/NotificationsPanel";
 
-type Tab = "overview" | "clients" | "access" | "invites" | "audit" | "subscriptions" | "referrals" | "meta" | "pricing" | "settings";
+type Tab = "overview" | "clients" | "access" | "subscriptions" | "pricing" | "analytics" | "settings";
+type SettingsTab = "account" | "kyc" | "company" | "integrations";
 
 const AFRICAN_REGIONS: Record<string, string[]> = {
   "Eastern Africa": ["Kenya", "Tanzania", "Uganda", "Rwanda", "Ethiopia", "Somalia", "Burundi", "South Sudan", "Eritrea", "Djibouti", "Comoros", "Mauritius", "Seychelles", "Madagascar", "Mozambique"],
