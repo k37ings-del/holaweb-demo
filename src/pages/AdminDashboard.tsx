@@ -599,9 +599,11 @@ const AdminDashboard = () => {
                   </table>
                 </div>
                 </div>
+                </div>
               )}
               {pricingSubTab === "referrals" && (
                 <div className="space-y-4">
+
 
               <div className="flex items-center justify-between">
                 <p className="font-body text-sm text-muted-foreground">Manage promo codes and discounts.</p>
